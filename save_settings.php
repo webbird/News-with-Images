@@ -3,24 +3,21 @@
  *
  * @category        modules
  * @package         news_img
- * @author          WebsiteBaker Project
+ * @author          WBCE Community
  * @copyright       2004-2009, Ryan Djurovich
  * @copyright       2009-2010, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @copyright       2019-, WBCE Community
+ * @link            https://www.wbce.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 4.3.4 and higher
- * @version         $Id: save_settings.php 1280 2010-01-29 02:59:35Z Luisehahne $
- * @filesource      $HeadURL: modules/news_img/save_settings.php $
- * @lastmodified    $Date: 2011-10-06  $ by Silvia Reins
+ * @platform        WBCE
  *
  */
 
-require('../../config.php');
+require '../../config.php';
 
 // Include WB admin wrapper script
 $update_when_modified = true; // Tells script to update when this page was last updated
-require(WB_PATH.'/modules/admin.php');
+require WB_PATH.'/modules/admin.php';
 
 // This code removes any <?php tags and adds slashes
 $friendly = array('&lt;', '&gt;', '?php');
@@ -63,7 +60,7 @@ if($posts_per_page=='') {
 }
 
 // Update settings
-$database->query("UPDATE ".TABLE_PREFIX."mod_news_img_settings SET header = '$header', post_loop = '$post_loop', footer = '$footer', posts_per_page = '$posts_per_page', post_header = '$post_header', post_footer = '$post_footer', comments_header = '$comments_header', comments_loop = '$comments_loop', comments_footer = '$comments_footer', comments_page = '$comments_page', commenting = '$commenting', resize = '$resize', resize_preview = '$resize_preview', crop_preview = '$crop', use_captcha = '$use_captcha' WHERE section_id = '$section_id'");
+$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_settings` SET `header` = '$header', `post_loop` = '$post_loop', `footer` = '$footer', `posts_per_page` = '$posts_per_page', `post_header` = '$post_header', `post_footer` = '$post_footer', `comments_header` = '$comments_header', `comments_loop` = '$comments_loop', `comments_footer` = '$comments_footer', `comments_page` = '$comments_page', `commenting` = '$commenting', `resize` = '$resize', `resize_preview` = '$resize_preview', `crop_preview` = '$crop', `use_captcha` = '$use_captcha' WHERE `section_id` = '$section_id'");
 
 // Check if there is a db error, otherwise say successful
 if($database->is_error()) {
@@ -74,5 +71,3 @@ if($database->is_error()) {
 
 // Print admin footer
 $admin->print_footer();
-
-?>

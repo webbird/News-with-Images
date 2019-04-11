@@ -3,16 +3,13 @@
  *
  * @category        modules
  * @package         news_img
- * @author          WebsiteBaker Project
+ * @author          WBCE Community
  * @copyright       2004-2009, Ryan Djurovich
  * @copyright       2009-2010, Website Baker Org. e.V.
- * @link			      http://www.websitebaker2.org/
+ * @copyright       2019-, WBCE Community
+ * @link            https://www.wbce.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 4.3.4 and higher
- * @version         $Id: view.php 1281 2010-01-30 04:57:58Z Luisehahne $
- * @filesource      $HeadURL: modules/news_img/view.php $
- * @lastmodified    $Date: 2011-10-06  $ by Silvia Reins
+ * @platform        WBCE
  *
  */
 
@@ -33,7 +30,6 @@ if(!file_exists(WB_PATH.'/templates/abenaa/gallery/simple-lightbox.js'))
 } else {
     $usebrax=true;
 	echo ''."\n";
-
 }
 
 // load module language file
@@ -56,7 +52,7 @@ if(isset($_GET['p']) AND is_numeric($_GET['p']) AND $_GET['p'] >= 0)
 
 // Get user's username, display name, email, and id - needed for insertion into post info
 $users = array();
-$query_users = $database->query("SELECT user_id,username,display_name,email FROM ".TABLE_PREFIX."users");
+$query_users = $database->query("SELECT `user_id`,`username`,`display_name`,`email` FROM `".TABLE_PREFIX."users`");
 if($query_users->numRows() > 0)
 {
 	while( false != ($user = $query_users->fetchRow()) )
@@ -78,7 +74,7 @@ $groups[0]['title'] = '';
 $groups[0]['active'] = true;
 $groups[0]['image'] = '';
 
-$query_users = $database->query("SELECT group_id,title,active FROM ".TABLE_PREFIX."mod_news_img_groups WHERE section_id = '$section_id' ORDER BY position ASC");
+$query_users = $database->query("SELECT `group_id`,`title`,`active` FROM `".TABLE_PREFIX."mod_news_img_groups` WHERE `section_id` = '$section_id' ORDER BY `position` ASC");
 if($query_users->numRows() > 0)
 {
 	while( false != ($group = $query_users->fetchRow()) )
@@ -105,7 +101,7 @@ if(!defined('POST_ID') OR !is_numeric(POST_ID))
 	// Check if we should only list posts from a certain group
 	if(isset($_GET['g']) AND is_numeric($_GET['g']))
     {
-		$query_extra = " AND group_id = '".$_GET['g']."'";
+		$query_extra = " AND `group_id` = '".$_GET['g']."'";
 	} else {
 		$query_extra = '';
 	}
@@ -113,13 +109,13 @@ if(!defined('POST_ID') OR !is_numeric(POST_ID))
 	// Check if we should only list posts from a certain group
 	if(isset($_GET['g']) AND is_numeric($_GET['g']))
     {
-		$query_extra = " AND group_id = '".$_GET['g']."'";
+		$query_extra = " AND `group_id` = '".$_GET['g']."'";
 	} else {
 		$query_extra = '';
 	}
 
 	// Get settings
-	$query_settings = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_news_img_settings WHERE section_id = '$section_id'");
+	$query_settings = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '$section_id'");
 	if($query_settings->numRows() > 0)
     {
 		$fetch_settings = $query_settings->fetchRow();
@@ -136,9 +132,9 @@ if(!defined('POST_ID') OR !is_numeric(POST_ID))
 
 	$t = time();
 	// Get total number of posts
-	$query_total_num = $database->query("SELECT post_id, section_id FROM ".TABLE_PREFIX."mod_news_img_posts
-		WHERE section_id = '$section_id' AND active = '1' AND title != '' $query_extra
-		AND (published_when = '0' OR published_when <= $t) AND (published_until = 0 OR published_until >= $t)");
+	$query_total_num = $database->query("SELECT `post_id`, `section_id` FROM `".TABLE_PREFIX."mod_news_img_posts`
+		WHERE `section_id` = '$section_id' AND `active` = '1' AND `title` != '' $query_extra
+		AND (`published_when` = '0' OR `published_when` <= $t) AND (`published_until` = 0 OR `published_until` >= $t)");
 	$total_num = $query_total_num->numRows();
 
 	// Work-out if we need to add limit code to sql
@@ -150,10 +146,10 @@ if(!defined('POST_ID') OR !is_numeric(POST_ID))
 	}
 
 	// Query posts (for this page)
-	$query_posts = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_news_img_posts
-		WHERE section_id = '$section_id' AND active = '1' AND title != ''$query_extra
-		AND (published_when = '0' OR published_when <= $t) AND (published_until = 0 OR published_until >= $t)
-		ORDER BY position DESC".$limit_sql);
+	$query_posts = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts`
+		WHERE `section_id` = '$section_id' AND `active` = '1' AND `title` != ''$query_extra
+		AND (`published_when` = '0' OR `published_when` <= $t) AND (`published_until` = 0 OR `published_until` >= $t)
+		ORDER BY `position` DESC".$limit_sql);
 	$num_posts = $query_posts->numRows();
 
 	// Create previous and next links
@@ -337,7 +333,7 @@ elseif(defined('POST_ID') AND is_numeric(POST_ID))
   if(defined('POST_SECTION') AND POST_SECTION == $section_id)
   {
 	// Get settings
-	$query_settings = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_news_img_settings WHERE section_id = '$section_id'");
+	$query_settings = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '$section_id'");
 	if($query_settings->numRows() > 0)
     {
 		$fetch_settings = $query_settings->fetchRow();
@@ -354,7 +350,7 @@ elseif(defined('POST_ID') AND is_numeric(POST_ID))
 		$setting_comments_footer = '';
     }
 	// Get page info
-	$query_page = $database->query("SELECT link FROM ".TABLE_PREFIX."pages WHERE page_id = '".PAGE_ID."'");
+	$query_page = $database->query("SELECT `link` FROM `".TABLE_PREFIX."pages` WHERE `page_id` = '".PAGE_ID."'");
 	if($query_page->numRows() > 0)
     {
 		$page = $query_page->fetchRow();
@@ -374,9 +370,9 @@ elseif(defined('POST_ID') AND is_numeric(POST_ID))
 
 	// Get post info
 	$t = time();
-	$query_post = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_news_img_posts
-		WHERE post_id = '".POST_ID."' AND active = '1'
-		AND (published_when = '0' OR published_when <= $t) AND (published_until = 0 OR published_until >= $t)");
+	$query_post = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts`
+		WHERE `post_id` = '".POST_ID."' AND `active` = '1'
+		AND (`published_when` = '0' OR `published_when` <= $t) AND (`published_until` = 0 OR `published_until` >= $t)");
 
 	if($query_post->numRows() > 0)
     {
@@ -463,7 +459,7 @@ elseif(defined('POST_ID') AND is_numeric(POST_ID))
         // post images
         // 2014-04-10 by BlackBird Webprogrammierung:
         //            added image sort order
-        $sql_result = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_news_img_img WHERE post_id = '".POST_ID."' ORDER BY position, id ASC");
+        $sql_result = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = '".POST_ID."' ORDER BY `position`, `id` ASC");
         echo $usebrax
              ? '<div class="col span_2_of_3"><div id="fotogallery"><div class="masonry gallery"> '
              : '';
@@ -491,7 +487,7 @@ elseif(defined('POST_ID') AND is_numeric(POST_ID))
 		print str_replace($vars, $values, $setting_comments_header);
 
 		// Query for comments
-		$query_comments = $database->query("SELECT title,comment,commented_when,commented_by FROM ".TABLE_PREFIX."mod_news_comments WHERE post_id = '".POST_ID."' ORDER BY commented_when ASC");
+		$query_comments = $database->query("SELECT `title`,`comment`,`commented_when`,`commented_by` FROM `".TABLE_PREFIX."mod_news_comments` WHERE `post_id` = '".POST_ID."' ORDER BY `commented_when` ASC");
 		if($query_comments->numRows() > 0)
         {
 			while( false != ($comment = $query_comments->fetchRow()) )

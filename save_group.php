@@ -3,20 +3,17 @@
  *
  * @category        modules
  * @package         news_img
- * @author          WebsiteBaker Project
+ * @author          WBCE Community
  * @copyright       2004-2009, Ryan Djurovich
  * @copyright       2009-2010, Website Baker Org. e.V.
- * @link		      	http://www.websitebaker2.org/
+ * @copyright       2019-, WBCE Community
+ * @link            https://www.wbce.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 4.3.4 and higher
- * @version         $Id: save_group.php 1280 2010-01-29 02:59:35Z Luisehahne $
- * @filesource      $HeadURL: modules/news_img/save_group.php $
- * @lastmodified    $Date: 2011-10-06  $ by Silvia Reins
+ * @platform        WBCE
  *
  */
 
-require('../../config.php');
+require '../../config.php';
 
 // Get id
 if(!isset($_POST['group_id']) OR !is_numeric($_POST['group_id']))
@@ -31,10 +28,10 @@ else
 
 // Include WB admin wrapper script
 $update_when_modified = true; // Tells script to update when this page was last updated
-require(WB_PATH.'/modules/admin.php');
+require WB_PATH.'/modules/admin.php';
 
 // Include WB functions file
-require_once(WB_PATH.'/framework/functions.php');
+require_once WB_PATH.'/framework/functions.php';
 
 // Vagroup_idate all fields
 if($admin->get_post('title') == '')
@@ -48,7 +45,7 @@ else
 }
 
 // Update row
-$database->query("UPDATE ".TABLE_PREFIX."mod_news_img_groups SET title = '$title', active = '$active' WHERE group_id = '$group_id'");
+$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_groups` SET `title` = '$title', `active` = '$active' WHERE `group_id` = '$group_id'");
 
 // Check if the user uploaded an image or wants to delete one
 if(isset($_FILES['image']['tmp_name']) AND $_FILES['image']['tmp_name'] != '')
@@ -73,7 +70,7 @@ if(isset($_FILES['image']['tmp_name']) AND $_FILES['image']['tmp_name'] != '')
 	// Upload image
 	move_uploaded_file($_FILES['image']['tmp_name'], $new_filename);
 	// Check if we need to create a thumb
-	$query_settings = $database->query("SELECT resize FROM ".TABLE_PREFIX."mod_news_img_settings WHERE section_id = '$section_id'");
+	$query_settings = $database->query("SELECT `resize` FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '$section_id'");
 	$fetch_settings = $query_settings->fetchRow();
 	$resize = $fetch_settings['resize'];
 	if($resize != 0)
@@ -107,4 +104,3 @@ if($database->is_error()) {
 // Print admin footer
 $admin->print_footer();
 
-?>

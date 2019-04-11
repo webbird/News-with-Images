@@ -13,13 +13,13 @@
  *
  */
 
-require('../../config.php');
+require '../../config.php';
 
 // Include WB admin wrapper script
-require(WB_PATH.'/modules/admin.php');
+require WB_PATH.'/modules/admin.php';
 
 // Include the ordering class
-require(WB_PATH.'/framework/class.order.php');
+require WB_PATH.'/framework/class.order.php';
 // Get new order
 $order = new order(TABLE_PREFIX.'mod_news_img_posts', 'position', 'post_id', 'section_id');
 $position = $order->get_new($section_id);

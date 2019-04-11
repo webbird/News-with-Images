@@ -3,23 +3,20 @@
  *
  * @category        modules
  * @package         news_img
- * @author          WebsiteBaker Project
+ * @author          WBCE Community
  * @copyright       2004-2009, Ryan Djurovich
  * @copyright       2009-2010, Website Baker Org. e.V.
- * @link			      http://www.websitebaker2.org/
+ * @copyright       2019-, WBCE Community
+ * @link            https://www.wbce.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 4.3.4 and higher
- * @version         $Id: modify.php 1280 2010-01-29 02:59:35Z Luisehahne $
- * @filesource      $HeadURL: modules/news/modify.php $
- * @lastmodified    $Date: 2011-10-06  $ by Silvia Reins
+ * @platform        WBCE
  *
  */
 
 // Must include code to stop this file being access directly
 if(!defined('WB_PATH')) { exit("Cannot access this file directly"); }
-$database->query("DELETE FROM ".TABLE_PREFIX."mod_news_img_posts  WHERE page_id = '$page_id' and section_id = '$section_id' and title=''"); 
-$database->query("DELETE FROM ".TABLE_PREFIX."mod_news_img_groups  WHERE page_id = '$page_id' and section_id = '$section_id' and title=''"); 
+$database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_posts`  WHERE `page_id` = '$page_id' and `section_id` = '$section_id' and `title`=''");
+$database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_groups`  WHERE `page_id` = '$page_id' and `section_id` = '$section_id' and `title`=''");
 
 //overwrite php.ini on Apache servers for valid SESSION ID Separator
 if(function_exists('ini_set')) {
@@ -48,7 +45,7 @@ if(function_exists('ini_set')) {
 <?php
 
 // Loop through existing posts
-$query_posts = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE section_id = '$section_id' ORDER BY position DESC");
+$query_posts = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `section_id` = '$section_id' ORDER BY `position` DESC");
 if($query_posts->numRows() > 0) {
 	$num_posts = $query_posts->numRows();
 	$row = 'a';
@@ -71,7 +68,7 @@ if($query_posts->numRows() > 0) {
 			<td width="180">
 				<?php echo $TEXT['GROUP'].': ';
 				// Get group title
-				$query_title = $database->query("SELECT title FROM ".TABLE_PREFIX."mod_news_img_groups WHERE group_id = '".$post['group_id']."'");
+				$query_title = $database->query("SELECT `title` FROM `".TABLE_PREFIX."mod_news_img_groups` WHERE `group_id` = '".$post['group_id']."'");
 				if($query_title->numRows() > 0) {
 					$fetch_title = $query_title->fetchRow();
 					echo ($fetch_title['title']);
@@ -83,7 +80,7 @@ if($query_posts->numRows() > 0) {
 			<td width="120">
 				<?php echo $TEXT['COMMENTS'].': ';
 				// Get number of comments
-				$query_title = $database->query("SELECT title FROM ".TABLE_PREFIX."mod_news_img_comments WHERE post_id = '".$post['post_id']."'");
+				$query_title = $database->query("SELECT `title` FROM `".TABLE_PREFIX."mod_news_img_comments` WHERE `post_id` = '".$post['post_id']."'");
 				echo $query_title->numRows();
 				?>
 			</td>
@@ -149,7 +146,7 @@ if($query_posts->numRows() > 0) {
 <?php
 
 // Loop through existing groups
-$query_groups = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_groups` WHERE section_id = '$section_id' ORDER BY position ASC");
+$query_groups = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_groups` WHERE `section_id` = '$section_id' ORDER BY `position` ASC");
 if($query_groups->numRows() > 0) {
 	$num_groups = $query_groups->numRows();
 	$row = 'a';
@@ -206,4 +203,3 @@ if($query_groups->numRows() > 0) {
 } else {
 	echo $TEXT['NONE_FOUND'];
 }
-?>

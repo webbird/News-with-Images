@@ -3,20 +3,17 @@
  *
  * @category        modules
  * @package         news_img
- * @author          WebsiteBaker Project
+ * @author          WBCE Community
  * @copyright       2004-2009, Ryan Djurovich
  * @copyright       2009-2010, Website Baker Org. e.V.
- * @link			      http://www.websitebaker2.org/
+ * @copyright       2019-, WBCE Community
+ * @link            https://www.wbce.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 4.3.4 and higher
- * @version         $Id: modify_post.php 1281 2010-01-30 04:57:58Z Luisehahne $
- * @filesource      $HeadURL: modules/news_img/modify_post.php $
- * @lastmodified    $Date: 2011-10-06  $ by Silvia Reins
+ * @platform        WBCE
  *
  */
 
-require('../../config.php');
+require '../../config.php';
 
 $file_dir = PAGES_DIRECTORY.'/beitragsbilder/';
 $thumb_dir = PAGES_DIRECTORY.'/beitragsbilder/thumb/';
@@ -27,16 +24,15 @@ if(!isset($_GET['post_id']) OR !is_numeric($_GET['post_id'])) {
 	exit(0);
 } else {
 	$post_id = $_GET['post_id'];
-        
 }
 
 // Include WB admin wrapper script
-require(WB_PATH.'/modules/admin.php');
+require WB_PATH.'/modules/admin.php';
 
 // delete image
 if(isset ($_GET['img_id'])) {
-    $img_id = $_GET['img_id'];
-  $query_img=$database->query("SELECT * FROM ".TABLE_PREFIX."mod_news_img_img WHERE id = '$img_id'");
+  $img_id = $_GET['img_id'];
+  $query_img=$database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `id` = '$img_id'");
   $row = $query_img->fetchRow();
  
   if(!$row) {
@@ -47,14 +43,14 @@ if(isset ($_GET['img_id'])) {
     unlink (WB_PATH.$thumb_dir.'thumb_'.$row['bildname']);  
   } 
   
-  $database->query("DELETE FROM ".TABLE_PREFIX."mod_news_img_img WHERE id = '$img_id'");
+  $database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `id` = '$img_id'");
   
 }   //end delete
 
 // delete previewimage
 if(isset ($_GET['post_img'])) {
     $post_img = $_GET['post_img'];
-    $database->query("UPDATE ".TABLE_PREFIX."mod_news_img_posts SET image = '' WHERE post_id = '$post_id'");
+    $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `image` = '' WHERE `post_id` = '$post_id'");
     unlink (WB_PATH.$file_dir.$post_img); 
 }   //end delete  preview
 
@@ -72,7 +68,7 @@ if(isset($_GET['id']) && ( isset($_GET['up']) || isset($_GET['down']) ) ) {
 // 2014-04-10 ---end---
 
 // Get header and footer
-$query_content = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_news_img_posts WHERE post_id = '$post_id'");
+$query_content = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `post_id` = '$post_id'");
 $fetch_content = $query_content->fetchRow();
 
 if (!defined('WYSIWYG_EDITOR') OR WYSIWYG_EDITOR=="none" OR !file_exists(WB_PATH.'/modules/'.WYSIWYG_EDITOR.'/include.php')) {
@@ -123,7 +119,7 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
 		<select name="group" style="width: 100%;">
 			<option value="0"><?php echo $TEXT['NONE']; ?></option>
 			<?php
-			$query = $database->query("SELECT group_id,title FROM ".TABLE_PREFIX."mod_news_img_groups WHERE section_id = '$section_id' ORDER BY position ASC");
+			$query = $database->query("SELECT `group_id`,`title` FROM `".TABLE_PREFIX."mod_news_img_groups` WHERE `section_id` = '$section_id' ORDER BY `position` ASC");
 			if($query->numRows() > 0) {
 				// Loop through groups
 				while($group = $query->fetchRow()) {
@@ -206,7 +202,7 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
 
 //show all images
 // 2014-04-10 by BlackBird Webprogrammierung: added position to sort order
-$query_img = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_news_img_img WHERE post_id = ".$post_id." ORDER BY position,id ASC");
+$query_img = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = ".$post_id." ORDER BY `position`,`id` ASC");
 
 if($query_img->numRows() > 0) {
     echo '<div id="fotoshow"><h3>Bilder anzeigen</h3><table><tbody>';
@@ -353,7 +349,7 @@ if($query_img->numRows() > 0) {
 <?php
 
 // Loop through existing comments
-$query_comments = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_comments` WHERE section_id = '$section_id' AND post_id = '$post_id' ORDER BY commented_when DESC");
+$query_comments = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_comments` WHERE `section_id` = '$section_id' AND `post_id` = '$post_id' ORDER BY `commented_when` DESC");
 if($query_comments->numRows() > 0) {
 	$row = 'a';
 	?>
@@ -396,5 +392,3 @@ if($query_comments->numRows() > 0) {
 
 // Print admin footer
 $admin->print_footer();
-
-?>

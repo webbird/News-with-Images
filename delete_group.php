@@ -3,16 +3,13 @@
  *
  * @category        modules
  * @package         news_img
- * @author          WebsiteBaker Project
+ * @author          WBCE Community
  * @copyright       2004-2009, Ryan Djurovich
  * @copyright       2009-2010, Website Baker Org. e.V.
- * @link			      http://www.websitebaker2.org/
+ * @copyright       2019-, WBCE Community
+ * @link            https://www.wbce.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 4.3.4 and higher
- * @version         $Id: delete_group.php 1280 2010-01-29 02:59:35Z Luisehahne $
- * @filesource      $HeadURL: modules/news_img/delete_group.php $
- * @lastmodified    $Date: 2011-10-06  $ by Silvia Reins
+ * @platform        WBCE
  *
  */
 
@@ -30,9 +27,9 @@ if(!isset($_GET['group_id']) OR !is_numeric($_GET['group_id'])) {
 $update_when_modified = true; // Tells script to update when this page was last updated
 require(WB_PATH.'/modules/admin.php');
 
-$database->query("UPDATE ".TABLE_PREFIX."mod_news_img_posts SET group_id = '0' where group_id='$group_id'");
+$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `group_id` = '0' where `group_id`='$group_id'");
 // Update row
-$database->query("DELETE FROM ".TABLE_PREFIX."mod_news_img_groups WHERE group_id = '$group_id'");
+$database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_groups` WHERE `group_id` = '$group_id'");
 // Check if there is a db error, otherwise say successful
 if($database->is_error()) {
 	$admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
@@ -42,5 +39,3 @@ if($database->is_error()) {
 
 // Print admin footer
 $admin->print_footer();
-
-?>

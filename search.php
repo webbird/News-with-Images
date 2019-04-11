@@ -3,16 +3,13 @@
  *
  * @category        modules
  * @package         news_img
- * @author          WebsiteBaker Project
+ * @author          WBCE Community
  * @copyright       2004-2009, Ryan Djurovich
  * @copyright       2009-2010, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @copyright       2019-, WBCE Community
+ * @link            https://www.wbce.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 4.3.4 and higher
- * @version         $Id: search.php 1280 2010-01-29 02:59:35Z Luisehahne $
- * @filesource      $HeadURL: modules/news_img/search.php $
- * @lastmodified    $Date: 2011-10-06  $ by Silvia Reins
+ * @platform        WBCE
  *
  */
 
@@ -31,11 +28,11 @@ function news_img_search($func_vars) {
 	$table_posts = TABLE_PREFIX."mod_news_img_posts";
 	$table_groups = TABLE_PREFIX."mod_news_img_groups";
 	$query = $func_database->query("
-		SELECT p.post_id, p.title, p.content_short, p.content_long, p.link, p.posted_when, p.posted_by
-		FROM $table_posts AS p LEFT OUTER JOIN $table_groups AS g ON p.group_id = g.group_id
-		WHERE p.section_id='$func_section_id' AND p.active = '1' AND ( g.active IS NULL OR g.active = '1' )
-		AND (published_when = '0' OR published_when <= $t) AND (published_until = 0 OR published_until >= $t)
-		ORDER BY p.post_id DESC
+		SELECT p.`post_id`, p.`title`, p.`content_short`, p.`content_long`, p.`link`, p.`posted_when`, p.`posted_by`
+		FROM `$table_posts` AS p LEFT OUTER JOIN `$table_groups` AS g ON p.`group_id` = g.`group_id`
+		WHERE p.`section_id`='$func_section_id' AND p.`active` = '1' AND ( g.`active` IS NULL OR g.`active` = '1' )
+		AND (`published_when` = '0' OR `published_when` <= $t) AND (`published_until` = 0 OR `published_until` >= $t)
+		ORDER BY p.`post_id` DESC
 	");
 	// now call print_excerpt() for every single post
 	if($query->numRows() > 0) {
@@ -45,10 +42,10 @@ function news_img_search($func_vars) {
 			if($excerpt_from_comments) {
 				$table = TABLE_PREFIX."mod_news_img_comments";
 				$commentquery = $func_database->query("
-					SELECT title, comment
-					FROM $table
-					WHERE post_id='{$res['post_id']}'
-					ORDER BY commented_when ASC
+					SELECT `title`, `comment`
+					FROM `$table`
+					WHERE `post_id`='{$res['post_id']}'
+					ORDER BY `commented_when` ASC
 				");
 				if($commentquery->numRows() > 0) {
 					while($c_res = $commentquery->fetchRow()) {
@@ -76,9 +73,9 @@ function news_img_search($func_vars) {
 	$table_groups = TABLE_PREFIX."mod_news_img_groups";
 	$table_posts = TABLE_PREFIX."mod_news_img_posts";
 	$query = $func_database->query("
-		SELECT DISTINCT g.title, g.group_id
-		FROM $table_groups AS g INNER JOIN $table_posts AS p ON g.group_id = p.group_id
-		WHERE g.section_id='$func_section_id' AND g.active = '1' AND p.active = '1'
+		SELECT DISTINCT g.`title`, g.`group_id`
+		FROM `$table_groups` AS g INNER JOIN `$table_posts` AS p ON g.`group_id` = p.`group_id`
+		WHERE g.`section_id`='$func_section_id' AND g.`active` = '1' AND p.`active` = '1'
 	");
 	// now call print_excerpt() for every single group, too
 	if($query->numRows() > 0) {
@@ -101,4 +98,3 @@ function news_img_search($func_vars) {
 	return $result;
 }
 
-?>

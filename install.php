@@ -3,16 +3,13 @@
  *
  * @category        modules
  * @package         news_img
- * @author          WebsiteBaker Project
+ * @author          WBCE Community
  * @copyright       2004-2009, Ryan Djurovich
  * @copyright       2009-2010, Website Baker Org. e.V.
- * @link			      http://www.websitebaker2.org/
+ * @copyright       2019-, WBCE Community
+ * @link            https://www.wbce.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 4.3.4 and higher
- * @version      	  $Id: install.php 1284 2010-02-01 05:27:59Z Luisehahne $
- * @filesource      $HeadURL: modules/news_img/install.php $
- * @lastmodified    $Date: 2011-10-06  $ by Silvia Reins
+ * @platform        WBCE
  *
  */
 
@@ -103,7 +100,7 @@ if(defined('WB_URL'))
 					 . ' )';
 	$database->query($mod_news);
 		
-    $mod_search = "SELECT * FROM ".TABLE_PREFIX."search WHERE value = 'news'";
+    $mod_search = "SELECT * FROM `".TABLE_PREFIX."search` WHERE `value` = 'news'";
     $insert_search = $database->query($mod_search);
     if( $insert_search->numRows() == 0 )
     {
@@ -119,7 +116,7 @@ if(defined('WB_URL'))
     	$field_info = serialize($field_info);
     	$database->query("INSERT INTO ".TABLE_PREFIX."search (name,value,extra) VALUES ('module', 'news', '$field_info')");
     	// Query start
-    	$query_start_code = "SELECT [TP]pages.page_id, [TP]pages.page_title,	[TP]pages.link, [TP]pages.description, [TP]pages.modified_when, [TP]pages.modified_by	FROM [TP]mod_news_posts, [TP]mod_news_groups, [TP]mod_news_comments, [TP]mod_news_settings, [TP]pages WHERE ";
+    	$query_start_code = "SELECT [TP]pages.page_id, [TP]pages.page_title, [TP]pages.link, [TP]pages.description, [TP]pages.modified_when, [TP]pages.modified_by	FROM [TP]mod_news_posts, [TP]mod_news_groups, [TP]mod_news_comments, [TP]mod_news_settings, [TP]pages WHERE ";
     	$database->query("INSERT INTO ".TABLE_PREFIX."search (name,value,extra) VALUES ('query_start', '$query_start_code', 'news')");
     	// Query body
     	$query_body_code = "
@@ -140,10 +137,10 @@ if(defined('WB_URL'))
     	$database->query("INSERT INTO ".TABLE_PREFIX."search (name,value,extra) VALUES ('query_end', '$query_end_code', 'news')");
 
     	// Insert blank row (there needs to be at least on row for the search to work)
-    	$database->query("INSERT INTO ".TABLE_PREFIX."mod_news_img_posts (section_id,page_id) VALUES ('0', '0')");
-    	$database->query("INSERT INTO ".TABLE_PREFIX."mod_news_img_groups (section_id,page_id) VALUES ('0', '0')");
-    	$database->query("INSERT INTO ".TABLE_PREFIX."mod_news_img_comments (section_id,page_id) VALUES ('0', '0')");
-    	$database->query("INSERT INTO ".TABLE_PREFIX."mod_news_img_settings (section_id,page_id) VALUES ('0', '0')");
+    	$database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_posts` (`section_id`,`page_id`) VALUES ('0', '0')");
+    	$database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_groups` (`section_id`,`page_id`) VALUES ('0', '0')");
+    	$database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_comments` (`section_id`,`page_id`) VALUES ('0', '0')");
+    	$database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_settings` (`section_id`,`page_id`) VALUES ('0', '0')");
     }
 
         // Make news post img files dir
@@ -218,5 +215,3 @@ header('Location: ../');
 		change_mode(WB_PATH.PAGES_DIRECTORY.'/beitragsbilder/thumb/index.php', 'file');
 	}
 };
-
-?>

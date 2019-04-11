@@ -3,16 +3,13 @@
  *
  * @category        modules
  * @package         news_img
- * @author          WebsiteBaker Project
+ * @author          WBCE Community
  * @copyright       2004-2009, Ryan Djurovich
  * @copyright       2009-2010, Website Baker Org. e.V.
- * @link			      http://www.websitebaker2.org/
+ * @copyright       2019-, WBCE Community
+ * @link            https://www.wbce.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 4.3.4 and higher
- * @version         $Id: rss.php 1280 2010-01-29 02:59:35Z Luisehahne $
- * @filesource      $HeadURL: modules/news_img/rss.php $
- * @lastmodified    $Date: 2011-10-06  $ by Silvia Reins
+ * @platform        WBCE
  *
  */
 
@@ -29,8 +26,8 @@ if(isset($_GET['group_id']) AND is_numeric($_GET['group_id'])) {
 }
 
 // Include WB files
-require_once('../../config.php');
-require_once(WB_PATH.'/framework/class.frontend.php');
+require_once '../../config.php';
+require_once WB_PATH.'/framework/class.frontend.php';
 $database = new database();
 $wb = new frontend();
 $wb->page_id = $page_id;
@@ -68,12 +65,12 @@ echo '<?xml version="1.0" encoding="'.$charset.'"?>';
 <?php
 // Get news items from database
 $t = TIME();
-$time_check_str= "(published_when = '0' OR published_when <= ".$t.") AND (published_until = 0 OR published_until >= ".$t.")";
+$time_check_str= "(`published_when` = '0' OR `published_when` <= ".$t.") AND (`published_until` = 0 OR `published_until` >= ".$t.")";
 //Query
 if(isset($group_id)) {
-	$query = "SELECT * FROM ".TABLE_PREFIX."mod_news_img_posts WHERE group_id=".$group_id." AND page_id = ".$page_id." AND active=1 AND ".$time_check_str." ORDER BY posted_when DESC";
+	$query = "SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `group_id`=".$group_id." AND `page_id` = ".$page_id." AND `active`=1 AND ".$time_check_str." ORDER BY `posted_when` DESC";
 } else {
-	$query = "SELECT * FROM ".TABLE_PREFIX."mod_news_img_posts WHERE page_id=".$page_id." AND active=1 AND ".$time_check_str." ORDER BY posted_when DESC";	
+	$query = "SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `page_id`=".$page_id." AND `active`=1 AND ".$time_check_str." ORDER BY `posted_when` DESC";
 }
 $result = $database->query($query);
 

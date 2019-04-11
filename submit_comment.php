@@ -3,30 +3,22 @@
  *
  * @category        modules
  * @package         news_img
- * @author          WebsiteBaker Project
+ * @author          WBCE Community
  * @copyright       2004-2009, Ryan Djurovich
  * @copyright       2009-2010, Website Baker Org. e.V.
- * @link			      http://www.websitebaker2.org/
+ * @copyright       2019-, WBCE Community
+ * @link            https://www.wbce.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 4.3.4 and higher
- * @version         $Id: submit_comment.php 1280 2010-01-29 02:59:35Z Luisehahne $
- * @filesource      $HeadURL: modules/news_img/submit_comment.php $
- * @lastmodified    $Date: 2011-10-06  $ by Silvia Reins
+ * @platform        WBCE
  *
  */
 
 // Include config file
-require('../../config.php');
+require '../../config.php';
 
-/*overwrite php.ini on Apache servers for valid SESSION ID Separator
-if(function_exists('ini_set')) {
-	ini_set('arg_separator.output', '&amp;');
-}
-*/
-require_once(WB_PATH.'/framework/class.wb.php');
+require_once WB_PATH.'/framework/class.wb.php';
+
 $wb = new wb;
-         /*  */
 
 // Check if we should show the form or add a comment
 if(isset($_GET['page_id']) AND is_numeric($_GET['page_id'])
@@ -51,7 +43,7 @@ if(isset($_GET['page_id']) AND is_numeric($_GET['page_id'])
 	$post_id = $_GET['post_id'];
 
 	// Check captcha
-	$query_settings = $database->query("SELECT use_captcha FROM ".TABLE_PREFIX."mod_news_img_settings WHERE section_id = '$section_id'");
+	$query_settings = $database->query("SELECT `use_captcha` FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '$section_id'");
 	if( !$query_settings->numRows())
     {
 		header("Location: ".WB_URL.PAGES_DIRECTORY."");
@@ -129,9 +121,9 @@ if(isset($_GET['page_id']) AND is_numeric($_GET['page_id'])
 		$commented_by = '';
 	}
 
-	$query = $database->query("INSERT INTO ".TABLE_PREFIX."mod_news_img_comments (section_id,page_id,post_id,title,comment,commented_when,commented_by) VALUES ('$section_id','$page_id','$post_id','$title','$comment','$commented_when','$commented_by')");
+	$query = $database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_comments` (`section_id`,`page_id`,`post_id`,`title`,`comment`,`commented_when`,`commented_by`) VALUES ('$section_id','$page_id','$post_id','$title','$comment','$commented_when','$commented_by')");
 	// Get page link
-	$query_page = $database->query("SELECT link FROM ".TABLE_PREFIX."mod_news_img_posts WHERE post_id = '$post_id'");
+	$query_page = $database->query("SELECT `link` FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `post_id` = '$post_id'");
 	$page = $query_page->fetchRow();
 	header('Location: '.$wb->page_link($page['link']).'?post_id='.$post_id.'' );
 	exit( 0 );
@@ -150,5 +142,3 @@ else
 	    exit( 0 );
     }
 }
-
-?>

@@ -3,20 +3,17 @@
  *
  * @category        modules
  * @package         news_img
- * @author          WebsiteBaker Project
+ * @author          WBCE Community
  * @copyright       2004-2009, Ryan Djurovich
  * @copyright       2009-2010, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @copyright       2019-, WBCE Community
+ * @link            https://www.wbce.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 4.3.4 and higher
- * @version         $Id: modify_group.php 1280 2010-01-29 02:59:35Z Luisehahne $
- * @filesource      $HeadURL: modules/news_img/modify_group.php $
- * @lastmodified    $Date: 2011-10-06  $ by Silvia Reins
+ * @platform        WBCE
  *
  */
 
-require('../../config.php');
+require '../../config.php';
 
 // Get id
 if(!isset($_GET['group_id']) OR !is_numeric($_GET['group_id'])) {
@@ -27,10 +24,10 @@ if(!isset($_GET['group_id']) OR !is_numeric($_GET['group_id'])) {
 }
 
 // Include WB admin wrapper script
-require(WB_PATH.'/modules/admin.php');
+require WB_PATH.'/modules/admin.php';
 
 // Get header and footer
-$query_content = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_news_img_groups WHERE group_id = '$group_id'");
+$query_content = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_groups` WHERE `group_id` = '$group_id'");
 $fetch_content = $query_content->fetchRow();
 
 ?>
@@ -98,4 +95,3 @@ $fetch_content = $query_content->fetchRow();
 // Print admin footer
 $admin->print_footer();
 
-?>

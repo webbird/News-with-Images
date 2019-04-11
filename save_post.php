@@ -3,22 +3,19 @@
  *
  * @category        modules
  * @package         news_img
- * @author          WebsiteBaker Project
+ * @author          WBCE Community
  * @copyright       2004-2009, Ryan Djurovich
  * @copyright       2009-2010, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @copyright       2019-, WBCE Community
+ * @link            https://www.wbce.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 4.3.4 and higher
- * @version         $Id: save_post.php 1281 2010-01-30 04:57:58Z Luisehahne $
- * @filesource      $HeadURL: modules/news_img/save_post.php $
- * @lastmodified    $Date: 2011-10-06  $ by Silvia Reins
+ * @platform        WBCE
  *
  */
 
-require_once('../../config.php');
+require_once '../../config.php';
 
-require_once(WB_PATH."/include/jscalendar/jscalendar-functions.php");
+require_once WB_PATH."/include/jscalendar/jscalendar-functions.php";
 
 #var_dump($_POST);
 #var_dump($_FILES);
@@ -162,7 +159,7 @@ function image_resize($src, $dst, $width, $height, $crop=0){
 
 // Include WB admin wrapper script
 $update_when_modified = true; // Tells script to update when this page was last updated
-require(WB_PATH.'/modules/admin.php');
+require WB_PATH.'/modules/admin.php';
 
 // Validate all fields
 if($admin->get_post('title') == '' AND $admin->get_post('url') == '')
@@ -182,7 +179,7 @@ else
 }
 
 // Get page link URL
-$query_page = $database->query("SELECT level,link FROM ".TABLE_PREFIX."pages WHERE page_id = '$page_id'");
+$query_page = $database->query("SELECT `level`,`link` FROM `".TABLE_PREFIX."pages` WHERE `page_id` = '$page_id'");
 $page = $query_page->fetchRow();
 $page_level = $page['level'];
 $page_link = $page['link'];
@@ -335,7 +332,7 @@ if (isset($_FILES["postfoto"]) && $_FILES["postfoto"]["name"] != "") {
               // copy in folder
               move_uploaded_file($postpicture['tmp_name'], $thumb_dir.$postbildname);
               //resize
-              $query_content = $database->query("SELECT `resize_preview`, `crop_preview` FROM ".TABLE_PREFIX."mod_news_img_settings WHERE section_id = '$section_id'");
+              $query_content = $database->query("SELECT `resize_preview`, `crop_preview` FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '$section_id'");
               $fetch_content = $query_content->fetchRow();
               if(substr_count($fetch_content['resize_preview'],'x')>0) {
                   list($previewwidth,$previewheight) = explode('x',$fetch_content['resize_preview'],2);
@@ -363,10 +360,10 @@ if (isset($_FILES["postfoto"]) && $_FILES["postfoto"]["name"] != "") {
 $title = strip_tags($title);
      
 // Update row
-$database->query("UPDATE ".TABLE_PREFIX."mod_news_img_posts SET group_id = '$group_id', title = '$title', link = '$post_link', content_short = '$short', content_long = '$long', image = '$image', commenting = '$commenting', active = '$active', published_when = '$publishedwhen', published_until = '$publisheduntil', posted_when = '".time()."', posted_by = '".$admin->get_user_id()."' WHERE post_id = '$post_id'");
+$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `group_id` = '$group_id', `title` = '$title', `link` = '$post_link', `content_short` = '$short', `content_long` = '$long', `image` = '$image', `commenting` = '$commenting', `active` = '$active', `published_when` = '$publishedwhen', `published_until` = '$publisheduntil', `posted_when` = '".time()."', `posted_by` = '".$admin->get_user_id()."' WHERE `post_id` = '$post_id'");
 
 //update Bildbeschreibungen der tabelle mod_news_img_img
-$query_img = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_news_img_img WHERE post_id = ".$post_id);
+$query_img = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = ".$post_id);
 if($query_img->numRows() > 0) {
 
   while($row = $query_img->fetchRow()) {
@@ -376,7 +373,7 @@ if($query_img->numRows() > 0) {
       $bildbeschreibung = isset($_POST['bildbeschreibung'][$row_id])
                         ? $_POST['bildbeschreibung'][$row_id]
                         : '';
-     $database->query("UPDATE ".TABLE_PREFIX."mod_news_img_img SET bildbeschreibung = '$bildbeschreibung' WHERE id = '$row_id'");
+     $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_img` SET `bildbeschreibung` = '$bildbeschreibung' WHERE id = '$row_id'");
   }
 }
 
@@ -396,5 +393,3 @@ else
 
 // Print admin footer
 $admin->print_footer();
-
-?>
