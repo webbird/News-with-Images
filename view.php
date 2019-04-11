@@ -18,23 +18,11 @@ if(defined('WB_PATH') == false) { exit("Cannot access this file directly"); }
 
 $file_dir = PAGES_DIRECTORY.'/beitragsbilder/';
 $thumb_dir = PAGES_DIRECTORY.'/beitragsbilder/thumb/';
-
-// 2014-04-10 by BlackBird Webprogrammierung:
-//            use Brax Highslide Gallery if available, included Lightbox otherwise
-$usebrax=false;
-if(!file_exists(WB_PATH.'/templates/abenaa/gallery/simple-lightbox.js'))
-{
-    echo '<script src="' . WB_URL . '/modules/news_img/js/prototype.js" type="text/javascript"></script>' . "\n";
-    echo '<script src="' . WB_URL . '/modules/news_img/js/scriptaculous.js?load=effects" type="text/javascript"></script>' . "\n";
-    echo '<script src="' . WB_URL . '/modules/news_img/js/lightbox.js" type="text/javascript"></script>' . "\n";
-} else {
-    $usebrax=true;
-	echo ''."\n";
-}
+$usebrax = false;
 
 // load module language file
 $lang = (dirname(__FILE__)) . '/languages/' . LANGUAGE . '.php';
-require_once(!file_exists($lang) ? (dirname(__FILE__)) . '/languages/EN.php' : $lang );
+require_once ( !file_exists($lang) ? (dirname(__FILE__)) . '/languages/EN.php' : $lang );
 
 //overwrite php.ini on Apache servers for valid SESSION ID Separator
 if(function_exists('ini_set'))
