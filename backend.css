@@ -1,0 +1,56 @@
+.setting_name {
+	vertical-align: top;
+	width: 20%;
+}
+.setting_value {
+	vertical-align: top;
+	width: 80%;
+}
+
+/* 
+  The definitions below provide the style for the edit CSS button 
+  Required CSS class name: input.mod_moduledirectory_edit_css
+*/
+input.mod_news_edit_css {
+  color: #000;
+  padding: 2px;
+  margin: -20px auto;
+  float: right;
+}		
+
+/* post images */
+.xbtooltip {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        border: 1px solid grey;
+        padding: 3px;
+}
+.xbtooltip img {
+        width: 200px;
+}
+.img_list {
+        width: 80px;
+}
+
+#fotos {
+    float:left;
+}
+
+#fotos input {
+    margin: 2px;
+}
+
+#fotoshow {
+    float:right;
+    width:60%;
+}
+#fotoshow table{
+    border:1px solid grey;
+    padding:2px;
+    border-spacing:0;
+}
+#fotoshow table tbody tr td {
+    border-bottom:1px solid grey;
+   padding: 2px;
+}
