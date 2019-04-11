@@ -3,16 +3,13 @@
  *
  * @category        modules
  * @package         news_img
- * @author          WebsiteBaker Project
+ * @author          WBCE Community
  * @copyright       2004-2009, Ryan Djurovich
  * @copyright       2009-2010, Website Baker Org. e.V.
- * @link			      http://www.websitebaker2.org/
+ * @copyright       2019-, WBCE Community
+ * @link            https://www.wbce.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 4.3.4 and higher
- * @version         $Id: add_post.php 1280 2010-01-29 02:59:35Z Luisehahne $
- * @filesource	    $HeadURL: modules/news_img/add_post.php $
- * @lastmodified    $Date: 2011-10-06  $ by Silvia Reins
+ * @platform        WBCE
  *
  */
 
@@ -28,12 +25,12 @@ $order = new order(TABLE_PREFIX.'mod_news_img_posts', 'position', 'post_id', 'se
 $position = $order->get_new($section_id);
 
 // Get default commenting
-$query_settings = $database->query("SELECT commenting FROM ".TABLE_PREFIX."mod_news_img_settings WHERE section_id = '$section_id'");
+$query_settings = $database->query("SELECT `commenting` FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '$section_id'");
 $fetch_settings = $query_settings->fetchRow();
 $commenting = $fetch_settings['commenting'];
 
 // Insert new row into database
-$sql = "INSERT INTO ".TABLE_PREFIX."mod_news_img_posts (section_id,page_id,position,link,content_short,content_long,commenting,active) VALUES ('$section_id','$page_id','$position','','','','$commenting','1')";
+$sql = "INSERT INTO `".TABLE_PREFIX."mod_news_img_posts` (`section_id`,`page_id`,`position`,`link`,`content_short`,`content_long`,`commenting`,`active`) VALUES ('$section_id','$page_id','$position','','','','$commenting','1')";
 $database->query($sql);
 
 // Say that a new record has been added, then redirect to modify page
@@ -47,5 +44,3 @@ if($database->is_error()) {
 
 // Print admin footer
 $admin->print_footer();
-
-?>
