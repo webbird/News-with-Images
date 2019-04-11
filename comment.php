@@ -3,16 +3,13 @@
  *
  * @category        modules
  * @package         news_img
- * @author          WebsiteBaker Project
+ * @author          WBCE Community
  * @copyright       2004-2009, Ryan Djurovich
  * @copyright       2009-2010, Website Baker Org. e.V.
- * @link			      http://www.websitebaker2.org/
+ * @copyright       2019-, WBCE Community
+ * @link            https://www.wbce.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 4.3.4 and higher
- * @version         $Id: comment.php 1280 2010-01-29 02:59:35Z Luisehahne $
- * @filesource	    $HeadURL: modules/news_img/comment.php $
- * @lastmodified    $Date: 2011-10-06  $ by Silvia Reins
+ * @platform        WBCE
  *
  */
 
@@ -30,7 +27,7 @@ $post_id = $_GET['post_id'];
 $section_id = $_GET['section_id'];
 
 // Query post for page id
-$query_post = $database->query("SELECT post_id,title,section_id,page_id FROM ".TABLE_PREFIX."mod_news_img_posts WHERE post_id = '$post_id'");
+$query_post = $database->query("SELECT `post_id`,`title`,`section_id`,`page_id` FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `post_id` = '$post_id'");
 if($query_post->numRows() == 0)
 {
     header("Location: ".WB_URL.PAGES_DIRECTORY."");
@@ -52,10 +49,10 @@ else
 	$table_posts = TABLE_PREFIX."mod_news_img_posts";
 	$table_groups = TABLE_PREFIX."mod_news_img_groups";
 	$query = $database->query("
-		SELECT p.post_id
-		FROM $table_posts AS p LEFT OUTER JOIN $table_groups AS g ON p.group_id = g.group_id
-		WHERE p.post_id='$post_id' AND p.commenting != 'none' AND p.active = '1' AND ( g.active IS NULL OR g.active = '1' )
-		AND (p.published_when = '0' OR p.published_when <= $t) AND (p.published_until = 0 OR p.published_until >= $t)
+		SELECT p.`post_id`
+		FROM `$table_posts` AS p LEFT OUTER JOIN `$table_groups` AS g ON p.`group_id` = g.`group_id`
+		WHERE p.`post_id`='$post_id' AND p.`commenting` != 'none' AND p.`active` = '1' AND ( g.`active` IS NULL OR g.`active` = '1' )
+		AND (p.`published_when` = '0' OR p.`published_when` <= $t) AND (p.`published_until` = 0 OR p.`published_until` >= $t)
 	");
 	if($query->numRows() == 0)
     {
@@ -71,7 +68,7 @@ else
 	}
 
 	// Get page details
-	$query_page = $database->query("SELECT parent,page_title,menu_title,keywords,description,visibility FROM ".TABLE_PREFIX."pages WHERE page_id = '$page_id'");
+	$query_page = $database->query("SELECT `parent`,`page_title`,`menu_title`,`keywords`,`description`,`visibility` FROM `".TABLE_PREFIX."pages` WHERE `page_id` = '$page_id'");
 	if($query_page->numRows() == 0)
     {
 		header("Location: ".WB_URL.PAGES_DIRECTORY."");
@@ -86,5 +83,3 @@ else
 		require(WB_PATH.'/index.php');
 	}
 }
-
-?>

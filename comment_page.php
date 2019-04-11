@@ -3,16 +3,13 @@
  *
  * @category        modules
  * @package         news_img
- * @author          WebsiteBaker Project
+ * @author          WBCE Community
  * @copyright       2004-2009, Ryan Djurovich
  * @copyright       2009-2010, Website Baker Org. e.V.
- * @link			      http://www.websitebaker2.org/
+ * @copyright       2019-, WBCE Community
+ * @link            https://www.wbce.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 4.3.4 and higher
- * @version         $Id: comment_page.php 1280 2010-01-29 02:59:35Z Luisehahne $
- * @filesource	    $HeadURL: modules/news_img/comment_page.php $
- * @lastmodified    $Date: 2011-10-06  $ by Silvia Reins
+ * @platform        WBCE
  *
  */
 
@@ -22,29 +19,22 @@ if(!defined('WB_URL')) {
 	exit(0);
 }
 
-/* check if frontend.css file needs to be included into the <body></body> of page  */
-if ( (!function_exists('register_frontend_modfiles') || !defined('MOD_FRONTEND_CSS_REGISTERED')) && file_exists(WB_PATH .'/modules/news_img/frontend.css')) {
-	echo '<style type="text/css">';
-	include(WB_PATH .'/modules/news_img/frontend.css');
-	echo "\n</style>\n";
-}
-
 // check if module language file exists for the language set by the user (e.g. DE, EN)
 if(!file_exists(WB_PATH .'/modules/news_img/languages/'.LANGUAGE .'.php'))
 {
 	// no module language file exists for the language set by the user, include default module language file EN.php
-	require_once(WB_PATH .'/modules/news_img/languages/EN.php');
+	require WB_PATH .'/modules/news_img/languages/EN.php';
 }
 else
 {
 	// a module language file exists for the language defined by the user, load it
-	require_once(WB_PATH .'/modules/news_img/languages/'.LANGUAGE .'.php');
+	require WB_PATH .'/modules/news_img/languages/'.LANGUAGE .'.php';
 }
 
-require_once(WB_PATH.'/include/captcha/captcha.php');
+require_once WB_PATH.'/include/captcha/captcha.php';
 
 // Get comments page template details from db
-$query_settings = $database->query("SELECT comments_page,use_captcha,commenting FROM ".TABLE_PREFIX."mod_news_img_settings WHERE section_id = '".SECTION_ID."'");
+$query_settings = $database->query("SELECT `comments_page`,`use_captcha`,`commenting` FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '".SECTION_ID."'");
 if($query_settings->numRows() == 0)
 {
 	header("Location: ".WB_URL.PAGES_DIRECTORY."");
