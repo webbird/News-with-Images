@@ -41,3 +41,4 @@ $MOD_NEWS['TEXT_DEFAULTS_CLICK'] = 'Click to choose from the defaults';
 
 //additional settings
 $MOD_NEWS['POST_CONTENT'] = 'Post content';
+$MOD_NEWS['GALLERY'] = 'Image gallery';

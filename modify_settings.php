@@ -122,6 +122,15 @@ if(function_exists('edit_module_css'))
 				</select>
 			</td>
 		</tr>
+        <tr>
+			<td class="setting_name"><?php echo $MOD_NEWS['GALLERY'] ?>:</td>
+			<td class="setting_value">
+				<select name="gallery" style="width: 98%;">
+                    <option value="fotorama">Fotorama</option>
+                    <option value="masonry">Masonry</option>
+                </select>
+			</td>
+		</tr>
 		<?php if(extension_loaded('gd') AND function_exists('imageCreateFromJpeg')) { /* Make's sure GD library is installed */
             $previewwidth = $previewheight = '';
 		    if(substr_count($fetch_content['resize_preview'],'x')>0) {

@@ -16,13 +16,17 @@
 $module_directory   = 'news_img';
 $module_name        = 'News with Images';
 $module_function    = 'page';
-$module_version     = '3.7.0';
+$module_version     = '3.7.1';
 $module_platform    = '2.8.x';
 $module_author      = 'Ryan Djurovich, Rob Smith, Silvia Reins, Bianka Martinovic';
 $module_license     = 'GNU General Public License';
 $module_description = 'This page type is designed for making a news page with Images and Lightboxeffect.';
 
 /**
+ * v3.7.1 - 2019-04-12 Bianka Martinovic
+ *          + added Masonry
+ *          + added Gallery setting
+ *
  * v3.7.0 - 2019-04-12 Bianka Martinovic
  *          + added Fotorama as default image gallery
  *          + added settings for post content markup and image loop

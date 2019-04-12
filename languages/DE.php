@@ -41,5 +41,4 @@ $MOD_NEWS['TEXT_DEFAULTS_CLICK'] = 'Anklicken um Standardgr&ouml;&szlig;e zu w&a
 
 //additional settings
 $MOD_NEWS['POST_CONTENT'] = 'Nachrichten-Inhalt';
-
-?>
+$MOD_NEWS['GALLERY'] = 'Bildergalerie';

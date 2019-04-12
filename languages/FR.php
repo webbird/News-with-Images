@@ -35,3 +35,4 @@ $TEXT['UNKNOWN'] = 'Invit&eacute;';
 
 //additional settings
 $MOD_NEWS['POST_CONTENT'] = 'Nachrichten-Inhalt';
+$MOD_NEWS['GALLERY'] = 'Image gallery';

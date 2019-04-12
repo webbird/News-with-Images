@@ -224,7 +224,10 @@ if($query_img->numRows() > 0) {
             $down = '<a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&id='.$row['id'].'&down=1">'
                   . '<img src="'.THEME_URL.'/images/down_16.png" /></a>';
         }
-        echo '<tr><td>'.$up.$down.'</td><td width="100"><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'" onmouseover="XBT(this, {id:\'tt'.$i.'\'})"><img class="img_list" src="'.WB_URL.$thumb_dir.'thumb_'.$row["bildname"].'" /></a><div id="tt'.$i.'" class="xbtooltip"><img src="'.WB_URL.$file_dir.$row["bildname"].'" /></div></td><td width="200">'.$row["bildname"].'</td><td width="200"><input type="text" name="bildbeschreibung['.$row["id"].']" value="'.$row["bildbeschreibung"].'"></td><td width="100"><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&img_id='.$row["id"].'">l&ouml;schen</a></td><tr>';
+        echo '<tr><td>'.$up.$down.'</td>',
+             '<td width="100"><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'" onmouseover="XBT(this, {id:\'tt'.$i.'\'})"><img class="img_list" src="'.WB_URL.$thumb_dir.'thumb_'.$row["bildname"].'" /></a><div id="tt'.$i.'" class="xbtooltip"><img src="'.WB_URL.$file_dir.$row["bildname"].'" /></div></td>',
+             '<td>'.$row["bildname"].'<br /><input type="text" name="bildbeschreibung['.$row["id"].']" value="'.$row["bildbeschreibung"].'"></td>',
+             '<td><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&img_id='.$row["id"].'">l&ouml;schen</a></td><tr>';
         $i++;
         $first=false;
     }

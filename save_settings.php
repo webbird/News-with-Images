@@ -36,6 +36,7 @@ $comments_page = $admin->add_slashes(str_replace($friendly, $raw, $_POST['commen
 $commenting = $admin->add_slashes($_POST['commenting']);
 $posts_per_page = $admin->add_slashes($_POST['posts_per_page']);
 $use_captcha = $admin->add_slashes($_POST['use_captcha']);
+$gallery = $admin->add_slashes($_POST['gallery']);
 
 $resize = '';
 $resize_preview = '';
@@ -61,8 +62,24 @@ if($posts_per_page=='') {
     $posts_per_page = 0; // unlimited
 }
 
+// if the gallery setting changed, load default settings
+$query_content = $database->query("SELECT `gallery` FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '$section_id'");
+$fetch_content = $query_content->fetchRow();
+if($fetch_content['gallery'] != $gallery) {
+    include WB_PATH.'/modules/news_img/js/'.$gallery.'/settings.php';
+}
+
 // Update settings
-$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_settings` SET `header` = '$header', `post_loop` = '$post_loop', `footer` = '$footer', `posts_per_page` = '$posts_per_page', `post_header` = '$post_header', `post_content` = '$post_content', `image_loop` = '$image_loop', `post_footer` = '$post_footer', `comments_header` = '$comments_header', `comments_loop` = '$comments_loop', `comments_footer` = '$comments_footer', `comments_page` = '$comments_page', `commenting` = '$commenting', `resize` = '$resize', `resize_preview` = '$resize_preview', `crop_preview` = '$crop', `use_captcha` = '$use_captcha' WHERE `section_id` = '$section_id'");
+$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_settings` SET ".
+    "`header` = '$header', `post_loop` = '$post_loop', `footer` = '$footer', ".
+    "`posts_per_page` = '$posts_per_page', `post_header` = '$post_header', ".
+    "`post_content` = '$post_content', `image_loop` = '$image_loop', ".
+    "`post_footer` = '$post_footer', `comments_header` = '$comments_header', ".
+    "`comments_loop` = '$comments_loop', `comments_footer` = '$comments_footer', ".
+    "`comments_page` = '$comments_page', `commenting` = '$commenting', ".
+    "`resize` = '$resize', `resize_preview` = '$resize_preview', ".
+    "`crop_preview` = '$crop', `use_captcha` = '$use_captcha', `gallery` = '$gallery' ".
+    "WHERE `section_id` = '$section_id'");
 
 // Check if there is a db error, otherwise say successful
 if($database->is_error()) {

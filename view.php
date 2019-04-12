@@ -327,23 +327,6 @@ elseif(defined('POST_ID') AND is_numeric(POST_ID))
 {
     // -------------------------|   show post page    |-------------------------
 
-    echo "<script>
-        (function() {
-            if(typeof window.fotorama == 'undefined') {
-                var script = document.createElement('script');
-                script.src = WB_URL + '/modules/news_img/js/fotorama/fotorama.js';
-                script.type = 'text/javascript';
-                script.onload = function() {
-                    var css = document.createElement('link');
-                    css.href = WB_URL + '/modules/news_img/js/fotorama/fotorama.css';
-                    document.getElementsByTagName('head')[0].appendChild(css);
-                };
-                document.getElementsByTagName('head')[0].appendChild(script);
-            }
-        })();
-
-    </script>";
-
     if(defined('POST_SECTION') AND POST_SECTION == $section_id)
     {
         // Get settings
@@ -358,6 +341,7 @@ elseif(defined('POST_ID') AND is_numeric(POST_ID))
             $setting_comments_header = ($fetch_settings['comments_header']);
             $setting_comments_loop = ($fetch_settings['comments_loop']);
             $setting_comments_footer = ($fetch_settings['comments_footer']);
+            $setting_gallery = ($fetch_settings['gallery']);
         } else {
             $setting_post_header = '';
             $setting_post_footer = '';
@@ -365,7 +349,13 @@ elseif(defined('POST_ID') AND is_numeric(POST_ID))
             $setting_comments_loop = '';
             $setting_comments_footer = '';
             $setting_image_loop = '<img src="[IMAGE]" alt="[DESCRIPTION]" />';
+            $setting_gallery = '';
         }
+
+        if(strlen($setting_gallery)) {
+            include __DIR__.'/js/'.$setting_gallery.'/include.tpl';
+        }
+
         // Get page info
         $query_page = $database->query("SELECT `link` FROM `".TABLE_PREFIX."pages` WHERE `page_id` = '".PAGE_ID."'");
         if($query_page->numRows() > 0)
@@ -460,13 +450,6 @@ elseif(defined('POST_ID') AND is_numeric(POST_ID))
 
         // echo post header
         echo str_replace($vars, $values, $setting_post_header);
-        // Replace [wblink--PAGE_ID--] with real link
-        $wb->preprocess($post_long);
-        // echo post
-        echo $post_short;
-        echo $post_long;
-        // echo post footer
-        echo str_replace($vars, $values, $setting_post_footer);
 
         // post images
         // 2014-04-10 by BlackBird Webprogrammierung:
@@ -480,7 +463,17 @@ elseif(defined('POST_ID') AND is_numeric(POST_ID))
             }
         }
 
-        echo str_replace(array('[IMAGES]'),array(implode("",$images)),$setting_post_content);
+        // Replace [wblink--PAGE_ID--] with real link
+        $wb->preprocess($post_long);
+        // echo post
+        echo str_replace(
+            array('[IMAGES]','[CONTENT]'),
+            array(implode("",$images),$post_short.$post_long),
+            $setting_post_content
+        );
+
+        // echo post footer
+        echo str_replace($vars, $values, $setting_post_footer);
 
         // Show comments section if we have to
         if(($post['commenting'] == 'private' AND isset($wb) AND $wb->is_authenticated() == true) OR $post['commenting'] == 'public')
