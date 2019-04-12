@@ -171,6 +171,7 @@ else
 	$title = $admin->get_post_escaped('title');
 	$short = $admin->get_post_escaped('short');
 	$long = $admin->get_post_escaped('long');
+	$block2 = $admin->get_post_escaped('block2');
 	$image = $admin->get_post_escaped('image');
 	$commenting = $admin->get_post_escaped('commenting');
 	$active = $admin->get_post_escaped('active');
@@ -360,7 +361,7 @@ if (isset($_FILES["postfoto"]) && $_FILES["postfoto"]["name"] != "") {
 $title = strip_tags($title);
      
 // Update row
-$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `group_id` = '$group_id', `title` = '$title', `link` = '$post_link', `content_short` = '$short', `content_long` = '$long', `image` = '$image', `commenting` = '$commenting', `active` = '$active', `published_when` = '$publishedwhen', `published_until` = '$publisheduntil', `posted_when` = '".time()."', `posted_by` = '".$admin->get_user_id()."' WHERE `post_id` = '$post_id'");
+$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `group_id` = '$group_id', `title` = '$title', `link` = '$post_link', `content_short` = '$short', `content_long` = '$long', `content_block2` = '$block2', `image` = '$image', `commenting` = '$commenting', `active` = '$active', `published_when` = '$publishedwhen', `published_until` = '$publisheduntil', `posted_when` = '".time()."', `posted_by` = '".$admin->get_user_id()."' WHERE `post_id` = '$post_id'");
 
 //update Bildbeschreibungen der tabelle mod_news_img_img
 $query_img = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = ".$post_id);

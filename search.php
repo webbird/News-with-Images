@@ -28,7 +28,7 @@ function news_img_search($func_vars) {
 	$table_posts = TABLE_PREFIX."mod_news_img_posts";
 	$table_groups = TABLE_PREFIX."mod_news_img_groups";
 	$query = $func_database->query("
-		SELECT p.`post_id`, p.`title`, p.`content_short`, p.`content_long`, p.`link`, p.`posted_when`, p.`posted_by`
+		SELECT p.`post_id`, p.`title`, p.`content_short`, p.`content_long`, p.`content_block2`, p.`link`, p.`posted_when`, p.`posted_by`
 		FROM `$table_posts` AS p LEFT OUTER JOIN `$table_groups` AS g ON p.`group_id` = g.`group_id`
 		WHERE p.`section_id`='$func_section_id' AND p.`active` = '1' AND ( g.`active` IS NULL OR g.`active` = '1' )
 		AND (`published_when` = '0' OR `published_when` <= $t) AND (`published_until` = 0 OR `published_until` >= $t)
@@ -37,7 +37,7 @@ function news_img_search($func_vars) {
 	// now call print_excerpt() for every single post
 	if($query->numRows() > 0) {
 		while($res = $query->fetchRow()) {
-			$text = $res['title'].$divider.$res['content_short'].$divider.$res['content_long'].$divider;
+			$text = $res['title'].$divider.$res['content_short'].$divider.$res['content_long'].$divider.$res['content_block2'].$divider;
 			// fetch comments and add to $text
 			if($excerpt_from_comments) {
 				$table = TABLE_PREFIX."mod_news_img_comments";
