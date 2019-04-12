@@ -112,6 +112,13 @@ require(WB_PATH."/index.php");
         TABLE_PREFIX
     ));
 
+    // 2019-04-12 by BlackBird Webprogrammierung:
+    //            custom markup for post content and image loop
+    $database->query(sprintf(
+        'ALTER TABLE `%smod_news_img_settings` ADD COLUMN `post_content` TEXT NOT NULL AFTER `post_header`, ADD COLUMN `image_loop` TEXT NOT NULL AFTR `post_content`',
+        TABLE_PREFIX
+    ));
+
     // Print admin footer
     $admin->print_footer();
 }

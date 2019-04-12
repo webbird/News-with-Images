@@ -90,6 +90,18 @@ if(function_exists('edit_module_css'))
 				<textarea name="post_header" rows="10" cols="1" style="width: 98%; height: 60px;"><?php echo str_replace($raw, $friendly, ($fetch_content['post_header'])); ?></textarea>
 			</td>
 		</tr>
+        <tr>
+			<td class="setting_name"><?php echo $MOD_NEWS['POST_CONTENT']; ?>:</td>
+			<td class="setting_value">
+				<textarea name="post_content" rows="10" cols="1" style="width: 98%; height: 60px;"><?php echo str_replace($raw, $friendly, ($fetch_content['post_content'])); ?></textarea>
+			</td>
+		</tr>
+        <tr>
+			<td class="setting_name"><?php echo $TEXT['IMAGE'].' '.$TEXT['LOOP']; ?>:</td>
+			<td class="setting_value">
+				<textarea name="image_loop" rows="10" cols="1" style="width: 98%; height: 60px;"><?php echo str_replace($raw, $friendly, ($fetch_content['image_loop'])); ?></textarea>
+			</td>
+		</tr>
 		<tr>
 			<td class="setting_name"><?php echo $TEXT['POST_FOOTER']; ?>:</td>
 			<td class="setting_value">

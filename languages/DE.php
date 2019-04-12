@@ -2,17 +2,14 @@
 /**
  *
  * @category        modules
- * @package         news
- * @author          WebsiteBaker Project
+ * @package         news_img
+ * @author          WBCE Community
  * @copyright       2004-2009, Ryan Djurovich
  * @copyright       2009-2010, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @copyright       2019-, WBCE Community
+ * @link            https://www.wbce.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 4.3.4 and higher
- * @version         $Id: DE.php 1279 2010-01-28 10:59:42Z Luisehahne $
- * @filesource		$HeadURL: http://svn.websitebaker2.org/branches/2.8.x/wb/modules/news/languages/DE.php $
- * @lastmodified    $Date: 2010-01-28 11:59:42 +0100 (Do, 28. Jan 2010) $
+ * @platform        WBCE
  *
  */
 
@@ -41,4 +38,8 @@ $MOD_NEWS['CROP'] = 'Beschneiden';
 $MOD_NEWS['TEXT_CROP'] = 'Wenn das Seitenverh&auml;ltnis des Originals nicht zum eingestellten Seitenverh&auml;ltnis passt, wird der &Uuml;berstand der l&auml;ngeren Seite abgeschnitten.';
 $MOD_NEWS['RESIZE_PREVIEW_IMAGE_TO'] = 'Vorschaubild Gr&ouml;&szlig;e &auml;ndern auf';
 $MOD_NEWS['TEXT_DEFAULTS_CLICK'] = 'Anklicken um Standardgr&ouml;&szlig;e zu w&auml;hlen';
+
+//additional settings
+$MOD_NEWS['POST_CONTENT'] = 'Nachrichten-Inhalt';
+
 ?>

@@ -2,20 +2,16 @@
 /**
  *
  * @category        modules
- * @package         news
- * @author          WebsiteBaker Project
+ * @package         news_img
+ * @author          WBCE Community
  * @copyright       2004-2009, Ryan Djurovich
  * @copyright       2009-2010, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @copyright       2019-, WBCE Community
+ * @link            https://www.wbce.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 4.3.4 and higher
- * @version         $Id: NO.php 1279 2010-01-28 10:59:42Z Luisehahne $
- * @filesource		$HeadURL: http://svn.websitebaker2.org/branches/2.8.x/wb/modules/news/languages/NO.php $
- * @lastmodified    $Date: 2010-01-28 11:59:42 +0100 (Do, 28. Jan 2010) $
+ * @platform        WBCE
  *
  */
-
 //Modul Description
 $module_description = 'Med denne modulen kan du lage Nyhets sider.';
   
@@ -36,4 +32,5 @@ $MOD_NEWS['TEXT_BY'] = 'Av';
 $MOD_NEWS['PAGE_NOT_FOUND'] = 'Finner ikke siden ';
 $TEXT['UNKNOWN'] = 'Guest';
 
-?>
+//additional settings
+$MOD_NEWS['POST_CONTENT'] = 'Nachrichten-Inhalt';
