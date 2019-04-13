@@ -30,7 +30,7 @@ $fetch_settings = $query_settings->fetchRow();
 $commenting = $fetch_settings['commenting'];
 
 // Insert new row into database
-$sql = "INSERT INTO `".TABLE_PREFIX."mod_news_img_posts` (`section_id`,`page_id`,`position`,`link`,`content_short`,`content_long`,`commenting`,`active`) VALUES ('$section_id','$page_id','$position','','','','$commenting','1')";
+$sql = "INSERT INTO `".TABLE_PREFIX."mod_news_img_posts` (`section_id`,`page_id`,`position`,`link`,`content_short`,`content_long`,`content_block2`,`commenting`,`active`) VALUES ('$section_id','$page_id','$position','','','','','$commenting','1')";
 $database->query($sql);
 
 // Say that a new record has been added, then redirect to modify page

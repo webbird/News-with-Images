@@ -76,7 +76,7 @@ if (!defined('WYSIWYG_EDITOR') OR WYSIWYG_EDITOR=="none" OR !file_exists(WB_PATH
 		echo '<textarea name="'.$name.'" id="'.$id.'" rows="10" cols="1" style="width: '.$width.'; height: '.$height.';">'.$content.'</textarea>';
 	}
 } else {
-	$id_list=array("short","long");
+	$id_list=array("short","long","block2");
 	require(WB_PATH.'/modules/'.WYSIWYG_EDITOR.'/include.php');
 }
 
@@ -192,6 +192,16 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
 	<td>
 	<?php
 	show_wysiwyg_editor("long","long",htmlspecialchars($fetch_content['content_long']),"100%","650px");
+	?>
+	</td>
+</tr>
+<tr>
+	<td valign="top"><?php echo $TEXT['BLOCK']; ?> 2:</td>
+</tr>
+<tr>
+	<td>
+	<?php
+	show_wysiwyg_editor("block2","block2",htmlspecialchars($fetch_content['content_block2']),"100%","650px");
 	?>
 	</td>
 </tr>

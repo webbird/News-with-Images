@@ -475,6 +475,12 @@ elseif(defined('POST_ID') AND is_numeric(POST_ID))
         // echo post footer
         echo str_replace($vars, $values, $setting_post_footer);
 
+	// Block2
+	$post_block2 = ($post['content_block2']);
+	define("NEWS_BLOCK2", $post_block2);
+	define("TOPIC_BLOCK2", $post_block2); // re-use the constant from topics for backwards compatibility
+	if (!defined("MODULES_BLOCK2")) define("MODULES_BLOCK2", $post_block2);
+
         // Show comments section if we have to
         if(($post['commenting'] == 'private' AND isset($wb) AND $wb->is_authenticated() == true) OR $post['commenting'] == 'public')
         {

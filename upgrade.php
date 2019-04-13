@@ -119,6 +119,13 @@ require(WB_PATH."/index.php");
         TABLE_PREFIX
     ));
 
+    // 2019-04-12 by Martin Hecht:
+    //            add second block
+    $database->query(sprintf(
+        'ALTER TABLE `%smod_news_img_posts` ADD COLUMN `content_block2` TEXT NOT NULL AFTER `content_long`',
+        TABLE_PREFIX
+    ));
+
     // Print admin footer
     $admin->print_footer();
 }
