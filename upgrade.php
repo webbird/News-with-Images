@@ -115,7 +115,14 @@ require(WB_PATH."/index.php");
     // 2019-04-12 by BlackBird Webprogrammierung:
     //            custom markup for post content and image loop
     $database->query(sprintf(
-        'ALTER TABLE `%smod_news_img_settings` ADD COLUMN `post_content` TEXT NOT NULL AFTER `post_header`, ADD COLUMN `image_loop` TEXT NOT NULL AFTR `post_content`',
+        'ALTER TABLE `%smod_news_img_settings` ADD COLUMN `post_content` TEXT NOT NULL AFTER `post_header`, ADD COLUMN `image_loop` TEXT NOT NULL AFTER `post_content`',
+        TABLE_PREFIX
+    ));
+
+    // 2019-04-12 by BlackBird Webprogrammierung:
+    //            custom markup for post content and image loop
+    $database->query(sprintf(
+        'ALTER TABLE `%smod_news_img_settings` ADD COLUMN `gallery` TEXT NOT NULL AFTER `use_captcha`',
         TABLE_PREFIX
     ));
 
@@ -123,6 +130,12 @@ require(WB_PATH."/index.php");
     //            add second block
     $database->query(sprintf(
         'ALTER TABLE `%smod_news_img_posts` ADD COLUMN `content_block2` TEXT NOT NULL AFTER `content_long`',
+        TABLE_PREFIX
+    ));
+    // 2019-04-13 by Martin Hecht:
+    //            add view order
+    $database->query(sprintf(
+        'ALTER TABLE `%smod_news_img_settings` ADD COLUMN `view_order` INT NOT NULL DEFAULT \'0\' AFTER `post_loop`',
         TABLE_PREFIX
     ));
 

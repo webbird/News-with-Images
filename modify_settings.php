@@ -79,6 +79,20 @@ if(function_exists('edit_module_css'))
 			</td>
 		</tr>
 		<tr>
+			<td class="setting_name"><?php echo $TEXT['VIEW']; ?>:</td>
+			<td class="setting_value">
+				<select name="view_order" style="width: 98%;">
+					<?php
+					echo '<option value="0"'.(($fetch_content['view_order'] == 0)?' selected="selected"':'').'>'.$TEXT['CUSTOM'].'</option>';
+					echo '<option value="1"'.(($fetch_content['view_order'] == 1)?' selected="selected"':'').'>'.$TEXT['PUBL_START_DATE'].'</option>';
+					echo '<option value="2"'.(($fetch_content['view_order'] == 2)?' selected="selected"':'').'>'.$TEXT['PUBL_END_DATE'].'</option>';
+					echo '<option value="3"'.(($fetch_content['view_order'] == 3)?' selected="selected"':'').'>'.$TEXT['SUBMITTED'].'</option>';
+					echo '<option value="4"'.(($fetch_content['view_order'] == 4)?' selected="selected"':'').'>'.$TEXT['SUBMISSION_ID'].'</option>';
+					?>
+				</select>
+			</td>
+		</tr>
+		<tr>
 			<td class="setting_name"><?php echo $TEXT['FOOTER']; ?>:</td>
 			<td class="setting_value">
 				<textarea name="footer" rows="10" cols="1" style="width: 98%; height: 80px;"><?php echo str_replace($raw, $friendly, ($fetch_content['footer'])); ?></textarea>

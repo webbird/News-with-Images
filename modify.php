@@ -43,9 +43,24 @@ if(function_exists('ini_set')) {
 <h2><?php echo $TEXT['MODIFY'].'/'.$TEXT['DELETE'].' '.$TEXT['POST']; ?></h2>
 
 <?php
+    // Get settings
+    $query_settings = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '$section_id'");
+    if($query_settings->numRows() > 0)
+    {
+        $fetch_settings = $query_settings->fetchRow();
+        $setting_view_order = ($fetch_settings['view_order']);
+    } else {
+	$setting_view_order = 0;
+    }
+    
+    $order_by = "position";
+    if($setting_view_order==1) $order_by = "published_when"; 
+    if($setting_view_order==2) $order_by = "published_until"; 
+    if($setting_view_order==3) $order_by = "posted_when"; 
+    if($setting_view_order==4) $order_by = "post_id"; 
 
 // Loop through existing posts
-$query_posts = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `section_id` = '$section_id' ORDER BY `position` DESC");
+$query_posts = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `section_id` = '$section_id' ORDER BY `$order_by` DESC");
 if($query_posts->numRows() > 0) {
 	$num_posts = $query_posts->numRows();
 	$row = 'a';
@@ -105,14 +120,14 @@ if($query_posts->numRows() > 0) {
 			</a>
 			</td>
 			<td width="20">
-			<?php if($post['position'] != $num_posts) { ?>
+			<?php if(($post['position'] != $num_posts)&&($setting_view_order == 0)) { ?>
 				<a href="<?php echo WB_URL; ?>/modules/news_img/move_down.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>" title="<?php echo $TEXT['MOVE_UP']; ?>">
 					<img src="<?php echo THEME_URL; ?>/images/up_16.png" border="0" alt="^" />
 				</a>
 			<?php } ?>
 			</td>
 			<td width="20">
-			<?php if($post['position'] != 1) { ?>
+			<?php if(($post['position'] != 1)&&($setting_view_order == 0)) { ?>
 				<a href="<?php echo WB_URL; ?>/modules/news_img/move_up.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>" title="<?php echo $TEXT['MOVE_DOWN']; ?>">
 					<img src="<?php echo THEME_URL; ?>/images/down_16.png" border="0" alt="v" />
 				</a>
