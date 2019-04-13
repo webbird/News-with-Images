@@ -111,14 +111,22 @@ if(!defined('POST_ID') OR !is_numeric(POST_ID))
         $fetch_settings = $query_settings->fetchRow();
         $setting_header = ($fetch_settings['header']);
         $setting_post_loop = ($fetch_settings['post_loop']);
+        $setting_view_order = ($fetch_settings['view_order']);
         $setting_footer = ($fetch_settings['footer']);
         $setting_posts_per_page = $fetch_settings['posts_per_page'];
     } else {
         $setting_header = '';
         $setting_post_loop = '';
+	$setting_view_order = 0;
         $setting_footer = '';
         $setting_posts_per_page = '';
     }
+    
+    $order_by = "position";
+    if($setting_view_order==1) $order_by = "published_when"; 
+    if($setting_view_order==2) $order_by = "published_until"; 
+    if($setting_view_order==3) $order_by = "posted_when"; 
+    if($setting_view_order==4) $order_by = "post_id"; 
 
     $t = time();
     // Get total number of posts
@@ -139,7 +147,7 @@ if(!defined('POST_ID') OR !is_numeric(POST_ID))
     $query_posts = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts`
         WHERE `section_id` = '$section_id' AND `active` = '1' AND `title` != ''$query_extra
         AND (`published_when` = '0' OR `published_when` <= $t) AND (`published_until` = 0 OR `published_until` >= $t)
-        ORDER BY `position` DESC".$limit_sql);
+        ORDER BY `$order_by` DESC".$limit_sql);
     $num_posts = $query_posts->numRows();
 
     // Create previous and next links

@@ -72,6 +72,7 @@ if(defined('WB_URL'))
                      . '`page_id` INT NOT NULL DEFAULT \'0\','
                      . '`header` TEXT NOT NULL ,'
                      . '`post_loop` TEXT NOT NULL ,'
+                     . '`view_order` INT NOT NULL DEFAULT \'0\','
                      . '`footer` TEXT NOT NULL ,'
                      . '`posts_per_page` INT NOT NULL DEFAULT \'0\','
                      . '`post_header` TEXT NOT NULL,'
@@ -86,7 +87,8 @@ if(defined('WB_URL'))
                      . '`resize` INT NOT NULL DEFAULT \'0\','
                      . '`resize_preview` VARCHAR(50) NULL, '
                      . '`crop_preview` CHAR(1) NOT NULL DEFAULT \'N\', '
-                     . ' `use_captcha` INT NOT NULL DEFAULT \'0\','
+                     . '`use_captcha` INT NOT NULL DEFAULT \'0\','
+                     . '`gallery` TEXT NOT NULL,'
                      . 'PRIMARY KEY (section_id)'
                 . ' )';
 

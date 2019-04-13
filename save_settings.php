@@ -24,6 +24,7 @@ $friendly = array('&lt;', '&gt;', '?php');
 $raw = array('<', '>', '');
 $header = $admin->add_slashes(str_replace($friendly, $raw, $_POST['header']));
 $post_loop = $admin->add_slashes(str_replace($friendly, $raw, $_POST['post_loop']));
+$view_order = intval($_POST['view_order']);
 $footer = $admin->add_slashes(str_replace($friendly, $raw, $_POST['footer']));
 $post_header = $admin->add_slashes(str_replace($friendly, $raw, $_POST['post_header']));
 $post_content = $admin->add_slashes(str_replace($friendly, $raw, $_POST['post_content']));
@@ -57,6 +58,7 @@ if(extension_loaded('gd') AND function_exists('imageCreateFromJpeg')) {
         $crop = 'N';
     }
 }
+if ($resize=='')$resize=0;
 
 if($posts_per_page=='') {
     $posts_per_page = 0; // unlimited
@@ -71,7 +73,7 @@ if($fetch_content['gallery'] != $gallery) {
 
 // Update settings
 $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_settings` SET ".
-    "`header` = '$header', `post_loop` = '$post_loop', `footer` = '$footer', ".
+    "`header` = '$header', `post_loop` = '$post_loop', `view_order` = '$view_order', `footer` = '$footer', ".
     "`posts_per_page` = '$posts_per_page', `post_header` = '$post_header', ".
     "`post_content` = '$post_content', `image_loop` = '$image_loop', ".
     "`post_footer` = '$post_footer', `comments_header` = '$comments_header', ".
