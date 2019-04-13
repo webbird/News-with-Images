@@ -36,7 +36,7 @@ $MOD_NEWS['IMAGE_FILENAME_ERROR'] ='Dateiname ist zu lang (erlaubt: max. 256 Zei
 $MOD_NEWS['GENERIC_IMAGE_ERROR'] ='Problem mit Vorschau- und/oder Galeriebild(ern). Bitte Dateinamen,-formate und -gr&ouml;&szlig;en &uuml;berpr&uuml;fen!';
 $MOD_NEWS['PREVIEWIMAGE'] = 'Beitragsbild';
 $MOD_NEWS['GALLERYIMAGES'] = 'Galeriebilder';
-$MOD_NEWS['DELETEIMAGE'] ='Bild löschen?';
+$MOD_NEWS['DELETEIMAGE'] ='Bild l&ouml;schen?';
 
 //Variables for the frontend
 $MOD_NEWS['TEXT_READ_MORE'] = 'Details anzeigen';
