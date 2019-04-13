@@ -7,6 +7,23 @@
 	width: 80%;
 }
 
+.resize_defaults {
+	cursor:pointer;
+}
+
+.mod_img_news_add,
+.mod_img_news_add_group,
+.mod_img_news_options {
+	padding:0.25em 1em !important;
+	margin-right:1em !important;
+}
+
+.mod_img_news_add_group,
+.mod_img_news_options {
+	float:right;
+}
+
+
 /* 
   The definitions below provide the style for the edit CSS button 
   Required CSS class name: input.mod_moduledirectory_edit_css

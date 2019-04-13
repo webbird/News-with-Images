@@ -29,6 +29,15 @@ if(!isset($_GET['post_id']) OR !is_numeric($_GET['post_id'])) {
 // Include WB admin wrapper script
 require WB_PATH.'/modules/admin.php';
 
+// check if module language file exists for the language set by the user (e.g. DE, EN)
+if(!file_exists(WB_PATH .'/modules/news_img/languages/'.LANGUAGE .'.php')) {
+	// no module language file exists for the language set by the user, include default module language file EN.php
+	require_once WB_PATH .'/modules/news_img/languages/EN.php';
+} else {
+	// a module language file exists for the language defined by the user, load it
+	require_once WB_PATH .'/modules/news_img/languages/'.LANGUAGE .'.php';
+}
+
 // delete image
 if(isset ($_GET['img_id'])) {
   $img_id = $_GET['img_id'];
@@ -92,6 +101,7 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
 <input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
 <input type="hidden" name="post_id" value="<?php echo $post_id; ?>" />
 <input type="hidden" name="link" value="<?php echo $fetch_content['link']; ?>" />
+<input type="hidden" name="savegoback" id="savegoback" value="" />
 
 <table class="row_a" cellpadding="2" cellspacing="0" width="100%">
 <tr>
@@ -101,7 +111,7 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
 	</td>
 </tr>
 <tr>
-	<td><?php echo 'Vorschaubild'; ?>:</td>
+	<td><?php echo $MOD_NEWS['PREVIEWIMAGE']; ?>:</td>
 	<td width="80%">
 	   <?php
 	     if ($fetch_content['image'] != "") {
@@ -201,7 +211,7 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
 <tr>
 	<td>
 	<?php
-	show_wysiwyg_editor("block2","block2",htmlspecialchars($fetch_content['content_block2']),"100%","650px");
+	show_wysiwyg_editor("block2","block2",htmlspecialchars($fetch_content['content_block2']),"100%","350px");
 	?>
 	</td>
 </tr>
@@ -215,7 +225,7 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
 $query_img = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = ".$post_id." ORDER BY `position`,`id` ASC");
 
 if($query_img->numRows() > 0) {
-    echo '<div id="fotoshow"><h3>Bilder anzeigen</h3><table><tbody>';
+    echo '<div id="fotoshow"><a name="fs"></a><h3>'.$MOD_NEWS['GALLERYIMAGES'].'</h3><table><tbody>';
     $i=1;
 
     // 2014-04-10 by BlackBird Webprogrammierung:
@@ -237,7 +247,7 @@ if($query_img->numRows() > 0) {
         echo '<tr><td>'.$up.$down.'</td>',
              '<td width="100"><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'" onmouseover="XBT(this, {id:\'tt'.$i.'\'})"><img class="img_list" src="'.WB_URL.$thumb_dir.'thumb_'.$row["bildname"].'" /></a><div id="tt'.$i.'" class="xbtooltip"><img src="'.WB_URL.$file_dir.$row["bildname"].'" /></div></td>',
              '<td>'.$row["bildname"].'<br /><input type="text" name="bildbeschreibung['.$row["id"].']" value="'.$row["bildbeschreibung"].'"></td>',
-             '<td><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&img_id='.$row["id"].'">l&ouml;schen</a></td><tr>';
+             '<td><a onclick="return confirm(\''.$MOD_NEWS['DELETEIMAGE'].'\')" href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&img_id='.$row["id"].'#fs"><img src="'.THEME_URL.'/images/delete_16.png" /></a></td><tr>';
         $i++;
         $first=false;
     }
@@ -246,7 +256,7 @@ if($query_img->numRows() > 0) {
 ?>
 
 <!-- Formular -->
-<div id="fotos"><h3>Fotos hochladen:</h3>
+<div id="fotos"><h3><?php echo $MOD_NEWS['IMAGEUPLOAD']?></h3>
       <input type="file" name="foto[]" accept="image/*" />  <br />
       <input type="file" name="foto[]" accept="image/*" />  <br />
       <input type="file" name="foto[]" accept="image/*" />  <br />
@@ -259,9 +269,11 @@ if($query_img->numRows() > 0) {
 <tr>
 	<td align="left">
 		<input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>" style="width: 100px; margin-top: 5px;" />
+		<input name="save" type="submit" onclick="document.getElementById('savegoback').value='1'" value="<?php echo $MOD_NEWS['SAVEGOBACK']; ?>" style="width: 200px; margin-top: 5px;" />
+		
 	</td>
 	<td align="right">
-		<input type="button" value="<?php echo "Zur&uuml;ck"; ?>" onclick="javascript: window.location = '<?php echo ADMIN_URL; ?>/pages/modify.php?page_id=<?php echo $page_id; ?>';" style="width: 100px; margin-top: 5px;" />
+		<input type="button" value="<?php echo $MOD_NEWS['GOBACK'] ?>" onclick="javascript: window.location = '<?php echo ADMIN_URL; ?>/pages/modify.php?page_id=<?php echo $page_id; ?>';" style="width: 100px; margin-top: 5px;" />
 	</td>
 </tr>
 </table>

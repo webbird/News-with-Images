@@ -14,10 +14,31 @@
  */
 
 //Modul Description
-$module_description = 'This page type is designed for making a news page.';
+$module_description = 'Module for creating news items with item image and item gallery (optional).';
 
 //Variables for the backend
 $MOD_NEWS['SETTINGS'] = 'News Settings';
+$MOD_NEWS['ADD_POST'] = 'Add post';
+$MOD_NEWS['ADD_GROUP'] = 'Add group';
+$MOD_NEWS['OPTIONS'] ='Options';
+$MOD_NEWS['SETTINGS'] = 'Options';
+$MOD_NEWS['ORDERBY']  = 'Order by';
+$MOD_NEWS['OVERVIEW_SETTINGS'] ='Overview page settings';
+$MOD_NEWS['POST_SETTINGS'] = 'Post settings';
+$MOD_NEWS['COMMENTS_SETTINGS'] = 'Comments settings';
+$MOD_NEWS['GALLERY_SETTINGS'] ='Gallery / image settings';
+$MOD_NEWS['GOBACK'] = 'Back';
+$MOD_NEWS['SAVEGOBACK'] = 'Save and go back';
+$MOD_NEWS['IMAGEUPLOAD'] = 'Upload images';
+$MOD_NEWS['IMAGE_INVALID_TYPE'] = 'Image type not supported';
+$MOD_NEWS['IMAGE_TOO_SMALL'] = 'Image is too small';
+$MOD_NEWS['IMAGE_LARGER_THAN'] ='Image is too large, max. size: ';
+$MOD_NEWS['IMAGE_FILENAME_ERROR'] ='Filename is too long (max. 256 characters allowed)';
+$MOD_NEWS['GENERIC_IMAGE_ERROR'] ='Issues with post and/or gallery image(s). Please check file name, file type amd file size.';
+$MOD_NEWS['PREVIEWIMAGE'] = 'Preview image';
+$MOD_NEWS['GALLERYIMAGES'] = 'Gallery images';
+$MOD_NEWS['DELETEIMAGE'] ='Delete this image?';
+
 
 //Variables for the frontend
 $MOD_NEWS['TEXT_READ_MORE'] = 'Read More';

@@ -15,7 +15,22 @@
 
 require_once '../../config.php';
 
+
+// check if module language file exists for the language set by the user (e.g. DE, EN)
+if(!file_exists(WB_PATH .'/modules/news_img/languages/'.LANGUAGE .'.php')) {
+	// no module language file exists for the language set by the user, include default module language file EN.php
+	require_once WB_PATH .'/modules/news_img/languages/EN.php';
+} else {
+	// a module language file exists for the language defined by the user, load it
+	require_once WB_PATH .'/modules/news_img/languages/'.LANGUAGE .'.php';
+}
+
+
+
 require_once WB_PATH."/include/jscalendar/jscalendar-functions.php";
+
+$imageErrorMessage ='';
+
 
 #var_dump($_POST);
 #var_dump($_FILES);
@@ -109,7 +124,7 @@ require(WB_PATH."/index.php");
 //Image resize
 function image_resize($src, $dst, $width, $height, $crop=0){
   //var_dump($src);
-  if(!list($w, $h) = getimagesize($src)) return "Nicht unterst&uuml;tzter Bildtyp!";
+  if(!list($w, $h) = getimagesize($src)) return $MOD_NEWS['IMAGE_INVALID_TYPE'];
 
   $type = strtolower(substr(strrchr($src,"."),1));
   if($type == 'jpeg') $type = 'jpg';
@@ -118,19 +133,19 @@ function image_resize($src, $dst, $width, $height, $crop=0){
     case 'gif': $img = imagecreatefromgif($src); break;
     case 'jpg': $img = imagecreatefromjpeg($src); break;
     case 'png': $img = imagecreatefrompng($src); break;
-    default : return "Nicht unterst&uuml;tzter Bildtyp!";
+    default : return $MOD_NEWS['IMAGE_INVALID_TYPE'];
   }
 
   // resize
   if($crop){
-    if($w < $width or $h < $height) return "Bild ist zu klein!";
+    if($w < $width or $h < $height) return $MOD_NEWS['IMAGE_TOO_SMALL'].'<br />';
     $ratio = max($width/$w, $height/$h);
     $h = $height / $ratio;
     $x = ($w - $width / $ratio) / 2;
     $w = $width / $ratio;
   }
   else{
-    if($w < $width and $h < $height) return "Bild ist zu klein!";
+    if($w < $width and $h < $height) return $MOD_NEWS['IMAGE_TOO_SMALL'].'<br />';
     $ratio = min($width/$w, $height/$h);
     $width = $w * $ratio;
     $height = $h * $ratio;
@@ -258,10 +273,10 @@ if (isset($_FILES["foto"])) {
 
             // check
             if  ( $picture['size'][$i] > $imagemaxsize) {
-              $error = 'Datei ist zu gro�. Sie darf max. '.byte_convert($imagemaxsize).' sein!' ;
+               $pic_error.= $MOD_NEWS['IMAGE_LARGER_THAN'].byte_convert($imagemaxsize).'<br />';
             }
             elseif ( strlen($bildname) > '256') {
-              $error = 'Der Dateiname darf 256 Zeichen nicht &uuml;berschreiten!' ;
+              $pic_error.= $MOD_NEWS['IMAGE_FILENAME_ERROR'].'1<br />';
             }
             else {
               // copy in folder
@@ -276,8 +291,8 @@ if (isset($_FILES["foto"])) {
 
               //resize (create thumb)
               if (true !== ($pic_error = @image_resize($file_dir.$bildname, $thumb_dir.'thumb_'.$bildname, $thumbsize, $thumbsize, 1))) {
-                echo $pic_error;
-                unlink($bildname);
+                $imageErrorMessage.=$pic_error.'<br />';
+                @unlink($bildname);
               }
               else {
 
@@ -324,10 +339,10 @@ if (isset($_FILES["postfoto"]) && $_FILES["postfoto"]["name"] != "") {
 
             // check
             if  ( $postpicture['size'] > '2048000') {
-              $error = 'Datei ist zu gro�. Sie darf max. 2 MB sein!' ;
+               $pic_error.= $MOD_NEWS['IMAGE_LARGER_THAN'].' 2 MB<br />';
             }
             elseif ( strlen($postbildname) > '256') {
-              $error = 'Der Dateiname darf 256 Zeichen nicht &uuml;berschreiten!' ;
+              $pic_error.= $MOD_NEWS['IMAGE_FILENAME_ERROR'].'<br />';
             }
             else {
               // copy in folder
@@ -339,8 +354,8 @@ if (isset($_FILES["postfoto"]) && $_FILES["postfoto"]["name"] != "") {
                   list($previewwidth,$previewheight) = explode('x',$fetch_content['resize_preview'],2);
                   $crop = ( $fetch_content['crop_preview'] == 'Y' ) ? 1 : 0;
                   if (true !== ($pic_error = @image_resize($thumb_dir.$postbildname, $file_dir.'post_'.$post_id.'_'.$postbildname, $previewwidth, $previewheight, $crop))) {
-                    echo $pic_error;
-                    unlink($postbildname);
+                    $imageErrorMessage.=$pic_error.'<br />';
+                    @unlink($postbildname);
                   }
                   else {
 
@@ -388,8 +403,15 @@ if($database->is_error())
 }
 else
 {
-	//$admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
-    $admin->print_success($TEXT['SUCCESS'], WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$id);
+	if ($imageErrorMessage!='') {		
+		$admin->print_error($MOD_NEWS['GENERIC_IMAGE_ERROR'], WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$id);
+	} else {
+		if (isset($_POST['savegoback']) && $_POST['savegoback']=='1') {
+			$admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+		} else {
+			$admin->print_success($TEXT['SUCCESS'], WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$id);
+		}
+	}
 }
 
 // Print admin footer

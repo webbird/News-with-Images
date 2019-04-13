@@ -15,6 +15,16 @@
 
 // Must include code to stop this file being access directly
 if(!defined('WB_PATH')) { exit("Cannot access this file directly"); }
+
+// check if module language file exists for the language set by the user (e.g. DE, EN)
+if(!file_exists(WB_PATH .'/modules/news_img/languages/'.LANGUAGE .'.php')) {
+	// no module language file exists for the language set by the user, include default module language file EN.php
+	require_once WB_PATH .'/modules/news_img/languages/EN.php';
+} else {
+	// a module language file exists for the language defined by the user, load it
+	require_once WB_PATH .'/modules/news_img/languages/'.LANGUAGE .'.php';
+}
+
 $database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_posts`  WHERE `page_id` = '$page_id' and `section_id` = '$section_id' and `title`=''");
 $database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_groups`  WHERE `page_id` = '$page_id' and `section_id` = '$section_id' and `title`=''");
 
@@ -24,19 +34,11 @@ if(function_exists('ini_set')) {
 }
 
 ?>
-<table cellpadding="0" cellspacing="0" border="0" width="100%">
-<tr>
-	<td align="left" width="33%">
-		<input type="button" value="<?php echo $TEXT['ADD'].' '.$TEXT['POST']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/add_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>';" style="width: 100%;" />
-	</td>
-	<td align="left" width="33%">
-		<input type="button" value="<?php echo $TEXT['ADD'].' '.$TEXT['GROUP']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/add_group.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>';" style="width: 100%;" />
-	</td>
-	<td align="right" width="33%">
-		<input type="button" value="<?php echo $TEXT['SETTINGS']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/modify_settings.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>';" style="width: 100%;" />
-	</td>
-</tr>
-</table>
+<input type="button" class="mod_img_news_add" value="<?php echo $MOD_NEWS['ADD_POST']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/add_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>';"  />
+
+<input  class="mod_img_news_options" type="button" value="<?php echo $MOD_NEWS['OPTIONS']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/modify_settings.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>';"  />
+
+<input  class="mod_img_news_add_group" type="button" value="<?php echo $MOD_NEWS['ADD_GROUP']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/add_group.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>';"  />
 
 <br />
 
