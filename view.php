@@ -100,7 +100,20 @@ if(!defined('POST_ID') OR !is_numeric(POST_ID))
     if(isset($_GET['g']) AND is_numeric($_GET['g']))
     {
         $query_extra = " AND `group_id` = '".$_GET['g']."'";
-    } else {
+    } elseif(isset($_GET['m']) AND is_numeric($_GET['m']) AND isset($_GET['y']) AND is_numeric($_GET['y']) AND isset($_GET['method']) AND is_numeric($_GET['method'])){
+		$startdate = mktime(0,0,0,$_GET['m'],1,$_GET['y']);
+		$enddate = mktime(0,0,0,$_GET['m']+1,1,$_GET['y']);
+		switch($_GET['method']){
+		case 0:
+			$date_option = "posted_when";
+			break;
+		case 1:
+			$date_option = "published_when";
+			break;
+		}
+		$query_extra = " AND ".$date_option." >= '$startdate' AND ".$date_option." < '$enddate'";
+	} 
+	else {
         $query_extra = '';
     }
 
@@ -218,7 +231,7 @@ if(!defined('POST_ID') OR !is_numeric(POST_ID))
     }
     if($num_posts > 0)
     {
-        if($query_extra != '')
+        if($query_extra != '' && isset($_GET['g']))
         {
             ?>
             <div class="selected-group-title">
