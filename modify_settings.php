@@ -39,9 +39,9 @@ $raw = array('<', '>');
 $friendly = array('&lt;', '&gt;');
 
 // check if backend.css file needs to be included into the <body></body> of modify.php
-if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."/modules/form/backend.css")) {
+if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."/modules/news_img/backend.css")) {
 	echo '<style type="text/css">';
-	include(WB_PATH .'/modules/form/backend.css');
+	include(WB_PATH .'/modules/news_img/backend.css');
 	echo "\n</style>\n";
 }
 
@@ -54,7 +54,7 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 // Place this call outside of any <form></form> construct!!!
 if(function_exists('edit_module_css'))
 {
-	edit_module_css('news');
+	edit_module_css('news_img');
 }
 ?>
 
