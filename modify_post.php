@@ -124,23 +124,73 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
 		</td>
 </tr>
 <tr>
-	<td><?php echo $TEXT['GROUP']; ?>:</td>
-	<td>
-		<select name="group" style="width: 100%;">
-			<option value="0"><?php echo $TEXT['NONE']; ?></option>
-			<?php
-			$query = $database->query("SELECT `group_id`,`title` FROM `".TABLE_PREFIX."mod_news_img_groups` WHERE `section_id` = '$section_id' ORDER BY `position` ASC");
-			if($query->numRows() > 0) {
-				// Loop through groups
-				while($group = $query->fetchRow()) {
-					?>
-					<option value="<?php echo $group['group_id']; ?>"<?php if($fetch_content['group_id'] == $group['group_id']) { echo ' selected="selected"'; } ?>><?php echo $group['title']; ?></option>
-					<?php
-				}
+    <td><?php echo $TEXT['GROUP']; ?>:</td>
+    <td>
+        <select name="group" style="width: 100%;">
+            <?php
+	    // We encode the group_id, section_id and page_id into an urlencoded serialized array.
+	    // So we have a single string that we can submit safely and decode it when receiving.
+            echo '<option value="'.urlencode(serialize(array('g' => 0, 's' => $section_id, 'p' => $page_id))).'">'
+	        . $TEXT['NONE']." (".$TEXT['CURRENT']." ".$TEXT['SECTION']." ".$section_id.")</option>";
+            $query = $database->query("SELECT `group_id`,`title` FROM `".TABLE_PREFIX."mod_news_img_groups`"
+	        . " WHERE `section_id` = '$section_id' ORDER BY `position` ASC");
+            if($query->numRows() > 0) {
+                // Loop through groups
+                while($group = $query->fetchRow()) {
+                    echo '<option value="'
+		        . urlencode(serialize(array('g' => intval($group['group_id']), 's' => $section_id, 'p' => $page_id))).'"';
+                    if($fetch_content['group_id'] == $group['group_id']) { 
+                        echo ' selected="selected"'; 
+                    }
+                    echo '>'.$group['title'].' ('.$TEXT['CURRENT']." ".$TEXT['SECTION'].' '.$section_id.')</option>';
+                }
+            }
+            // this was just assignment to a group within the local section. Let's find out which sections exist
+	    // and offer to move the post to another news_img section
+            $query_sections = $database->query("SELECT `section_id`,`page_id` FROM `".TABLE_PREFIX."mod_news_img_settings`"
+	        . " WHERE `section_id` != '$section_id' ORDER BY `page_id`,`section_id` ASC");
+            $pid = $page_id;
+            if($query_sections->numRows() > 0) {
+                // Loop through all news_img sections, do sanity checks and filter out the current section which is handled above
+                while($sect = $query_sections->fetchRow()) {
+                    if($sect['section_id'] != $section_id){
+                        if($sect['page_id'] != $pid){ // for new pages insert a separator
+                            $pid = intval($sect['page_id']);
+                            $page_title = "";
+                            $page_details = "";
+			    if($pid != 0){ // find out the page title and print separator line
+				$page_details = $admin->get_page_details($pid);
+                        	if (!empty($page_details)){
+                                    $page_title=isset($page_details['page_title'])?$page_details['page_title']:"";
+                        	    echo '<option value="'.urlencode(serialize(array('g' => 0, 's' => 0, 'p' => 0))).'">'
+                        	    .'[--- '.$TEXT['PAGE'].' '.$pid.' ('.$page_title.') ---]</option>';
+                        	}
+			    }
+                	}
+			if($pid != 0){  
+        		    echo '<option value="'.urlencode(serialize(array('g' => 0, 's' => $sect['section_id'], 'p' => $pid))).'">'
+	        	       . $TEXT['NONE']." (".$TEXT['SECTION']." ".$sect['section_id'].")</option>";
+                	    // now loop through groups of this section, at least for the ones which are not dummy sections
+                	    $query_groups = $database->query("SELECT `group_id`,`title` FROM `".TABLE_PREFIX."mod_news_img_groups`"
+		        	. " WHERE `section_id` = '".intval($sect['section_id'])."' ORDER BY `position` ASC");
+                	    if($query_groups->numRows() > 0) {
+                        	// Loop through groups
+                        	while($group = $query_groups->fetchRow()) {
+                        	    echo '<option value="'
+			        	. urlencode(serialize(array(
+					    'g' => intval($group['group_id']), 
+					    's' => intval($sect['section_id']), 
+					    'p' => $pid)))
+					.'">'.$group['title'].' ('.$TEXT['SECTION'].' '.$sect['section_id'].')</option>';
+                        	}
+                            }
 			}
-			?>
-		</select>
-	</td>
+		    }
+                }
+            }
+            ?>
+        </select>
+    </td>
 </tr>
 <tr>
 	<td><?php echo $TEXT['COMMENTING']; ?>:</td>

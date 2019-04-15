@@ -176,6 +176,8 @@ function image_resize($src, $dst, $width, $height, $crop=0){
 $update_when_modified = true; // Tells script to update when this page was last updated
 require WB_PATH.'/modules/admin.php';
 
+$group="";
+
 // Validate all fields
 if($admin->get_post('title') == '' AND $admin->get_post('url') == '')
 {
@@ -191,8 +193,27 @@ else
 	$commenting = $admin->get_post_escaped('commenting');
 	$active = $admin->get_post_escaped('active');
 	$old_link = $admin->get_post_escaped('link');
-	$group_id = $admin->get_post_escaped('group');
+	$group = $admin->get_post_escaped('group');
 }
+
+$group_id = 0;
+$old_section_id = $section_id;
+$old_page_id = $page_id;
+
+if(!empty($group)){
+    $gid_value = urldecode($group);
+    $values = unserialize($gid_value);
+    if(!isset($values['s']) OR  !isset($values['g']) OR  !isset($values['p'])){
+        header("Location: ".ADMIN_URL."/pages/index.php");
+        exit( 0 );
+    }
+    if(intval($values['p'])!=0){
+       $group_id = intval($values['g']);
+       $section_id = intval($values['s']);
+       $page_id = intval($values['p']);
+    }
+}
+
 
 // Get page link URL
 $query_page = $database->query("SELECT `level`,`link` FROM `".TABLE_PREFIX."pages` WHERE `page_id` = '$page_id'");
@@ -238,14 +259,14 @@ $publisheduntil = jscalendar_to_timestamp($admin->get_post_escaped('enddate'), $
 if($publisheduntil == '' || $publisheduntil < 1)
 	$publisheduntil=0;
 
+if(!defined('ORDERING_CLASS_LOADED')) {
+    require WB_PATH.'/framework/class.order.php';
+}
 
 //post images
 if (isset($_FILES["foto"])) {
     // 2014-04-10 by BlackBird Webprogrammierung:
     //            image position (order)
-    if(!defined('ORDERING_CLASS_LOADED')) {
-        require WB_PATH.'/framework/class.order.php';
-    }
     
     foreach($_FILES as $picture) {
         if(!isset($picture['name']) || !is_array($picture['name'])) {
@@ -374,26 +395,50 @@ if (isset($_FILES["postfoto"]) && $_FILES["postfoto"]["name"] != "") {
   
 // strip HTML from title
 $title = strip_tags($title);
+
+$position="";
+// if we are moving posts across section borders we have to update the order of the posts
+if($old_section_id!=$section_id)
+{
+    // Get new order
+    $order = new order(TABLE_PREFIX.'mod_news_img_posts', 'position', 'post_id', 'section_id');
+    $position = "`position` = '".$order->get_new($section_id)."',";
+}
+
      
 // Update row
-$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `group_id` = '$group_id', `title` = '$title', `link` = '$post_link', `content_short` = '$short', `content_long` = '$long', `content_block2` = '$block2', `image` = '$image', `commenting` = '$commenting', `active` = '$active', `published_when` = '$publishedwhen', `published_until` = '$publisheduntil', `posted_when` = '".time()."', `posted_by` = '".$admin->get_user_id()."' WHERE `post_id` = '$post_id'");
+$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `page_id` = '$page_id', `section_id` = '$section_id', $position `group_id` = '$group_id', `title` = '$title', `link` = '$post_link', `content_short` = '$short', `content_long` = '$long', `content_block2` = '$block2', `image` = '$image', `commenting` = '$commenting', `active` = '$active', `published_when` = '$publishedwhen', `published_until` = '$publisheduntil', `posted_when` = '".time()."', `posted_by` = '".$admin->get_user_id()."' WHERE `post_id` = '$post_id'");
 
-//update Bildbeschreibungen der tabelle mod_news_img_img
-$query_img = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = ".$post_id);
-if($query_img->numRows() > 0) {
+// when no error has occurred go ahead and update the image descriptions
+if(!($database->is_error()))
+{
+  //update Bildbeschreibungen der tabelle mod_news_img_img
+  $query_img = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = ".$post_id);
+  if($query_img->numRows() > 0) {
 
-  while($row = $query_img->fetchRow()) {
-      $row_id = $row['id'];
-     // var_dump($row_id);
-      //var_dump($_POST['bildbeschreibung'][$row_id]);
-      $bildbeschreibung = isset($_POST['bildbeschreibung'][$row_id])
-                        ? $_POST['bildbeschreibung'][$row_id]
-                        : '';
-     $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_img` SET `bildbeschreibung` = '$bildbeschreibung' WHERE id = '$row_id'");
+    while($row = $query_img->fetchRow()) {
+	$row_id = $row['id'];
+       // var_dump($row_id);
+	//var_dump($_POST['bildbeschreibung'][$row_id]);
+	$bildbeschreibung = isset($_POST['bildbeschreibung'][$row_id])
+                          ? $_POST['bildbeschreibung'][$row_id]
+                          : '';
+       $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_img` SET `bildbeschreibung` = '$bildbeschreibung' WHERE id = '$row_id'");
+    }
   }
 }
 
+// if this went fine so far and we are moving posts across section borders we still have to update the comments tables and reorder
+if((!($database->is_error()))&&($old_section_id!=$section_id))
+{
+    // Update row
+    $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_comments` SET `page_id` = '$page_id', `section_id` = '$section_id' WHERE `post_id` = '$post_id'");
 
+    // Clean up ordering
+    $order = new order(TABLE_PREFIX.'mod_news_img_posts', 'position', 'post_id', 'section_id');
+    $order->clean($old_section_id); 
+
+}
 
 //   exit;
 // Check if there is a db error, otherwise say successful
