@@ -223,21 +223,27 @@ if(!defined('POST_ID') OR !is_numeric(POST_ID))
     // echo header
     if($display_previous_next_links == 'none')
     {
-        echo  str_replace( array('[NEXT_PAGE_LINK]','[NEXT_LINK]','[PREVIOUS_PAGE_LINK]','[PREVIOUS_LINK]','[OUT_OF]','[OF]','[DISPLAY_PREVIOUS_NEXT_LINKS]'),
-                            array('','','','','','', $display_previous_next_links), $setting_header);
+        echo  str_replace(
+            array('[NEXT_PAGE_LINK]','[NEXT_LINK]','[PREVIOUS_PAGE_LINK]','[PREVIOUS_LINK]','[OUT_OF]','[OF]','[DISPLAY_PREVIOUS_NEXT_LINKS]'),
+            array('','','','','','', $display_previous_next_links),
+            $setting_header
+        );
     } else {
-        echo str_replace(  array('[NEXT_PAGE_LINK]','[NEXT_LINK]','[PREVIOUS_PAGE_LINK]','[PREVIOUS_LINK]','[OUT_OF]','[OF]','[DISPLAY_PREVIOUS_NEXT_LINKS]'),
-                            array($next_page_link, $next_link, $previous_page_link, $previous_link, $out_of, $of, $display_previous_next_links), $setting_header);
+        echo str_replace(
+            array('[NEXT_PAGE_LINK]','[NEXT_LINK]','[PREVIOUS_PAGE_LINK]','[PREVIOUS_LINK]','[OUT_OF]','[OF]','[DISPLAY_PREVIOUS_NEXT_LINKS]'),
+            array($next_page_link, $next_link, $previous_page_link, $previous_link, $out_of, $of, $display_previous_next_links),
+            $setting_header
+        );
     }
     if($num_posts > 0)
     {
         if($query_extra != '' && isset($_GET['g']))
         {
-            ?>
+?>
             <div class="selected-group-title">
                 <?php echo '<a href="'.htmlspecialchars(strip_tags($_SERVER['PHP_SELF'])).'">'.PAGE_TITLE.'</a> &gt;&gt; '.$groups[$_GET['g']]['title']; ?>
             </div>
-            <?php
+<?php
         }
         while( false != ($post = $query_posts->fetchRow()) )
         {
@@ -287,11 +293,13 @@ if(!defined('POST_ID') OR !is_numeric(POST_ID))
                 $group_id      = $post['group_id'];
                 $group_title   = $groups[$group_id]['title'];
                 $group_image   = $groups[$group_id]['image'];
+                $group_image_url = WB_URL."/modules/news_img/images/nopic.png";
                 $display_image = ($group_image == '') ? "none" : "inherit";
                 $display_group = ($group_id == 0) ? 'none' : 'inherit';
 
                 if ($group_image != "") {
-                    $group_image= "<img src='".$group_image."' alt='".$group_title."' />";
+                    $group_image_url = $group_image;
+                    $group_image = "<img src='".$group_image."' alt='".$group_title."' />";
                 }
 
                 // Replace [wblink--PAGE_ID--] with real link
@@ -310,21 +318,48 @@ if(!defined('POST_ID') OR !is_numeric(POST_ID))
 
                 // Replace vars with values
                 $post_long_len = strlen($post['content_long']);
-                $vars = array('[PAGE_TITLE]', '[GROUP_ID]', '[GROUP_TITLE]', '[GROUP_IMAGE]', '[DISPLAY_GROUP]', '[DISPLAY_IMAGE]', '[TITLE]', '[IMAGE]', '[SHORT]', '[LINK]', '[MODI_DATE]', '[MODI_TIME]', '[CREATED_DATE]', '[CREATED_TIME]', '[PUBLISHED_DATE]', '[PUBLISHED_TIME]', '[USER_ID]', '[USERNAME]', '[DISPLAY_NAME]', '[EMAIL]', '[TEXT_READ_MORE]','[SHOW_READ_MORE]');
+
+                // Placeholders
+                $vars = array(
+                    '[PAGE_TITLE]',
+                    '[GROUP_ID]',
+                    '[GROUP_TITLE]',
+                    '[GROUP_IMAGE]',
+                    '[DISPLAY_GROUP]',
+                    '[DISPLAY_IMAGE]',
+                    '[TITLE]',
+                    '[IMAGE]',
+                    '[SHORT]',
+                    '[LINK]',
+                    '[MODI_DATE]',
+                    '[MODI_TIME]',
+                    '[CREATED_DATE]',
+                    '[CREATED_TIME]',
+                    '[PUBLISHED_DATE]',
+                    '[PUBLISHED_TIME]',
+                    '[USER_ID]',
+                    '[USERNAME]',
+                    '[DISPLAY_NAME]',
+                    '[EMAIL]',
+                    '[TEXT_READ_MORE]',
+                    '[SHOW_READ_MORE]',
+                    '[GROUP_IMAGE_URL]',
+                );
+
                 if(isset($users[$uid]['username']) AND $users[$uid]['username'] != '')
                 {
                     if(($post_long_len < 9) && ($anz_post_img < 1))
                     {
-                        $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, '#" onclick="javascript:void(0);return false;" style="cursor:no-drop;', $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, $uid, $users[$uid]['username'], $users[$uid]['display_name'], $users[$uid]['email'], '', 'hidden');
+                        $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, '#" onclick="javascript:void(0);return false;" style="cursor:no-drop;', $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, $uid, $users[$uid]['username'], $users[$uid]['display_name'], $users[$uid]['email'], '', 'hidden',$group_image_url);
                     } else {
-                           $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, $post_link, $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, $uid, $users[$uid]['username'], $users[$uid]['display_name'], $users[$uid]['email'], $MOD_NEWS['TEXT_READ_MORE'], 'visible');
+                        $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, $post_link, $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, $uid, $users[$uid]['username'], $users[$uid]['display_name'], $users[$uid]['email'], $MOD_NEWS['TEXT_READ_MORE'], 'visible',$group_image_url);
                     }
                 } else {
                     if(($post_long_len < 9) && ($anz_post_img < 1))
                     {
-                        $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, '#" onclick="javascript:void(0);return false;" style="cursor:no-drop;', $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, '', '', '', '', '','hidden');
+                        $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, '#" onclick="javascript:void(0);return false;" style="cursor:no-drop;', $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, '', '', '', '', '','hidden',$group_image_url);
                     } else {
-                        $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, $post_link, $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, '', '', '', '', $MOD_NEWS['TEXT_READ_MORE'],'visible');
+                        $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, $post_link, $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, '', '', '', '', $MOD_NEWS['TEXT_READ_MORE'],'visible',$group_image_url);
                     }
                 }
                 echo str_replace($vars, $values, $setting_post_loop);
