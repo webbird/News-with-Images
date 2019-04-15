@@ -46,7 +46,8 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 }
 
 ?>
-<h2><?php echo $MOD_NEWS['SETTINGS']; ?></h2>
+<div class="mod_news_img">
+    <h2><?php echo $MOD_NEWS['SETTINGS']; ?></h2>
 <?php
 // include the button to edit the optional module CSS files (function added with WB 2.7)
 // Note: CSS styles for the button are defined in backend.css (div class="mod_moduledirectory_edit_css")
@@ -57,12 +58,12 @@ if(function_exists('edit_module_css'))
 }
 ?>
 
-<form name="modify" action="<?php echo WB_URL; ?>/modules/news_img/save_settings.php" method="post" style="margin: 0;">
+    <form name="modify" action="<?php echo WB_URL; ?>/modules/news_img/save_settings.php" method="post" style="margin: 0;">
 
 	<input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
 	<input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
 
-	<table class="row_a" cellpadding="2" cellspacing="0" width="100%">
+    	<table>
 		
 		<tr><td colspan="2"><h3><?php echo $MOD_NEWS['OVERVIEW_SETTINGS']?></h3></td></tr>
 		
@@ -253,7 +254,7 @@ if(function_exists('edit_module_css'))
 			</td>
 		</tr>
 	</table>
-	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+    	<table>
 		<tr>
 			<td class="left">
 				<input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>" style="width: 100px; margin-top: 5px;" />
@@ -263,8 +264,8 @@ if(function_exists('edit_module_css'))
 			</td>
 		</tr>
 	</table>
-</form>
-
+    </form>
+</div>
 <?php
 
 // Print admin footer

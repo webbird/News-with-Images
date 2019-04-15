@@ -1,7 +1,8 @@
 .mod_news_img table{width:100%}
 .mod_news_img th, .mod_news_img td{padding:2px 5px;}
-.mod_news_img tr:nth-child(odd){background-color:#ececec}
-.mod_news_img tr:nth-child(even){background-color:#fff}
+.mod_news_img table.striped tr:nth-child(odd){background-color:#ececec}
+.mod_news_img table.striped tr:nth-child(even){background-color:#fff}
+.mod_news_img table img.preview{height:50px;max-height:50px;}
 
 .setting_name {
 	vertical-align: top;

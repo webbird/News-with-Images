@@ -76,9 +76,8 @@ if(function_exists('ini_set')) {
     $query_posts = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `section_id` = '$section_id' ORDER BY `$order_by` DESC");
     if($query_posts->numRows() > 0) {
     	$num_posts = $query_posts->numRows();
-    	$row = 'a';
 ?>
-    	<table>
+    	<table class="striped">
             <tbody>
     	<?php
     	while($post = $query_posts->fetchRow()) {
@@ -173,9 +172,8 @@ if(function_exists('ini_set')) {
 $query_groups = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_groups` WHERE `section_id` = '$section_id' ORDER BY `position` ASC");
 if($query_groups->numRows() > 0) {
 	$num_groups = $query_groups->numRows();
-	$row = 'a';
 	?>
-	<table>
+	<table class="striped">
 	<?php
 	while($group = $query_groups->fetchRow()) {
 		?>
