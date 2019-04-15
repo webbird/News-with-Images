@@ -34,15 +34,13 @@ if(function_exists('ini_set')) {
 }
 
 ?>
-<input type="button" class="mod_img_news_add" value="<?php echo $MOD_NEWS['ADD_POST']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/add_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>';"  />
+<div class="mod_news_img">
+    <input type="button" class="mod_img_news_add" value="<?php echo $MOD_NEWS['ADD_POST']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/add_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>';"  />
+    <input  class="mod_img_news_options" type="button" value="<?php echo $MOD_NEWS['OPTIONS']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/modify_settings.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>';"  />
+    <input  class="mod_img_news_add_group" type="button" value="<?php echo $MOD_NEWS['ADD_GROUP']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/add_group.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>';"  />
+    <br />
 
-<input  class="mod_img_news_options" type="button" value="<?php echo $MOD_NEWS['OPTIONS']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/modify_settings.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>';"  />
-
-<input  class="mod_img_news_add_group" type="button" value="<?php echo $MOD_NEWS['ADD_GROUP']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/add_group.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>';"  />
-
-<br />
-
-<h2><?php echo $TEXT['MODIFY'].'/'.$TEXT['DELETE'].' '.$TEXT['POST']; ?></h2>
+    <h2><?php echo $TEXT['MODIFY'].'/'.$TEXT['DELETE'].' '.$TEXT['POST']; ?></h2>
 
 <?php
     // Get settings
@@ -61,96 +59,105 @@ if(function_exists('ini_set')) {
     if($setting_view_order==3) $order_by = "posted_when"; 
     if($setting_view_order==4) $order_by = "post_id"; 
 
-// Loop through existing posts
-$query_posts = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `section_id` = '$section_id' ORDER BY `$order_by` DESC");
-if($query_posts->numRows() > 0) {
-	$num_posts = $query_posts->numRows();
-	$row = 'a';
-	?>
-	<table cellpadding="2" cellspacing="0" border="0" width="100%">
-	<?php
-	while($post = $query_posts->fetchRow()) {
-		?>
-		<tr class="row_<?php echo $row; ?>">
-			<td width="20" style="padding-left: 5px;">
-				<a href="<?php echo WB_URL; ?>/modules/news_img/modify_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>" title="<?php echo $TEXT['MODIFY']; ?>">
-					<img src="<?php echo THEME_URL; ?>/images/modify_16.png" border="0" alt="Modify - " />
-				</a>
-			</td>
-			<td>
-				<a href="<?php echo WB_URL; ?>/modules/news_img/modify_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>">
-					<?php echo ($post['title']); ?>
-				</a>
-			</td>
-			<td width="180">
-				<?php echo $TEXT['GROUP'].': ';
-				// Get group title
-				$query_title = $database->query("SELECT `title` FROM `".TABLE_PREFIX."mod_news_img_groups` WHERE `group_id` = '".$post['group_id']."'");
-				if($query_title->numRows() > 0) {
-					$fetch_title = $query_title->fetchRow();
-					echo ($fetch_title['title']);
-				} else {
-					echo $TEXT['NONE'];
-				}
-				?>
-			</td>
-			<td width="120">
-				<?php echo $TEXT['COMMENTS'].': ';
-				// Get number of comments
-				$query_title = $database->query("SELECT `title` FROM `".TABLE_PREFIX."mod_news_img_comments` WHERE `post_id` = '".$post['post_id']."'");
-				echo $query_title->numRows();
-				?>
-			</td>
-			<td width="80">
-				<?php echo $TEXT['ACTIVE'].': '; if($post['active'] == 1) { echo $TEXT['YES']; } else { echo $TEXT['NO']; } ?>
-			</td>
-			<td width="20">
-			<?php
-			$start = $post['published_when'];
-			$end = $post['published_until'];
-			$t = time();
-			$icon = '';
-			if($start<=$t && $end==0)
-				$icon=THEME_URL.'/images/noclock_16.png';
-			elseif(($start<=$t || $start==0) && $end>=$t)
-				$icon=THEME_URL.'/images/clock_16.png';
-			else
-				$icon=THEME_URL.'/images/clock_red_16.png';
-			?>
-			<a href="<?php echo WB_URL; ?>/modules/news_img/modify_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>" title="<?php echo $TEXT['MODIFY']; ?>">
-				<img src="<?php echo $icon; ?>" border="0" alt="" />
-			</a>
-			</td>
-			<td width="20">
-			<?php if(($post['position'] != $num_posts)&&($setting_view_order == 0)) { ?>
-				<a href="<?php echo WB_URL; ?>/modules/news_img/move_down.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>" title="<?php echo $TEXT['MOVE_UP']; ?>">
-					<img src="<?php echo THEME_URL; ?>/images/up_16.png" border="0" alt="^" />
-				</a>
-			<?php } ?>
-			</td>
-			<td width="20">
-			<?php if(($post['position'] != 1)&&($setting_view_order == 0)) { ?>
-				<a href="<?php echo WB_URL; ?>/modules/news_img/move_up.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>" title="<?php echo $TEXT['MOVE_DOWN']; ?>">
-					<img src="<?php echo THEME_URL; ?>/images/down_16.png" border="0" alt="v" />
-				</a>
-			<?php } ?>
-			</td>
-			<td width="20">
-				<a href="javascript: confirm_link('<?php echo $TEXT['ARE_YOU_SURE']; ?>', '<?php echo WB_URL; ?>/modules/news_img/delete_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>');" title="<?php echo $TEXT['DELETE']; ?>">
-					<img src="<?php echo THEME_URL; ?>/images/delete_16.png" border="0" alt="X" />
-				</a>
-			</td>
-		</tr>
+    // map order to lang string
+    $lang_map = array(
+        0 => $TEXT['CUSTOM'],
+        1 => $TEXT['PUBL_START_DATE'],
+        2 => $TEXT['PUBL_END_DATE'],
+        3 => $TEXT['SUBMITTED'],
+        4 => $TEXT['SUBMISSION_ID']
+    );
+?>
+
+    <div style="text-align:right;font-style:italic"><?php echo $MOD_NEWS['ORDERBY'], ": <span class=\"\" title=\"", $MOD_NEWS['ORDER_CUSTOM_INFO'] ,"\">", $lang_map[$setting_view_order] ?></span></div>
+
+<?php
+    // Loop through existing posts
+    $query_posts = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `section_id` = '$section_id' ORDER BY `$order_by` DESC");
+    if($query_posts->numRows() > 0) {
+    	$num_posts = $query_posts->numRows();
+    	$row = 'a';
+?>
+    	<table>
+            <tbody>
+    	<?php
+    	while($post = $query_posts->fetchRow()) {
+    		?>
+    		<tr>
+    			<td style="width:20px">
+    				<a href="<?php echo WB_URL; ?>/modules/news_img/modify_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>" title="<?php echo $TEXT['MODIFY']; ?>">
+    					<img src="<?php echo THEME_URL; ?>/images/modify_16.png" border="0" alt="Modify - " />
+    				</a>
+    			</td>
+    			<td>
+    				<a href="<?php echo WB_URL; ?>/modules/news_img/modify_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>">
+    					<?php echo ($post['title']); ?>
+    				</a>
+    			</td>
+    			<td>
+    				<?php echo $TEXT['GROUP'].': ';
+    				// Get group title
+    				$query_title = $database->query("SELECT `title` FROM `".TABLE_PREFIX."mod_news_img_groups` WHERE `group_id` = '".$post['group_id']."'");
+    				if($query_title->numRows() > 0) {
+    					$fetch_title = $query_title->fetchRow();
+    					echo ($fetch_title['title']);
+    				} else {
+    					echo $TEXT['NONE'];
+    				}
+    				?>
+    			</td>
+    			<td>
+    				<?php echo $TEXT['COMMENTS'].': ';
+    				// Get number of comments
+    				$query_title = $database->query("SELECT `title` FROM `".TABLE_PREFIX."mod_news_img_comments` WHERE `post_id` = '".$post['post_id']."'");
+    				echo $query_title->numRows();
+    				?>
+    			</td>
+    			<td style="width:120px">
+    				<?php echo $TEXT['ACTIVE'].': '; if($post['active'] == 1) { echo $TEXT['YES']; } else { echo $TEXT['NO']; } ?>
+    			</td>
+    			<td style="width:20px">
+<?php
+	$start = $post['published_when'];
+	$end = $post['published_until'];
+	$t = time();
+	$icon = '';
+	if($start<=$t && $end==0)
+		$icon=THEME_URL.'/images/noclock_16.png';
+	elseif(($start<=$t || $start==0) && $end>=$t)
+		$icon=THEME_URL.'/images/clock_16.png';
+	else
+		$icon=THEME_URL.'/images/clock_red_16.png';
+?>
+    			<a href="<?php echo WB_URL; ?>/modules/news_img/modify_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>" title="<?php echo $TEXT['MODIFY']; ?>">
+    				<img src="<?php echo $icon; ?>" border="0" alt="" />
+    			</a>
+    			</td>
+    			<td style="width:20px">
+    			<?php if(($post['position'] != $num_posts)&&($setting_view_order == 0)) { ?>
+    				<a href="<?php echo WB_URL; ?>/modules/news_img/move_down.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>" title="<?php echo $TEXT['MOVE_UP']; ?>">
+    					<img src="<?php echo THEME_URL; ?>/images/up_16.png" border="0" alt="^" />
+    				</a>
+    			<?php } ?>
+    			</td>
+    			<td style="width:20px">
+    			<?php if(($post['position'] != 1)&&($setting_view_order == 0)) { ?>
+    				<a href="<?php echo WB_URL; ?>/modules/news_img/move_up.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>" title="<?php echo $TEXT['MOVE_DOWN']; ?>">
+    					<img src="<?php echo THEME_URL; ?>/images/down_16.png" border="0" alt="v" />
+    				</a>
+    			<?php } ?>
+    			</td>
+    			<td style="width:20px">
+    				<a href="javascript: confirm_link('<?php echo $TEXT['ARE_YOU_SURE']; ?>', '<?php echo WB_URL; ?>/modules/news_img/delete_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>');" title="<?php echo $TEXT['DELETE']; ?>">
+    					<img src="<?php echo THEME_URL; ?>/images/delete_16.png" border="0" alt="X" />
+    				</a>
+    			</td>
+    		</tr>
 		<?php
-		// Alternate row color
-		if($row == 'a') {
-			$row = 'b';
-		} else {
-			$row = 'a';
-		}
 	}
 	?>
-	</table>
+        </tbody>
+        </table>
 	<?php
 } else {
 	echo $TEXT['NONE_FOUND'];
@@ -158,7 +165,7 @@ if($query_posts->numRows() > 0) {
 
 ?>
 
-<h2><?php echo $TEXT['MODIFY'].'/'.$TEXT['DELETE'].' '.$TEXT['GROUP']; ?></h2>
+    <h2><?php echo $TEXT['MODIFY'].'/'.$TEXT['DELETE'].' '.$TEXT['GROUP']; ?></h2>
 
 <?php
 
@@ -168,12 +175,12 @@ if($query_groups->numRows() > 0) {
 	$num_groups = $query_groups->numRows();
 	$row = 'a';
 	?>
-	<table cellpadding="2" cellspacing="0" border="0" width="100%">
+	<table>
 	<?php
 	while($group = $query_groups->fetchRow()) {
 		?>
-		<tr class="row_<?php echo $row; ?>">
-			<td width="20" style="padding-left: 5px;">
+		<tr>
+			<td style="width:20px">
 				<a href="<?php echo WB_URL; ?>/modules/news_img/modify_group.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group['group_id']; ?>" title="<?php echo $TEXT['MODIFY']; ?>">
 					<img src="<?php echo THEME_URL; ?>/images/modify_16.png" border="0" alt="Modify - " />
 				</a>
@@ -183,38 +190,32 @@ if($query_groups->numRows() > 0) {
 					<?php echo $group['title']; ?>
 				</a>
 			</td>
-			<td width="80">
+			<td style="width:150px">
 				<?php echo $TEXT['ACTIVE'].': '; if($group['active'] == 1) { echo $TEXT['YES']; } else { echo $TEXT['NO']; } ?>
 			</td>
-			<td width="20">
+			<td style="width:20px">
 			<?php if($group['position'] != 1) { ?>
 				<a href="<?php echo WB_URL; ?>/modules/news_img/move_up.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group['group_id']; ?>" title="<?php echo $TEXT['MOVE_UP']; ?>">
 					<img src="<?php echo THEME_URL; ?>/images/up_16.png" border="0" alt="^" />
 				</a>
 			<?php } ?>
 			</td>
-			<td width="20">
+			<td style="width:20px">
 			<?php if($group['position'] != $num_groups) { ?>
 				<a href="<?php echo WB_URL; ?>/modules/news_img/move_down.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group['group_id']; ?>" title="<?php echo $TEXT['MOVE_DOWN']; ?>">
 					<img src="<?php echo THEME_URL; ?>/images/down_16.png" border="0" alt="v" />
 				</a>
 			<?php } ?>
 			</td>
-			<td width="20">
+			<td style="width:20px">
 				<a href="javascript: confirm_link('<?php echo $TEXT['ARE_YOU_SURE']; ?>', '<?php echo WB_URL; ?>/modules/news_img/delete_group.php?page_id=<?php echo $page_id; ?>&amp;group_id=<?php echo $group['group_id']; ?>');" title="<?php echo $TEXT['DELETE']; ?>">
 					<img src="<?php echo THEME_URL; ?>/images/delete_16.png" border="0" alt="X" />
 				</a>
 			</td>
 		</tr>
-		<?php
-		// Alternate row color
-		if($row == 'a') {
-			$row = 'b';
-		} else {
-			$row = 'a';
-		}
+<?php
 	}
-	?>
+?>
 	</table>
 	<?php
 } else {

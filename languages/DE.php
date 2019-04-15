@@ -17,26 +17,27 @@
 $module_description = 'Modul zum Erstellen von Newsbeitr&auml;gen mit optionalem Beitragsbild und Beitrags-Bildergalerie.';
 
 //Variables for the backend
-$MOD_NEWS['ADD_POST'] = 'Beitrag verfassen';
 $MOD_NEWS['ADD_GROUP'] = 'Gruppe anlegen';
+$MOD_NEWS['ADD_POST'] = 'Beitrag verfassen';
+$MOD_NEWS['COMMENTS_SETTINGS'] = 'Kommentareinstellungen';
+$MOD_NEWS['DELETEIMAGE'] ='Bild l&ouml;schen?';
+$MOD_NEWS['GALLERY_SETTINGS'] ='Galerie-/Bild-Einstellungen';
+$MOD_NEWS['GALLERYIMAGES'] = 'Galeriebilder';
+$MOD_NEWS['GENERIC_IMAGE_ERROR'] ='Problem mit Vorschau- und/oder Galeriebild(ern). Bitte Dateinamen,-formate und -gr&ouml;&szlig;en &uuml;berpr&uuml;fen!';
+$MOD_NEWS['GOBACK'] = 'Zur&uuml;ck';
+$MOD_NEWS['IMAGE_FILENAME_ERROR'] ='Dateiname ist zu lang (erlaubt: max. 256 Zeichen)';
+$MOD_NEWS['IMAGE_INVALID_TYPE'] = 'Nicht unterst&uuml;tzter Bildtyp';
+$MOD_NEWS['IMAGE_LARGER_THAN'] ='Bild ist zu gro&szlig, max. erlaubt: ';
+$MOD_NEWS['IMAGE_TOO_SMALL'] = 'Bild ist zu klein';
+$MOD_NEWS['IMAGEUPLOAD'] = 'Bilder hochladen';
 $MOD_NEWS['OPTIONS'] ='Einstellungen';
-$MOD_NEWS['SETTINGS'] = 'News Einstellungen';
 $MOD_NEWS['ORDERBY']  = 'Sortierung';
+$MOD_NEWS['ORDER_CUSTOM_INFO'] = 'Die Einstellung &quot;benutzerdefiniert&quot; erlaubt das manuelle Sortieren der Beitr&auml;ge &uuml;ber auf-/ab-Pfeile.';
 $MOD_NEWS['OVERVIEW_SETTINGS'] ='&Uuml;bersichtsseite';
 $MOD_NEWS['POST_SETTINGS'] = 'Beitragsansicht';
-$MOD_NEWS['COMMENTS_SETTINGS'] = 'Kommentareinstellungen';
-$MOD_NEWS['GALLERY_SETTINGS'] ='Galerie-/Bild-Einstellungen';
-$MOD_NEWS['GOBACK'] = 'Zur&uuml;ck';
-$MOD_NEWS['SAVEGOBACK'] = 'Speichern und Zur&uuml;ck';
-$MOD_NEWS['IMAGEUPLOAD'] = 'Bilder hochladen';
-$MOD_NEWS['IMAGE_INVALID_TYPE'] = 'Nicht unterst&uuml;tzter Bildtyp';
-$MOD_NEWS['IMAGE_TOO_SMALL'] = 'Bild ist zu klein';
-$MOD_NEWS['IMAGE_LARGER_THAN'] ='Bild ist zu gro&szlig, max. erlaubt: ';
-$MOD_NEWS['IMAGE_FILENAME_ERROR'] ='Dateiname ist zu lang (erlaubt: max. 256 Zeichen)';
-$MOD_NEWS['GENERIC_IMAGE_ERROR'] ='Problem mit Vorschau- und/oder Galeriebild(ern). Bitte Dateinamen,-formate und -gr&ouml;&szlig;en &uuml;berpr&uuml;fen!';
 $MOD_NEWS['PREVIEWIMAGE'] = 'Beitragsbild';
-$MOD_NEWS['GALLERYIMAGES'] = 'Galeriebilder';
-$MOD_NEWS['DELETEIMAGE'] ='Bild l&ouml;schen?';
+$MOD_NEWS['SAVEGOBACK'] = 'Speichern und Zur&uuml;ck';
+$MOD_NEWS['SETTINGS'] = 'News Einstellungen';
 
 //Variables for the frontend
 $MOD_NEWS['TEXT_READ_MORE'] = 'Details anzeigen';

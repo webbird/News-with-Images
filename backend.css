@@ -1,3 +1,8 @@
+.mod_news_img table{width:100%}
+.mod_news_img th, .mod_news_img td{padding:2px 5px;}
+.mod_news_img tr:nth-child(odd){background-color:#ececec}
+.mod_news_img tr:nth-child(even){background-color:#fff}
+
 .setting_name {
 	vertical-align: top;
 	width: 20%;
