@@ -16,7 +16,7 @@
 if(defined('WB_URL'))
 {
     
-    // $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_news_posts`");
+    // $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_news_img_posts`");
     $mod_news = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_news_img_posts` ( '
                      . '`post_id` INT NOT NULL AUTO_INCREMENT,'
                      . '`section_id` INT NOT NULL DEFAULT \'0\','
@@ -39,7 +39,7 @@ if(defined('WB_URL'))
                      . ' )';
     $database->query($mod_news);
     
-    // $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_news_groups`");
+    // $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_news_img_groups`");
     $mod_news = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_news_img_groups` ( '
                      . '`group_id` INT NOT NULL AUTO_INCREMENT,'
                      . '`section_id` INT NOT NULL DEFAULT \'0\','
@@ -51,7 +51,7 @@ if(defined('WB_URL'))
                 . ' )';
     $database->query($mod_news);
     
-    // $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_news_comments`");
+    // $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_news_img_comments`");
     $mod_news = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_news_img_comments` ( '
                      . '`comment_id` INT NOT NULL AUTO_INCREMENT,'
                      . '`section_id` INT NOT NULL DEFAULT \'0\','
@@ -66,7 +66,7 @@ if(defined('WB_URL'))
 
     $database->query($mod_news);
     
-    // $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_news_settings`");
+    // $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_news_img_settings`");
     $mod_news = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_news_img_settings` ( '
                      . '`section_id` INT NOT NULL DEFAULT \'0\','
                      . '`page_id` INT NOT NULL DEFAULT \'0\','
@@ -106,7 +106,7 @@ if(defined('WB_URL'))
 
     $database->query($mod_news);
         
-    $mod_search = "SELECT * FROM `".TABLE_PREFIX."search` WHERE `value` = 'news'";
+    $mod_search = "SELECT * FROM `".TABLE_PREFIX."search` WHERE `value` = 'news_img'";
     $insert_search = $database->query($mod_search);
     if( $insert_search->numRows() == 0 )
     {
@@ -120,28 +120,28 @@ if(defined('WB_URL'))
         $field_info['modified_when'] = 'modified_when';
         $field_info['modified_by'] = 'modified_by';
         $field_info = serialize($field_info);
-        $database->query("INSERT INTO ".TABLE_PREFIX."search (name,value,extra) VALUES ('module', 'news', '$field_info')");
+        $database->query("INSERT INTO ".TABLE_PREFIX."search (name,value,extra) VALUES ('module', 'news_img', '$field_info')");
         // Query start
-        $query_start_code = "SELECT [TP]pages.page_id, [TP]pages.page_title, [TP]pages.link, [TP]pages.description, [TP]pages.modified_when, [TP]pages.modified_by    FROM [TP]mod_news_posts, [TP]mod_news_groups, [TP]mod_news_comments, [TP]mod_news_settings, [TP]pages WHERE ";
-        $database->query("INSERT INTO ".TABLE_PREFIX."search (name,value,extra) VALUES ('query_start', '$query_start_code', 'news')");
+        $query_start_code = "SELECT [TP]pages.page_id, [TP]pages.page_title, [TP]pages.link, [TP]pages.description, [TP]pages.modified_when, [TP]pages.modified_by    FROM [TP]mod_news_img_posts, [TP]mod_news_img_groups, [TP]mod_news_img_comments, [TP]mod_news_img_settings, [TP]pages WHERE ";
+        $database->query("INSERT INTO ".TABLE_PREFIX."search (name,value,extra) VALUES ('query_start', '$query_start_code', 'news_img')");
         // Query body
         $query_body_code = "
-        [TP]pages.page_id = [TP]mod_news_posts.page_id AND [TP]mod_news_posts.title LIKE \'%[STRING]%\'
-        OR [TP]pages.page_id = [TP]mod_news_posts.page_id AND [TP]mod_news_posts.content_short LIKE \'%[STRING]%\'
-        OR [TP]pages.page_id = [TP]mod_news_posts.page_id AND [TP]mod_news_posts.content_long LIKE \'%[STRING]%\'
-        OR [TP]pages.page_id = [TP]mod_news_posts.page_id AND [TP]mod_news_posts.content_block2 LIKE \'%[STRING]%\'
-        OR [TP]pages.page_id = [TP]mod_news_comments.page_id AND [TP]mod_news_comments.title LIKE \'%[STRING]%\'
-        OR [TP]pages.page_id = [TP]mod_news_comments.page_id AND [TP]mod_news_comments.comment LIKE \'%[STRING]%\'
-        OR [TP]pages.page_id = [TP]mod_news_settings.page_id AND [TP]mod_news_settings.header LIKE \'%[STRING]%\'
-        OR [TP]pages.page_id = [TP]mod_news_settings.page_id AND [TP]mod_news_settings.footer LIKE \'%[STRING]%\'
-        OR [TP]pages.page_id = [TP]mod_news_settings.page_id AND [TP]mod_news_settings.post_header LIKE \'%[STRING]%\'
-        OR [TP]pages.page_id = [TP]mod_news_settings.page_id AND [TP]mod_news_settings.post_footer LIKE \'%[STRING]%\'
-        OR [TP]pages.page_id = [TP]mod_news_settings.page_id AND [TP]mod_news_settings.comments_header LIKE \'%[STRING]%\'
-        OR [TP]pages.page_id = [TP]mod_news_settings.page_id AND [TP]mod_news_settings.comments_footer LIKE \'%[STRING]%\'";
-        $database->query("INSERT INTO ".TABLE_PREFIX."search (name,value,extra) VALUES ('query_body', '$query_body_code', 'news')");
+        [TP]pages.page_id = [TP]mod_news_img_posts.page_id AND [TP]mod_news_img_posts.title LIKE \'%[STRING]%\'
+        OR [TP]pages.page_id = [TP]mod_news_img_posts.page_id AND [TP]mod_news_img_posts.content_short LIKE \'%[STRING]%\'
+        OR [TP]pages.page_id = [TP]mod_news_img_posts.page_id AND [TP]mod_news_img_posts.content_long LIKE \'%[STRING]%\'
+        OR [TP]pages.page_id = [TP]mod_news_img_posts.page_id AND [TP]mod_news_img_posts.content_block2 LIKE \'%[STRING]%\'
+        OR [TP]pages.page_id = [TP]mod_news_img_comments.page_id AND [TP]mod_news_img_comments.title LIKE \'%[STRING]%\'
+        OR [TP]pages.page_id = [TP]mod_news_img_comments.page_id AND [TP]mod_news_img_comments.comment LIKE \'%[STRING]%\'
+        OR [TP]pages.page_id = [TP]mod_news_img_settings.page_id AND [TP]mod_news_img_settings.header LIKE \'%[STRING]%\'
+        OR [TP]pages.page_id = [TP]mod_news_img_settings.page_id AND [TP]mod_news_img_settings.footer LIKE \'%[STRING]%\'
+        OR [TP]pages.page_id = [TP]mod_news_img_settings.page_id AND [TP]mod_news_img_settings.post_header LIKE \'%[STRING]%\'
+        OR [TP]pages.page_id = [TP]mod_news_img_settings.page_id AND [TP]mod_news_img_settings.post_footer LIKE \'%[STRING]%\'
+        OR [TP]pages.page_id = [TP]mod_news_img_settings.page_id AND [TP]mod_news_img_settings.comments_header LIKE \'%[STRING]%\'
+        OR [TP]pages.page_id = [TP]mod_news_img_settings.page_id AND [TP]mod_news_img_settings.comments_footer LIKE \'%[STRING]%\'";
+        $database->query("INSERT INTO ".TABLE_PREFIX."search (name,value,extra) VALUES ('query_body', '$query_body_code', 'news_img')");
         // Query end
         $query_end_code = "";
-        $database->query("INSERT INTO ".TABLE_PREFIX."search (name,value,extra) VALUES ('query_end', '$query_end_code', 'news')");
+        $database->query("INSERT INTO ".TABLE_PREFIX."search (name,value,extra) VALUES ('query_end', '$query_end_code', 'news_img')");
 
         // Insert blank row (there needs to be at least on row for the search to work)
         $database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_posts` (`section_id`,`page_id`) VALUES ('0', '0')");

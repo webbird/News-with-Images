@@ -546,7 +546,7 @@ elseif(defined('POST_ID') AND is_numeric(POST_ID))
             echo str_replace($vars, $values, $setting_comments_header);
 
             // Query for comments
-            $query_comments = $database->query("SELECT `title`,`comment`,`commented_when`,`commented_by` FROM `".TABLE_PREFIX."mod_news_comments` WHERE `post_id` = '".POST_ID."' ORDER BY `commented_when` ASC");
+            $query_comments = $database->query("SELECT `title`,`comment`,`commented_when`,`commented_by` FROM `".TABLE_PREFIX."mod_news_img_comments` WHERE `post_id` = '".POST_ID."' ORDER BY `commented_when` ASC");
             if($query_comments->numRows() > 0)
             {
                 while( false != ($comment = $query_comments->fetchRow()) )
