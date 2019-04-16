@@ -59,4 +59,4 @@ $comments_page = '';
 $commenting = 'none';
 $use_captcha = true;
 
-$database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_settings` (`section_id`,`page_id`,`header`,`post_loop`,`footer`,`post_header`,`post_content`,`image_loop`,`post_footer`,`comments_header`,`comments_loop`,`comments_footer`,`comments_page`,`commenting`,`use_captcha`) VALUES ('$section_id','$page_id','$header','$post_loop','$footer','$post_header','$post_content','$image_loop','$post_footer','$comments_header','$comments_loop','$comments_footer','$comments_page','$commenting','$use_captcha')");
+$database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_settings` (`section_id`,`page_id`,`header`,`post_loop`,`footer`,`post_header`,`post_content`,`image_loop`,`post_footer`,`comments_header`,`comments_loop`,`comments_footer`,`comments_page`,`commenting`,`use_captcha`,`gallery`) VALUES ('$section_id','$page_id','$header','$post_loop','$footer','$post_header','$post_content','$image_loop','$post_footer','$comments_header','$comments_loop','$comments_footer','$comments_page','$commenting','$use_captcha','')");
