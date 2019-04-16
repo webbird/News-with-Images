@@ -162,7 +162,7 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
 				$page_details = $admin->get_page_details($pid);
                         	if (!empty($page_details)){
                                     $page_title=isset($page_details['page_title'])?$page_details['page_title']:"";
-                        	    echo '<option value="'.urlencode(serialize(array('g' => 0, 's' => 0, 'p' => 0))).'">'
+                        	    echo '<option disabled value="'.urlencode(serialize(array('g' => 0, 's' => 0, 'p' => 0))).'">'
                         	    .'[--- '.$TEXT['PAGE'].' '.$pid.' ('.$page_title.') ---]</option>';
                         	}
 			    }

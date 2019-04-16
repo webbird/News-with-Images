@@ -4,33 +4,33 @@
 	display:none;
 }
 
-.mod_nwi_default {}
-    .mod_nwi_default .mod_nwi_group {
-      clear:both;
-    }
-    .mod_nwi_default .mod_nwi_teaserpic {
-      float:left;
-      max-width:33.33333%;
-      min-width:33.33333%;
-    }
-    .mod_nwi_default .mod_nwi_teaserpic img {
-      max-width:80%;
-      height:auto;
-    }
-    .mod_nwi_default .mod_nwi_teasertext {
-      float:left;
-      max-width:66.666666%;
-    }
-    .mod_nwi_default .mod_nwi_teasertext h3 {
-      margin:0 0 0.25em 0;
-      padding:0;
-    }
-    .mod_nwi_default .mod_nwi_metadata {
-      font-size:75%;
-    }
-    .mod_nwi_default .mod_nwi_shorttext {
-      padding:0.5em 0;
-    }
-    .mod_nwi_default .mod_nwi_spacer {
-      padding:1em 0;
-    }
+.mod_nwi_default {
+}
+
+.mod_nwi_default .mod_nwi_group {
+	width:100%;
+  clear:both;
+}
+.mod_nwi_default .mod_nwi_teaserpic {
+  float:left;  
+}
+.mod_nwi_default .mod_nwi_teaserpic img {
+  max-width:80%;
+  height:auto;
+}
+.mod_nwi_default .mod_nwi_teasertext {  
+  display: table;
+}
+.mod_nwi_default .mod_nwi_teasertext h3 {
+  margin:0 0 0.25em 0;
+  padding:0;
+}
+.mod_nwi_default .mod_nwi_metadata {
+  font-size:75%;
+}
+.mod_nwi_default .mod_nwi_shorttext {
+  padding:0.5em 0;
+}
+.mod_nwi_default .mod_nwi_spacer {
+  padding:1em 0;
+}
