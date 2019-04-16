@@ -15,8 +15,8 @@
 
 require '../../config.php';
 
-$file_dir = PAGES_DIRECTORY.'/beitragsbilder/';
-$thumb_dir = PAGES_DIRECTORY.'/beitragsbilder/thumb/';
+$file_dir = MEDIA_DIRECTORY.'/news_img/';
+$thumb_dir = MEDIA_DIRECTORY.'/news_img/thumb/';
 
 // Get id
 if(!isset($_GET['post_id']) OR !is_numeric($_GET['post_id'])) {

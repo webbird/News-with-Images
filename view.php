@@ -16,8 +16,8 @@
 // Must include code to stop this file being access directly
 if(defined('WB_PATH') == false) { exit("Cannot access this file directly"); }
 
-$file_dir = PAGES_DIRECTORY.'/beitragsbilder/';
-$thumb_dir = PAGES_DIRECTORY.'/beitragsbilder/thumb/';
+$file_dir = MEDIA_DIRECTORY.'/news_img/';
+$thumb_dir = MEDIA_DIRECTORY.'/news_img/thumb/';
 $usebrax = false;
 
 // Nur temporaer, spaeter ueber Optionen
@@ -307,7 +307,7 @@ if(!defined('POST_ID') OR !is_numeric(POST_ID))
                 $wb->preprocess($short);
                 
                 if ($post['image'] != "") {
-                    $post_img = "<img src='".WB_URL.PAGES_DIRECTORY.'/beitragsbilder/'.$post['image']."' alt='".$post['title']."' />";
+                    $post_img = "<img src='".WB_URL.MEDIA_DIRECTORY.'/news_img/'.$post['image']."' alt='".$post['title']."' />";
                 } else {
                     $post_img = "<img src='".WB_URL."/modules/news_img/images/nopic.png' alt='empty placeholder' />";
                 }
@@ -457,7 +457,7 @@ elseif(defined('POST_ID') AND is_numeric(POST_ID))
                 }
 
                 if ($post['image'] != "") {
-                    $post_img = "<img src='".WB_URL.PAGES_DIRECTORY.'/beitragsbilder/'.$post['image']."' alt='".$post['title']."' />";
+                    $post_img = "<img src='".WB_URL.MEDIA_DIRECTORY.'/news_img/'.$post['image']."' alt='".$post['title']."' />";
                 } else {
                     $post_img = "";
                 }
@@ -515,7 +515,7 @@ elseif(defined('POST_ID') AND is_numeric(POST_ID))
         $images = array();
         if($sql_result->numRows() > 0) {
             while($row = $sql_result->fetchRow()) {
-                $images[] = str_replace(array('[IMAGE]','[DESCRIPTION]'),array(WB_URL.PAGES_DIRECTORY.'/beitragsbilder/'.$row['bildname'],$row['bildbeschreibung']),$setting_image_loop);
+                $images[] = str_replace(array('[IMAGE]','[DESCRIPTION]'),array(WB_URL.MEDIA_DIRECTORY.'/news_img/'.$row['bildname'],$row['bildbeschreibung']),$setting_image_loop);
             }
         }
 

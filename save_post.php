@@ -44,8 +44,8 @@ $imagemaxwidth  = 900;     // max width in pixel
 $imagemaxheight = 900;     // max height in pixel
 $imagemaxsize   = 4096000; // max file size in byte
 
-$file_dir = WB_PATH.PAGES_DIRECTORY.'/beitragsbilder/';
-$thumb_dir = WB_PATH.PAGES_DIRECTORY.'/beitragsbilder/thumb/';
+$file_dir = WB_PATH.MEDIA_DIRECTORY.'/news_img/';
+$thumb_dir = WB_PATH.MEDIA_DIRECTORY.'/news_img/thumb/';
 
 // Get id
 if(!isset($_POST['post_id']) OR !is_numeric($_POST['post_id']))
