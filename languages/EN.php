@@ -19,6 +19,8 @@ $module_description = 'Module for creating news items with item image and item g
 //Variables for the backend
 $MOD_NEWS['ADD_GROUP'] = 'Add group';
 $MOD_NEWS['ADD_POST'] = 'Add post';
+$MOD_NEWS['NEW_POST'] = 'Create new post';
+$MOD_NEWS['COPY_POST'] = 'Copy post';
 $MOD_NEWS['COMMENTS_SETTINGS'] = 'Comments settings';
 $MOD_NEWS['DELETEIMAGE'] ='Delete this image?';
 $MOD_NEWS['GALLERY_SETTINGS'] ='Gallery / image settings';

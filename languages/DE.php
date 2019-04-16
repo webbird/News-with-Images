@@ -19,6 +19,8 @@ $module_description = 'Modul zum Erstellen von Newsbeitr&auml;gen mit optionalem
 //Variables for the backend
 $MOD_NEWS['ADD_GROUP'] = 'Gruppe anlegen';
 $MOD_NEWS['ADD_POST'] = 'Beitrag verfassen';
+$MOD_NEWS['NEW_POST'] = 'Neuen Beitrag verfassen';
+$MOD_NEWS['COPY_POST'] = 'Beitrag kopieren';
 $MOD_NEWS['COMMENTS_SETTINGS'] = 'Kommentareinstellungen';
 $MOD_NEWS['DELETEIMAGE'] ='Bild l&ouml;schen?';
 $MOD_NEWS['GALLERY_SETTINGS'] ='Galerie-/Bild-Einstellungen';
