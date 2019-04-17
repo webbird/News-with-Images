@@ -16,14 +16,24 @@
 $module_directory   = 'news_img';
 $module_name        = 'News with Images';
 $module_function    = 'page';
-$module_version     = '3.7.5';
+$module_version     = '3.7.6';
 $module_platform    = '2.8.x';
 $module_author      = 'Ryan Djurovich, Rob Smith, Silvia Reins, Martin Hecht, Florian Meerwinck, Bianka Martinovic';
 $module_license     = 'GNU General Public License';
 $module_description = 'This page type is designed for making a news page with Images and Lightboxeffect.';
 
 /**
- * v3.7.5 - 2019-04-14 Martin Hecht
+ * v3.7.6 - 2019-04-16 
+ *        - Martin Hecht
+ *          + copy posts
+ *          + display post id in backend
+ *        - Bianka Martinovic 
+ *          + moved images folder to MEDIA_DIRECTORY/news_img
+ *        - Florian Meerwinck
+ *          + CHanges to frontend display
+ *          + add default preview size
+ *
+ * v3.7.5 - 2019-04-15 Martin Hecht
  *          + allow moving posts across section borders
  *          + a few bugfixes
  *

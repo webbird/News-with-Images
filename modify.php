@@ -90,7 +90,7 @@ if(function_exists('ini_set')) {
     			</td>
     			<td>
     				<a href="<?php echo WB_URL; ?>/modules/news_img/modify_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>">
-    					<?php echo ($post['title']); ?>
+    					<?php echo ($post['title']." (".$post['post_id'].")" ); ?>
     				</a>
     			</td>
     			<td>
