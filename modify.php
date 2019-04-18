@@ -35,9 +35,9 @@ if(function_exists('ini_set')) {
 
 ?>
 <div class="mod_news_img">
-    <input type="button" class="mod_img_news_add" value="<?php echo $MOD_NEWS['ADD_POST']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/add_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>';"  />
-    <input  class="mod_img_news_options" type="button" value="<?php echo $MOD_NEWS['OPTIONS']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/modify_settings.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>';"  />
-    <input  class="mod_img_news_add_group" type="button" value="<?php echo $MOD_NEWS['ADD_GROUP']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/add_group.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>';"  />
+    <input type="button" class="mod_img_news_add" value="<?php echo $MOD_NEWS_IMG['ADD_POST']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/add_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>';"  />
+    <input  class="mod_img_news_options" type="button" value="<?php echo $MOD_NEWS_IMG['OPTIONS']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/modify_settings.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>';"  />
+    <input  class="mod_img_news_add_group" type="button" value="<?php echo $MOD_NEWS_IMG['ADD_GROUP']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/add_group.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>';"  />
     <br />
 
     <h2><?php echo $TEXT['MODIFY'].'/'.$TEXT['DELETE'].' '.$TEXT['POST']; ?></h2>
@@ -69,7 +69,7 @@ if(function_exists('ini_set')) {
     );
 ?>
 
-    <div style="text-align:right;font-style:italic"><?php echo $MOD_NEWS['ORDERBY'], ": <span class=\"\" title=\"", $MOD_NEWS['ORDER_CUSTOM_INFO'] ,"\">", $lang_map[$setting_view_order] ?></span></div>
+    <div style="text-align:right;font-style:italic"><?php echo $MOD_NEWS_IMG['ORDERBY'], ": <span class=\"\" title=\"", $MOD_NEWS_IMG['ORDER_CUSTOM_INFO'] ,"\">", $lang_map[$setting_view_order] ?></span></div>
 
 <?php
     // Loop through existing posts

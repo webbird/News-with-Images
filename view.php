@@ -352,14 +352,14 @@ if(!defined('POST_ID') OR !is_numeric(POST_ID))
                     {
                         $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, '#" onclick="javascript:void(0);return false;" style="cursor:no-drop;', $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, $uid, $users[$uid]['username'], $users[$uid]['display_name'], $users[$uid]['email'], '', 'hidden',$group_image_url);
                     } else {
-                        $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, $post_link, $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, $uid, $users[$uid]['username'], $users[$uid]['display_name'], $users[$uid]['email'], $MOD_NEWS['TEXT_READ_MORE'], 'visible',$group_image_url);
+                        $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, $post_link, $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, $uid, $users[$uid]['username'], $users[$uid]['display_name'], $users[$uid]['email'], $MOD_NEWS_IMG['TEXT_READ_MORE'], 'visible',$group_image_url);
                     }
                 } else {
                     if(($post_long_len < 9) && ($anz_post_img < 1))
                     {
                         $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, '#" onclick="javascript:void(0);return false;" style="cursor:no-drop;', $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, '', '', '', '', '','hidden',$group_image_url);
                     } else {
-                        $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, $post_link, $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, '', '', '', '', $MOD_NEWS['TEXT_READ_MORE'],'visible',$group_image_url);
+                        $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, $post_link, $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, '', '', '', '', $MOD_NEWS_IMG['TEXT_READ_MORE'],'visible',$group_image_url);
                     }
                 }
                 echo str_replace($vars, $values, $setting_post_loop);
@@ -492,9 +492,9 @@ elseif(defined('POST_ID') AND is_numeric(POST_ID))
                 $wb->preprocess($post_short);
                 if(isset($users[$uid]['username']) AND $users[$uid]['username'] != '')
                 {
-                    $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $post_short, $page_link, $MOD_NEWS['TEXT_BACK'], $MOD_NEWS['TEXT_LAST_CHANGED'],$post_date, $MOD_NEWS['TEXT_AT'], $post_time, $create_date, $create_time, $publ_date, $publ_time, $MOD_NEWS['TEXT_POSTED_BY'], $MOD_NEWS['TEXT_ON'], $uid, $users[$uid]['username'], $users[$uid]['display_name'], $users[$uid]['email']);
+                    $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $post_short, $page_link, $MOD_NEWS_IMG['TEXT_BACK'], $MOD_NEWS_IMG['TEXT_LAST_CHANGED'],$post_date, $MOD_NEWS_IMG['TEXT_AT'], $post_time, $create_date, $create_time, $publ_date, $publ_time, $MOD_NEWS_IMG['TEXT_POSTED_BY'], $MOD_NEWS_IMG['TEXT_ON'], $uid, $users[$uid]['username'], $users[$uid]['display_name'], $users[$uid]['email']);
                 } else {
-                    $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $post_short, $page_link, $MOD_NEWS['TEXT_BACK'], $MOD_NEWS['TEXT_LAST_CHANGED'], $post_date, $MOD_NEWS['TEXT_AT'], $post_time, $create_date, $create_time, $publ_date, $publ_time, $MOD_NEWS['TEXT_POSTED_BY'], $MOD_NEWS['TEXT_ON'], '', '', '', '');
+                    $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $post_short, $page_link, $MOD_NEWS_IMG['TEXT_BACK'], $MOD_NEWS_IMG['TEXT_LAST_CHANGED'], $post_date, $MOD_NEWS_IMG['TEXT_AT'], $post_time, $create_date, $create_time, $publ_date, $publ_time, $MOD_NEWS_IMG['TEXT_POSTED_BY'], $MOD_NEWS_IMG['TEXT_ON'], '', '', '', '');
                 }
 
                 $post_long = ($post['content_long']);
@@ -542,7 +542,7 @@ elseif(defined('POST_ID') AND is_numeric(POST_ID))
         {
             // echo comments header
             $vars = array('[ADD_COMMENT_URL]','[TEXT_COMMENTS]');
-            $values = array(WB_URL.'/modules/news_img/comment.php?post_id='.POST_ID.'&amp;section_id='.$section_id, $MOD_NEWS['TEXT_COMMENTS']);
+            $values = array(WB_URL.'/modules/news_img/comment.php?post_id='.POST_ID.'&amp;section_id='.$section_id, $MOD_NEWS_IMG['TEXT_COMMENTS']);
             echo str_replace($vars, $values, $setting_comments_header);
 
             // Query for comments
@@ -561,9 +561,9 @@ elseif(defined('POST_ID') AND is_numeric(POST_ID))
                     $vars = array('[TITLE]','[COMMENT]','[TEXT_ON]','[DATE]','[TEXT_AT]','[TIME]','[TEXT_BY]','[USER_ID]','[USERNAME]','[DISPLAY_NAME]', '[EMAIL]');
                     if(isset($users[$uid]['username']) AND $users[$uid]['username'] != '')
                     {
-                        $values = array(($comment['title']), ($comment['comment']), $MOD_NEWS['TEXT_ON'], $commented_date, $MOD_NEWS['TEXT_AT'], $commented_time, $MOD_NEWS['TEXT_BY'], $uid, ($users[$uid]['username']), ($users[$uid]['display_name']), ($users[$uid]['email']));
+                        $values = array(($comment['title']), ($comment['comment']), $MOD_NEWS_IMG['TEXT_ON'], $commented_date, $MOD_NEWS_IMG['TEXT_AT'], $commented_time, $MOD_NEWS_IMG['TEXT_BY'], $uid, ($users[$uid]['username']), ($users[$uid]['display_name']), ($users[$uid]['email']));
                     } else {
-                        $values = array(($comment['title']), ($comment['comment']), $MOD_NEWS['TEXT_ON'], $commented_date, $MOD_NEWS['TEXT_AT'], $commented_time, $MOD_NEWS['TEXT_BY'], '0', strtolower($TEXT['UNKNOWN']), $TEXT['UNKNOWN'], '');
+                        $values = array(($comment['title']), ($comment['comment']), $MOD_NEWS_IMG['TEXT_ON'], $commented_date, $MOD_NEWS_IMG['TEXT_AT'], $commented_time, $MOD_NEWS_IMG['TEXT_BY'], '0', strtolower($TEXT['UNKNOWN']), $TEXT['UNKNOWN'], '');
                     }
                     echo str_replace($vars, $values, $setting_comments_loop);
                 }
@@ -580,7 +580,7 @@ elseif(defined('POST_ID') AND is_numeric(POST_ID))
 
             // echo comments footer
             $vars = array('[ADD_COMMENT_URL]','[TEXT_ADD_COMMENT]');
-            $values = array(WB_URL.'/modules/news_img/comment.php?post_id='.POST_ID.'&amp;section_id='.$section_id, $MOD_NEWS['TEXT_ADD_COMMENT']);
+            $values = array(WB_URL.'/modules/news_img/comment.php?post_id='.POST_ID.'&amp;section_id='.$section_id, $MOD_NEWS_IMG['TEXT_ADD_COMMENT']);
             echo str_replace($vars, $values, $setting_comments_footer);
         }
     }

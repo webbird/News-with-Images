@@ -124,7 +124,7 @@ require(WB_PATH."/index.php");
 //Image resize
 function image_resize($src, $dst, $width, $height, $crop=0){
   //var_dump($src);
-  if(!list($w, $h) = getimagesize($src)) return $MOD_NEWS['IMAGE_INVALID_TYPE'];
+  if(!list($w, $h) = getimagesize($src)) return $MOD_NEWS_IMG['IMAGE_INVALID_TYPE'];
 
   $type = strtolower(substr(strrchr($src,"."),1));
   if($type == 'jpeg') $type = 'jpg';
@@ -133,19 +133,19 @@ function image_resize($src, $dst, $width, $height, $crop=0){
     case 'gif': $img = imagecreatefromgif($src); break;
     case 'jpg': $img = imagecreatefromjpeg($src); break;
     case 'png': $img = imagecreatefrompng($src); break;
-    default : return $MOD_NEWS['IMAGE_INVALID_TYPE'];
+    default : return $MOD_NEWS_IMG['IMAGE_INVALID_TYPE'];
   }
 
   // resize
   if($crop){
-    if($w < $width or $h < $height) return $MOD_NEWS['IMAGE_TOO_SMALL'].'<br />';
+    if($w < $width or $h < $height) return $MOD_NEWS_IMG['IMAGE_TOO_SMALL'].'<br />';
     $ratio = max($width/$w, $height/$h);
     $h = $height / $ratio;
     $x = ($w - $width / $ratio) / 2;
     $w = $width / $ratio;
   }
   else{
-    if($w < $width and $h < $height) return $MOD_NEWS['IMAGE_TOO_SMALL'].'<br />';
+    if($w < $width and $h < $height) return $MOD_NEWS_IMG['IMAGE_TOO_SMALL'].'<br />';
     $ratio = min($width/$w, $height/$h);
     $width = $w * $ratio;
     $height = $h * $ratio;
@@ -294,10 +294,10 @@ if (isset($_FILES["foto"])) {
 
             // check
             if  ( $picture['size'][$i] > $imagemaxsize) {
-               $pic_error.= $MOD_NEWS['IMAGE_LARGER_THAN'].byte_convert($imagemaxsize).'<br />';
+               $pic_error.= $MOD_NEWS_IMG['IMAGE_LARGER_THAN'].byte_convert($imagemaxsize).'<br />';
             }
             elseif ( strlen($bildname) > '256') {
-              $pic_error.= $MOD_NEWS['IMAGE_FILENAME_ERROR'].'1<br />';
+              $pic_error.= $MOD_NEWS_IMG['IMAGE_FILENAME_ERROR'].'1<br />';
             }
             else {
               // copy in folder
@@ -360,10 +360,10 @@ if (isset($_FILES["postfoto"]) && $_FILES["postfoto"]["name"] != "") {
 
             // check
             if  ( $postpicture['size'] > '2048000') {
-               $pic_error.= $MOD_NEWS['IMAGE_LARGER_THAN'].' 2 MB<br />';
+               $pic_error.= $MOD_NEWS_IMG['IMAGE_LARGER_THAN'].' 2 MB<br />';
             }
             elseif ( strlen($postbildname) > '256') {
-              $pic_error.= $MOD_NEWS['IMAGE_FILENAME_ERROR'].'<br />';
+              $pic_error.= $MOD_NEWS_IMG['IMAGE_FILENAME_ERROR'].'<br />';
             }
             else {
               // copy in folder
@@ -449,7 +449,7 @@ if($database->is_error())
 else
 {
 	if ($imageErrorMessage!='') {		
-		$admin->print_error($MOD_NEWS['GENERIC_IMAGE_ERROR'], WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$id);
+		$admin->print_error($MOD_NEWS_IMG['GENERIC_IMAGE_ERROR'], WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$id);
 	} else {
 		if (isset($_POST['savegoback']) && $_POST['savegoback']=='1') {
 			$admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);

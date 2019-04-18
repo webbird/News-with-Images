@@ -76,7 +76,7 @@ if($database->is_error())
 else
 {
 	if ($imageErrorMessage!='') {		
-		$admin->print_error($MOD_NEWS['GENERIC_IMAGE_ERROR'], WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$id);
+		$admin->print_error($MOD_NEWS_IMG['GENERIC_IMAGE_ERROR'], WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$id);
 	} else {
 		if (isset($_POST['savegoback']) && $_POST['savegoback']=='1') {
 			$admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);

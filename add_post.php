@@ -61,18 +61,18 @@ if($database->is_error()) {
 
 <table class="row_a" cellpadding="2" cellspacing="0" width="100%">
 <tr>
-    <td><?php echo $MOD_NEWS['ADD_POST'] ?>:</td>
+    <td><?php echo $MOD_NEWS_IMG['ADD_POST'] ?>:</td>
     <td>
         <select name="pid" style="width: 100%;">
             <?php
-            echo '<option value="0" selected="selected">'.$MOD_NEWS['NEW_POST']."</option>";
+            echo '<option value="0" selected="selected">'.$MOD_NEWS_IMG['NEW_POST']."</option>";
             $query = $database->query("SELECT `post_id`,`title`,`section_id` FROM `".TABLE_PREFIX."mod_news_img_posts`"
 	        . " ORDER BY `page_id`,`position` ASC");
             if($query->numRows() > 0) {
                 // Loop through posts
                 while($post = $query->fetchRow()) {
 		    if(intval($post['post_id']>0)&&($post['post_id']!=$post_id)&&($post['section_id']>0))
-                        echo '<option value="'.$post['post_id'].'">'.$MOD_NEWS['COPY_POST'].': '.$post['title'].' ('.$post['post_id'].')</option>';
+                        echo '<option value="'.$post['post_id'].'">'.$MOD_NEWS_IMG['COPY_POST'].': '.$post['title'].' ('.$post['post_id'].')</option>';
                 }
             }
             ?>
@@ -88,7 +88,7 @@ if($database->is_error()) {
 		<input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>" style="width: 100px; margin-top: 5px;" />
 	</td>
 	<td align="right">
-		<input type="button" value="<?php echo $MOD_NEWS['GOBACK'] ?>" onclick="javascript: window.location = '<?php echo ADMIN_URL; ?>/pages/modify.php?page_id=<?php echo $page_id; ?>';" style="width: 100px; margin-top: 5px;" />
+		<input type="button" value="<?php echo $MOD_NEWS_IMG['GOBACK'] ?>" onclick="javascript: window.location = '<?php echo ADMIN_URL; ?>/pages/modify.php?page_id=<?php echo $page_id; ?>';" style="width: 100px; margin-top: 5px;" />
 	</td>
 </tr>
 </table>

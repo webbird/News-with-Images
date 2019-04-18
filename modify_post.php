@@ -111,7 +111,7 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
 	</td>
 </tr>
 <tr>
-	<td><?php echo $MOD_NEWS['PREVIEWIMAGE']; ?>:</td>
+	<td><?php echo $MOD_NEWS_IMG['PREVIEWIMAGE']; ?>:</td>
 	<td width="80%">
 	   <?php
 	     if ($fetch_content['image'] != "") {
@@ -275,7 +275,7 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
 $query_img = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = ".$post_id." ORDER BY `position`,`id` ASC");
 
 if($query_img->numRows() > 0) {
-    echo '<div id="fotoshow"><a name="fs"></a><h3>'.$MOD_NEWS['GALLERYIMAGES'].'</h3><table><tbody>';
+    echo '<div id="fotoshow"><a name="fs"></a><h3>'.$MOD_NEWS_IMG['GALLERYIMAGES'].'</h3><table><tbody>';
     $i=1;
 
     // 2014-04-10 by BlackBird Webprogrammierung:
@@ -297,7 +297,7 @@ if($query_img->numRows() > 0) {
         echo '<tr><td>'.$up.$down.'</td>',
              '<td width="100"><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'" onmouseover="XBT(this, {id:\'tt'.$i.'\'})"><img class="img_list" src="'.WB_URL.$thumb_dir.'thumb_'.$row["bildname"].'" /></a><div id="tt'.$i.'" class="xbtooltip"><img src="'.WB_URL.$file_dir.$row["bildname"].'" /></div></td>',
              '<td>'.$row["bildname"].'<br /><input type="text" name="bildbeschreibung['.$row["id"].']" value="'.$row["bildbeschreibung"].'"></td>',
-             '<td><a onclick="return confirm(\''.$MOD_NEWS['DELETEIMAGE'].'\')" href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&img_id='.$row["id"].'#fs"><img src="'.THEME_URL.'/images/delete_16.png" /></a></td><tr>';
+             '<td><a onclick="return confirm(\''.$MOD_NEWS_IMG['DELETEIMAGE'].'\')" href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&img_id='.$row["id"].'#fs"><img src="'.THEME_URL.'/images/delete_16.png" /></a></td><tr>';
         $i++;
         $first=false;
     }
@@ -306,7 +306,7 @@ if($query_img->numRows() > 0) {
 ?>
 
 <!-- Formular -->
-<div id="fotos"><h3><?php echo $MOD_NEWS['IMAGEUPLOAD']?></h3>
+<div id="fotos"><h3><?php echo $MOD_NEWS_IMG['IMAGEUPLOAD']?></h3>
       <input type="file" name="foto[]" accept="image/*" />  <br />
       <input type="file" name="foto[]" accept="image/*" />  <br />
       <input type="file" name="foto[]" accept="image/*" />  <br />
@@ -319,11 +319,11 @@ if($query_img->numRows() > 0) {
 <tr>
 	<td align="left">
 		<input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>" style="width: 100px; margin-top: 5px;" />
-		<input name="save" type="submit" onclick="document.getElementById('savegoback').value='1'" value="<?php echo $MOD_NEWS['SAVEGOBACK']; ?>" style="width: 200px; margin-top: 5px;" />
+		<input name="save" type="submit" onclick="document.getElementById('savegoback').value='1'" value="<?php echo $MOD_NEWS_IMG['SAVEGOBACK']; ?>" style="width: 200px; margin-top: 5px;" />
 		
 	</td>
 	<td align="right">
-		<input type="button" value="<?php echo $MOD_NEWS['GOBACK'] ?>" onclick="javascript: window.location = '<?php echo ADMIN_URL; ?>/pages/modify.php?page_id=<?php echo $page_id; ?>';" style="width: 100px; margin-top: 5px;" />
+		<input type="button" value="<?php echo $MOD_NEWS_IMG['GOBACK'] ?>" onclick="javascript: window.location = '<?php echo ADMIN_URL; ?>/pages/modify.php?page_id=<?php echo $page_id; ?>';" style="width: 100px; margin-top: 5px;" />
 	</td>
 </tr>
 </table>

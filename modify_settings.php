@@ -47,7 +47,7 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 
 ?>
 <div class="mod_news_img">
-    <h2><?php echo $MOD_NEWS['SETTINGS']; ?></h2>
+    <h2><?php echo $MOD_NEWS_IMG['SETTINGS']; ?></h2>
 <?php
 // include the button to edit the optional module CSS files (function added with WB 2.7)
 // Note: CSS styles for the button are defined in backend.css (div class="mod_moduledirectory_edit_css")
@@ -65,10 +65,10 @@ if(function_exists('edit_module_css'))
 
     	<table>
 		
-		<tr><td colspan="2"><h3><?php echo $MOD_NEWS['OVERVIEW_SETTINGS']?></h3></td></tr>
+		<tr><td colspan="2"><h3><?php echo $MOD_NEWS_IMG['OVERVIEW_SETTINGS']?></h3></td></tr>
 		
 		<tr>
-			<td class="setting_name"><?php echo $MOD_NEWS['ORDERBY']; ?>:</td>
+			<td class="setting_name"><?php echo $MOD_NEWS_IMG['ORDERBY']; ?>:</td>
 			<td class="setting_value">
 				<select name="view_order" style="width: 98%;">
 					<?php
@@ -117,7 +117,7 @@ if(function_exists('edit_module_css'))
 			</td>
 		</tr>
 		
-		<tr><td colspan="2"><h3><?php echo $MOD_NEWS['POST_SETTINGS']?></h3></td></tr>
+		<tr><td colspan="2"><h3><?php echo $MOD_NEWS_IMG['POST_SETTINGS']?></h3></td></tr>
 		
 		<tr>
 			<td class="setting_name"><?php echo $TEXT['POST_HEADER']; ?>:</td>
@@ -126,7 +126,7 @@ if(function_exists('edit_module_css'))
 			</td>
 		</tr>
         <tr>
-			<td class="setting_name"><?php echo $MOD_NEWS['POST_CONTENT']; ?>:</td>
+			<td class="setting_name"><?php echo $MOD_NEWS_IMG['POST_CONTENT']; ?>:</td>
 			<td class="setting_value">
 				<textarea name="post_content" rows="10" cols="1" style="width: 98%; height: 60px;"><?php echo str_replace($raw, $friendly, ($fetch_content['post_content'])); ?></textarea>
 			</td>
@@ -140,10 +140,10 @@ if(function_exists('edit_module_css'))
 		</tr>
 		
 		
-		<tr><td colspan="2"><h3><?php echo $MOD_NEWS['GALLERY_SETTINGS']?></h3></td></tr>
+		<tr><td colspan="2"><h3><?php echo $MOD_NEWS_IMG['GALLERY_SETTINGS']?></h3></td></tr>
 		
         <tr>
-			<td class="setting_name"><?php echo $MOD_NEWS['GALLERY'] ?>:</td>
+			<td class="setting_name"><?php echo $MOD_NEWS_IMG['GALLERY'] ?>:</td>
 			<td class="setting_value">
 				<select name="gallery" style="width: 98%;">
                     <option value="fotorama">Fotorama</option>
@@ -166,13 +166,13 @@ if(function_exists('edit_module_css'))
             }
         ?>
 		<tr>
-			<td class="setting_name"><?php echo $MOD_NEWS['RESIZE_PREVIEW_IMAGE_TO']; ?>:</td>
+			<td class="setting_name"><?php echo $MOD_NEWS_IMG['RESIZE_PREVIEW_IMAGE_TO']; ?>:</td>
 			<td class="setting_value">
                 <label for="resize_width"><?php echo $TEXT['WIDTH'] ?></label>
                     <input type="text" maxlength="4" name="resize_width" id="resize_width" style="width:80px" value="<?php echo $previewwidth ?>" /> x
                 <label for="resize_height"><?php echo $TEXT['HEIGHT'] ?></label>
                     <input type="text" maxlength="4" name="resize_height" id="resize_height" style="width:80px" value="<?php echo $previewheight ?>" /> Pixel |
-                    <span title="<?php echo $MOD_NEWS['TEXT_DEFAULTS_CLICK']; ?>"><?php echo $MOD_NEWS['TEXT_DEFAULTS'] ?>
+                    <span title="<?php echo $MOD_NEWS_IMG['TEXT_DEFAULTS_CLICK']; ?>"><?php echo $MOD_NEWS_IMG['TEXT_DEFAULTS'] ?>
                 	<?php
 					$SIZES['50'] = '50x50px';
 					$SIZES['75'] = '75x75px';
@@ -184,11 +184,11 @@ if(function_exists('edit_module_css'))
 					}
 					?>
 				  </span>
-                <label for="crop_preview"><input type="checkbox" name="crop_preview" id="crop_preview"<?php if($fetch_content['crop_preview']=='Y'):?> checked="checked"<?php endif; ?> title="<?php echo $MOD_NEWS['TEXT_CROP'] ?>" /> <?php echo $MOD_NEWS['CROP'] ?></label>
+                <label for="crop_preview"><input type="checkbox" name="crop_preview" id="crop_preview"<?php if($fetch_content['crop_preview']=='Y'):?> checked="checked"<?php endif; ?> title="<?php echo $MOD_NEWS_IMG['TEXT_CROP'] ?>" /> <?php echo $MOD_NEWS_IMG['CROP'] ?></label>
 			</td>
 		</tr>
 		<?php } ?>
-	<tr><td colspan="2"><h3><?php echo $MOD_NEWS['COMMENTS_SETTINGS']?></h3></td></tr>
+	<tr><td colspan="2"><h3><?php echo $MOD_NEWS_IMG['COMMENTS_SETTINGS']?></h3></td></tr>
 		<tr>
 			<td class="setting_name"><?php echo $TEXT['COMMENTING']; ?>:</td>
 			<td class="setting_value">
