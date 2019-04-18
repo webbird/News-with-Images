@@ -394,16 +394,10 @@ elseif(defined('POST_ID') AND is_numeric(POST_ID))
             $setting_post_footer = ($fetch_settings['post_footer']);
             $setting_post_content = ($fetch_settings['post_content']);
             $setting_image_loop = ($fetch_settings['image_loop']);
-            $setting_comments_header = ($fetch_settings['comments_header']);
-            $setting_comments_loop = ($fetch_settings['comments_loop']);
-            $setting_comments_footer = ($fetch_settings['comments_footer']);
             $setting_gallery = ($fetch_settings['gallery']);
         } else {
             $setting_post_header = '';
             $setting_post_footer = '';
-            $setting_comments_header = '';
-            $setting_comments_loop = '';
-            $setting_comments_footer = '';
             $setting_image_loop = '<img src="[IMAGE]" alt="[DESCRIPTION]" />';
             $setting_gallery = '';
         }
@@ -531,64 +525,11 @@ elseif(defined('POST_ID') AND is_numeric(POST_ID))
         // echo post footer
         echo str_replace($vars, $values, $setting_post_footer);
 
-	// Block2
-	$post_block2 = ($post['content_block2']);
-	define("NEWS_BLOCK2", $post_block2);
-	define("TOPIC_BLOCK2", $post_block2); // re-use the constant from topics for backwards compatibility
-	if (!defined("MODULES_BLOCK2")) define("MODULES_BLOCK2", $post_block2);
+    	// Block2
+    	$post_block2 = ($post['content_block2']);
+    	define("NEWS_BLOCK2", $post_block2);
+    	define("TOPIC_BLOCK2", $post_block2); // re-use the constant from topics for backwards compatibility
+    	if (!defined("MODULES_BLOCK2")) define("MODULES_BLOCK2", $post_block2);
 
-        // Show comments section if we have to
-        if(($post['commenting'] == 'private' AND isset($wb) AND $wb->is_authenticated() == true) OR $post['commenting'] == 'public')
-        {
-            // echo comments header
-            $vars = array('[ADD_COMMENT_URL]','[TEXT_COMMENTS]');
-            $values = array(WB_URL.'/modules/news_img/comment.php?post_id='.POST_ID.'&amp;section_id='.$section_id, $MOD_NEWS_IMG['TEXT_COMMENTS']);
-            echo str_replace($vars, $values, $setting_comments_header);
-
-            // Query for comments
-            $query_comments = $database->query("SELECT `title`,`comment`,`commented_when`,`commented_by` FROM `".TABLE_PREFIX."mod_news_img_comments` WHERE `post_id` = '".POST_ID."' ORDER BY `commented_when` ASC");
-            if($query_comments->numRows() > 0)
-            {
-                while( false != ($comment = $query_comments->fetchRow()) )
-                {
-                    // Display Comments without slashes, but with new-line characters
-                    $comment['comment'] = nl2br($wb->strip_slashes($comment['comment']));
-                    $comment['title'] = $wb->strip_slashes($comment['title']);
-                    // echo comments loop
-                    $commented_date = gmdate(DATE_FORMAT, $comment['commented_when']+TIMEZONE);
-                    $commented_time = gmdate(TIME_FORMAT, $comment['commented_when']+TIMEZONE);
-                    $uid = $comment['commented_by'];
-                    $vars = array('[TITLE]','[COMMENT]','[TEXT_ON]','[DATE]','[TEXT_AT]','[TIME]','[TEXT_BY]','[USER_ID]','[USERNAME]','[DISPLAY_NAME]', '[EMAIL]');
-                    if(isset($users[$uid]['username']) AND $users[$uid]['username'] != '')
-                    {
-                        $values = array(($comment['title']), ($comment['comment']), $MOD_NEWS_IMG['TEXT_ON'], $commented_date, $MOD_NEWS_IMG['TEXT_AT'], $commented_time, $MOD_NEWS_IMG['TEXT_BY'], $uid, ($users[$uid]['username']), ($users[$uid]['display_name']), ($users[$uid]['email']));
-                    } else {
-                        $values = array(($comment['title']), ($comment['comment']), $MOD_NEWS_IMG['TEXT_ON'], $commented_date, $MOD_NEWS_IMG['TEXT_AT'], $commented_time, $MOD_NEWS_IMG['TEXT_BY'], '0', strtolower($TEXT['UNKNOWN']), $TEXT['UNKNOWN'], '');
-                    }
-                    echo str_replace($vars, $values, $setting_comments_loop);
-                }
-            } else {
-                // Say no comments found
-                $content = '';
-                if(isset($TEXT['NONE_FOUND'])) {
-                    $content .= '<tr><td>'.$TEXT['NONE_FOUND'].'<br /></td></tr>';
-                } else {
-                    $content .= '<tr><td>None Found<br /></td></tr>';
-                }
-                echo $content;
-            }
-
-            // echo comments footer
-            $vars = array('[ADD_COMMENT_URL]','[TEXT_ADD_COMMENT]');
-            $values = array(WB_URL.'/modules/news_img/comment.php?post_id='.POST_ID.'&amp;section_id='.$section_id, $MOD_NEWS_IMG['TEXT_ADD_COMMENT']);
-            echo str_replace($vars, $values, $setting_comments_footer);
-        }
     }
-
-    if(ENABLED_ASP)
-    {
-        $_SESSION['comes_from_view'] = POST_ID;
-        $_SESSION['comes_from_view_time'] = time();
-    }
-
 }

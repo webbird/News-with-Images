@@ -20,7 +20,6 @@ $database->query("DELETE FROM `".TABLE_PREFIX."search` WHERE `name` = 'module' A
 $database->query("DELETE FROM `".TABLE_PREFIX."search` WHERE `extra` = 'news_img'");
 $database->query("DROP TABLE `".TABLE_PREFIX."mod_news_img_posts`");
 $database->query("DROP TABLE `".TABLE_PREFIX."mod_news_img_groups`");
-$database->query("DROP TABLE `".TABLE_PREFIX."mod_news_img_comments`");
 $database->query("DROP TABLE `".TABLE_PREFIX."mod_news_img_settings`");
 $database->query("DROP TABLE `".TABLE_PREFIX."mod_news_img_img`");
 

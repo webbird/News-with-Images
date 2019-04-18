@@ -21,7 +21,6 @@ $MOD_NEWS_IMG['ADD_GROUP'] = 'Add group';
 $MOD_NEWS_IMG['ADD_POST'] = 'Add post';
 $MOD_NEWS_IMG['NEW_POST'] = 'Create new post';
 $MOD_NEWS_IMG['COPY_POST'] = 'Copy post';
-$MOD_NEWS_IMG['COMMENTS_SETTINGS'] = 'Comments settings';
 $MOD_NEWS_IMG['DELETEIMAGE'] ='Delete this image?';
 $MOD_NEWS_IMG['GALLERY_SETTINGS'] ='Gallery / image settings';
 $MOD_NEWS_IMG['GALLERYIMAGES'] = 'Gallery images';
@@ -45,15 +44,13 @@ $MOD_NEWS_IMG['SETTINGS'] = 'Options';
 //additional settings
 $MOD_NEWS_IMG['POST_CONTENT'] = 'Post content';
 $MOD_NEWS_IMG['GALLERY'] = 'Image gallery';
+$MOD_NEWS_IMG['GALLERY_INFO'] = 'After changing the gallery setting, hit save; the markup for the image loop will be adjusted automatically.';
 
 //Variables for the frontend
 $MOD_NEWS_IMG['PAGE_NOT_FOUND'] = 'Page not found';
-$MOD_NEWS_IMG['TEXT_ADD_COMMENT'] = 'Add Comment';
 $MOD_NEWS_IMG['TEXT_AT'] = 'at';
 $MOD_NEWS_IMG['TEXT_BACK'] = 'Back';
 $MOD_NEWS_IMG['TEXT_BY'] = 'By';
-$MOD_NEWS_IMG['TEXT_COMMENT'] = 'Comment';
-$MOD_NEWS_IMG['TEXT_COMMENTS'] = 'Comments';
 $MOD_NEWS_IMG['TEXT_LAST_CHANGED'] = 'Last changed';
 $MOD_NEWS_IMG['TEXT_ON'] = 'on';
 $MOD_NEWS_IMG['TEXT_POSTED_BY'] = 'Posted by';

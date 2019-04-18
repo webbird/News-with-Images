@@ -21,7 +21,6 @@ $MOD_NEWS_IMG['ADD_GROUP'] = 'Gruppe anlegen';
 $MOD_NEWS_IMG['ADD_POST'] = 'Beitrag verfassen';
 $MOD_NEWS_IMG['NEW_POST'] = 'Neuen Beitrag verfassen';
 $MOD_NEWS_IMG['COPY_POST'] = 'Beitrag kopieren';
-$MOD_NEWS_IMG['COMMENTS_SETTINGS'] = 'Kommentareinstellungen';
 $MOD_NEWS_IMG['DELETEIMAGE'] ='Bild l&ouml;schen?';
 $MOD_NEWS_IMG['GALLERY_SETTINGS'] ='Galerie-/Bild-Einstellungen';
 $MOD_NEWS_IMG['GALLERYIMAGES'] = 'Galeriebilder';
@@ -41,6 +40,12 @@ $MOD_NEWS_IMG['PREVIEWIMAGE'] = 'Beitragsbild';
 $MOD_NEWS_IMG['SAVEGOBACK'] = 'Speichern und Zur&uuml;ck';
 $MOD_NEWS_IMG['SETTINGS'] = 'News Einstellungen';
 
+//additional settings
+$MOD_NEWS_IMG['POST_CONTENT'] = 'Nachrichten-Inhalt';
+$MOD_NEWS_IMG['GALLERY'] = 'Bildergalerie';
+$MOD_NEWS_IMG['GALLERY_INFO'] = 'Nach dem &Auml;ndern der Galerie-Einstellung speichern; danach wird automatisch das Markup angepasst.';
+
+
 //Variables for the frontend
 $MOD_NEWS_IMG['TEXT_READ_MORE'] = 'Details anzeigen';
 $MOD_NEWS_IMG['TEXT_POSTED_BY'] = 'Ver&ouml;ffentlicht von';
@@ -48,9 +53,6 @@ $MOD_NEWS_IMG['TEXT_ON'] = 'am';
 $MOD_NEWS_IMG['TEXT_LAST_CHANGED'] = 'Zuletzt ge&auml;ndert am';
 $MOD_NEWS_IMG['TEXT_AT'] = 'um';
 $MOD_NEWS_IMG['TEXT_BACK'] = 'Zur&uuml;ck zur &Uuml;bersicht';
-$MOD_NEWS_IMG['TEXT_COMMENTS'] = 'Kommentare';
-$MOD_NEWS_IMG['TEXT_COMMENT'] = 'Kommentar';
-$MOD_NEWS_IMG['TEXT_ADD_COMMENT'] = 'Kommentar hinzuf&uuml;gen';
 $MOD_NEWS_IMG['TEXT_BY'] = 'von';
 $MOD_NEWS_IMG['PAGE_NOT_FOUND'] = 'Seite nicht gefunden';
 $TEXT['UNKNOWN'] = 'Gast';
@@ -61,6 +63,3 @@ $MOD_NEWS_IMG['TEXT_CROP'] = 'Wenn das Seitenverh&auml;ltnis des Originals nicht
 $MOD_NEWS_IMG['RESIZE_PREVIEW_IMAGE_TO'] = 'Vorschaubild Gr&ouml;&szlig;e &auml;ndern auf';
 $MOD_NEWS_IMG['TEXT_DEFAULTS_CLICK'] = 'Anklicken um Standardgr&ouml;&szlig;e zu w&auml;hlen';
 
-//additional settings
-$MOD_NEWS_IMG['POST_CONTENT'] = 'Nachrichten-Inhalt';
-$MOD_NEWS_IMG['GALLERY'] = 'Bildergalerie';

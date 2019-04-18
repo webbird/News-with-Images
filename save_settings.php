@@ -30,23 +30,15 @@ $post_header = $admin->add_slashes(str_replace($friendly, $raw, $_POST['post_hea
 $post_content = $admin->add_slashes(str_replace($friendly, $raw, $_POST['post_content']));
 $image_loop = $admin->add_slashes(str_replace($friendly, $raw, $_POST['image_loop']));
 $post_footer = $admin->add_slashes(str_replace($friendly, $raw, $_POST['post_footer']));
-$comments_header = $admin->add_slashes(str_replace($friendly, $raw, $_POST['comments_header']));
-$comments_loop = $admin->add_slashes(str_replace($friendly, $raw, $_POST['comments_loop']));
-$comments_footer = $admin->add_slashes(str_replace($friendly, $raw, $_POST['comments_footer']));
-$comments_page = $admin->add_slashes(str_replace($friendly, $raw, $_POST['comments_page']));
-$commenting = $admin->add_slashes($_POST['commenting']);
 $posts_per_page = $admin->add_slashes($_POST['posts_per_page']);
-$use_captcha = $admin->add_slashes($_POST['use_captcha']);
 $gallery = $admin->add_slashes($_POST['gallery']);
 
-$resize = '';
 $resize_preview = '';
 $crop = 'N';
 if(extension_loaded('gd') AND function_exists('imageCreateFromJpeg')) {
     $width = $_POST['resize_width'];
     $height = $_POST['resize_height'];
     $crop = (isset($_POST['crop_preview']) ? $_POST['crop_preview'] : 'N');
-    $resize = $_POST['resize'];
     if(is_numeric($width) && is_numeric($height)) {
         if($height>0 && $width>0) {
             $resize_preview = $width.'x'.$height;
@@ -58,8 +50,6 @@ if(extension_loaded('gd') AND function_exists('imageCreateFromJpeg')) {
         $crop = 'N';
     }
 }
-if ($resize=='')$resize=0;
-
 if($posts_per_page=='') {
     $posts_per_page = 0; // unlimited
 }
@@ -76,11 +66,8 @@ $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_settings` SET ".
     "`header` = '$header', `post_loop` = '$post_loop', `view_order` = '$view_order', `footer` = '$footer', ".
     "`posts_per_page` = '$posts_per_page', `post_header` = '$post_header', ".
     "`post_content` = '$post_content', `image_loop` = '$image_loop', ".
-    "`post_footer` = '$post_footer', `comments_header` = '$comments_header', ".
-    "`comments_loop` = '$comments_loop', `comments_footer` = '$comments_footer', ".
-    "`comments_page` = '$comments_page', `commenting` = '$commenting', ".
-    "`resize` = '$resize', `resize_preview` = '$resize_preview', ".
-    "`crop_preview` = '$crop', `use_captcha` = '$use_captcha', `gallery` = '$gallery' ".
+    "`post_footer` = '$post_footer', `resize_preview` = '$resize_preview', ".
+    "`crop_preview` = '$crop', `gallery` = '$gallery' ".
     "WHERE `section_id` = '$section_id'");
 
 // Check if there is a db error, otherwise say successful

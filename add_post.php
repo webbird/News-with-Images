@@ -33,13 +33,8 @@ require WB_PATH.'/framework/class.order.php';
 $order = new order(TABLE_PREFIX.'mod_news_img_posts', 'position', 'post_id', 'section_id');
 $position = $order->get_new($section_id);
 
-// Get default commenting
-$query_settings = $database->query("SELECT `commenting` FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '$section_id'");
-$fetch_settings = $query_settings->fetchRow();
-$commenting = $fetch_settings['commenting'];
-
 // Insert new row into database
-$sql = "INSERT INTO `".TABLE_PREFIX."mod_news_img_posts` (`section_id`,`page_id`,`position`,`link`,`content_short`,`content_long`,`content_block2`,`commenting`,`active`) VALUES ('$section_id','$page_id','$position','','','','','$commenting','1')";
+$sql = "INSERT INTO `".TABLE_PREFIX."mod_news_img_posts` (`section_id`,`page_id`,`position`,`link`,`content_short`,`content_long`,`content_block2`,`active`) VALUES ('$section_id','$page_id','$position','','','','','1')";
 $database->query($sql);
 
 // Say that a new record has been added, then redirect to modify page

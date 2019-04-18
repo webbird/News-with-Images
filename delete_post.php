@@ -55,7 +55,6 @@ $query_img = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_img` 
 
 // Delete post
 $database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `post_id` = '$post_id' LIMIT 1");
-$database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_comments` WHERE `post_id` = '$post_id'");
 
 // Clean up ordering
 require(WB_PATH.'/framework/class.order.php');

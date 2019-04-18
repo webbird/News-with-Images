@@ -18,8 +18,6 @@ function news_img_search($func_vars) {
 
 	// how many lines of excerpt we want to have at most
 	$max_excerpt_num = $func_default_max_excerpt;
-	// do we want excerpt from comments?
-	$excerpt_from_comments = true; // TODO: make this configurable
 	$divider = ".";
 	$result = false;
 
@@ -38,21 +36,7 @@ function news_img_search($func_vars) {
 	if($query->numRows() > 0) {
 		while($res = $query->fetchRow()) {
 			$text = $res['title'].$divider.$res['content_short'].$divider.$res['content_long'].$divider.$res['content_block2'].$divider;
-			// fetch comments and add to $text
-			if($excerpt_from_comments) {
-				$table = TABLE_PREFIX."mod_news_img_comments";
-				$commentquery = $func_database->query("
-					SELECT `title`, `comment`
-					FROM `$table`
-					WHERE `post_id`='{$res['post_id']}'
-					ORDER BY `commented_when` ASC
-				");
-				if($commentquery->numRows() > 0) {
-					while($c_res = $commentquery->fetchRow()) {
-						$text .= $c_res['title'].$divider.$c_res['comment'].$divider;
-					}
-				}
-			}
+
 			$mod_vars = array(
 				'page_link' => $res['link'], // use direct link to news-item
 				'page_link_target' => "",

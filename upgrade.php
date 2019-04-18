@@ -139,6 +139,13 @@ require(WB_PATH."/index.php");
         TABLE_PREFIX
     ));
 
+    // 2019-04-18 Bianka Martinovic
+    //            remove all commenting settings and table
+    $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_news_img_comments`");
+    $database->query("ALTER TABLE `".TABLE_PREFIX."mod_news_img_posts` DROP COLUMN `commenting`");
+    $database->query("ALTER TABLE `".TABLE_PREFIX."mod_news_img_settings` DROP COLUMN `comments_header`, DROP COLUMN `comments_loop`, DROP COLUMN `comments_footer`, DROP COLUMN `commenting`");
+
+
     // Print admin footer
     $admin->print_footer();
 }

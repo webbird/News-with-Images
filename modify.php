@@ -105,13 +105,6 @@ if(function_exists('ini_set')) {
     				}
     				?>
     			</td>
-    			<td>
-    				<?php echo $TEXT['COMMENTS'].': ';
-    				// Get number of comments
-    				$query_title = $database->query("SELECT `title` FROM `".TABLE_PREFIX."mod_news_img_comments` WHERE `post_id` = '".$post['post_id']."'");
-    				echo $query_title->numRows();
-    				?>
-    			</td>
     			<td style="width:120px">
     				<?php echo $TEXT['ACTIVE'].': '; if($post['active'] == 1) { echo $TEXT['YES']; } else { echo $TEXT['NO']; } ?>
     			</td>

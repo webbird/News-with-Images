@@ -52,12 +52,7 @@ $image_loop = '<img src="[IMAGE]" data-caption="[DESCRIPTION]" />';
 $post_footer = '<div class="div_link">
 <a href="[BACK]">[TEXT_BACK]</a>
 </div>';
-$comments_header = addslashes('');
-$comments_loop = addslashes('');
-$comments_footer = '';
-$comments_page = '';
-$commenting = 'none';
-$use_captcha = true;
+
 $resize_preview = '125x125';
 
-$database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_settings` (`section_id`,`page_id`,`header`,`post_loop`,`footer`,`post_header`,`post_content`,`image_loop`,`post_footer`,`comments_header`,`comments_loop`,`comments_footer`,`comments_page`,`commenting`,`use_captcha`,`gallery`,`resize_preview`) VALUES ('$section_id','$page_id','$header','$post_loop','$footer','$post_header','$post_content','$image_loop','$post_footer','$comments_header','$comments_loop','$comments_footer','$comments_page','$commenting','$use_captcha','','$resize_preview')");
+$database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_settings` (`section_id`,`page_id`,`header`,`post_loop`,`footer`,`post_header`,`post_content`,`image_loop`,`post_footer`,`gallery`,`resize_preview`) VALUES ('$section_id','$page_id','$header','$post_loop','$footer','$post_header','$post_content','$image_loop','$post_footer','$resize_preview')");

@@ -190,7 +190,6 @@ else
 	$long = $admin->get_post_escaped('long');
 	$block2 = $admin->get_post_escaped('block2');
 	$image = $admin->get_post_escaped('image');
-	$commenting = $admin->get_post_escaped('commenting');
 	$active = $admin->get_post_escaped('active');
 	$old_link = $admin->get_post_escaped('link');
 	$group = $admin->get_post_escaped('group');
@@ -407,7 +406,7 @@ if($old_section_id!=$section_id)
 
      
 // Update row
-$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `page_id` = '$page_id', `section_id` = '$section_id', $position `group_id` = '$group_id', `title` = '$title', `link` = '$post_link', `content_short` = '$short', `content_long` = '$long', `content_block2` = '$block2', `image` = '$image', `commenting` = '$commenting', `active` = '$active', `published_when` = '$publishedwhen', `published_until` = '$publisheduntil', `posted_when` = '".time()."', `posted_by` = '".$admin->get_user_id()."' WHERE `post_id` = '$post_id'");
+$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `page_id` = '$page_id', `section_id` = '$section_id', $position `group_id` = '$group_id', `title` = '$title', `link` = '$post_link', `content_short` = '$short', `content_long` = '$long', `content_block2` = '$block2', `image` = '$image', `active` = '$active', `published_when` = '$publishedwhen', `published_until` = '$publisheduntil', `posted_when` = '".time()."', `posted_by` = '".$admin->get_user_id()."' WHERE `post_id` = '$post_id'");
 
 // when no error has occurred go ahead and update the image descriptions
 if(!($database->is_error()))
@@ -428,16 +427,12 @@ if(!($database->is_error()))
   }
 }
 
-// if this went fine so far and we are moving posts across section borders we still have to update the comments tables and reorder
+// if this went fine so far and we are moving posts across section borders we still have to reorder
 if((!($database->is_error()))&&($old_section_id!=$section_id))
 {
-    // Update row
-    $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_comments` SET `page_id` = '$page_id', `section_id` = '$section_id' WHERE `post_id` = '$post_id'");
-
     // Clean up ordering
     $order = new order(TABLE_PREFIX.'mod_news_img_posts', 'position', 'post_id', 'section_id');
     $order->clean($old_section_id); 
-
 }
 
 //   exit;

@@ -30,7 +30,6 @@ if(defined('WB_URL'))
                      . '`content_short` TEXT NOT NULL ,'
                      . '`content_long` TEXT NOT NULL ,'
                      . '`content_block2` TEXT NOT NULL ,'
-                     . '`commenting` VARCHAR(7) NOT NULL DEFAULT \'\','
                      . '`published_when` INT NOT NULL DEFAULT \'0\','
                      . '`published_until` INT NOT NULL DEFAULT \'0\','
                      . '`posted_when` INT NOT NULL DEFAULT \'0\','
@@ -51,21 +50,6 @@ if(defined('WB_URL'))
                 . ' )';
     $database->query($mod_news);
     
-    // $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_news_img_comments`");
-    $mod_news = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_news_img_comments` ( '
-                     . '`comment_id` INT NOT NULL AUTO_INCREMENT,'
-                     . '`section_id` INT NOT NULL DEFAULT \'0\','
-                     . '`page_id` INT NOT NULL DEFAULT \'0\','
-                     . '`post_id` INT NOT NULL DEFAULT \'0\','
-                     . '`title` VARCHAR(255) NOT NULL DEFAULT \'\','
-                     . '`comment` TEXT NOT NULL ,'
-                     . '`commented_when` INT NOT NULL DEFAULT \'0\','
-                     . '`commented_by` INT NOT NULL DEFAULT \'0\','
-                     . 'PRIMARY KEY (comment_id)'
-                . ' )';
-
-    $database->query($mod_news);
-    
     // $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_news_img_settings`");
     $mod_news = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_news_img_settings` ( '
                      . '`section_id` INT NOT NULL DEFAULT \'0\','
@@ -79,11 +63,6 @@ if(defined('WB_URL'))
                      . '`post_content` TEXT NOT NULL,'
                      . '`image_loop` TEXT NOT NULL,'
                      . '`post_footer` TEXT NOT NULL,'
-                     . '`comments_header` TEXT NOT NULL,'
-                     . '`comments_loop` TEXT NOT NULL,'
-                     . '`comments_footer` TEXT NOT NULL,'
-                     . '`comments_page` TEXT NOT NULL,'
-                     . '`commenting` VARCHAR(7) NOT NULL DEFAULT \'\','
                      . '`resize` INT NOT NULL DEFAULT \'0\','
                      . '`resize_preview` VARCHAR(50) NULL, '
                      . '`crop_preview` CHAR(1) NOT NULL DEFAULT \'N\', '
@@ -97,8 +76,8 @@ if(defined('WB_URL'))
     //table images
     $mod_news = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_news_img_img` ( '
                  . '`id` INT NOT NULL AUTO_INCREMENT,'
-                 . '`bildname` VARCHAR(255) NOT NULL DEFAULT \'\','
-                 . '`bildbeschreibung` VARCHAR(255) NOT NULL DEFAULT \'\','
+                 . '`imgname` VARCHAR(255) NOT NULL DEFAULT \'\','
+                 . '`imgdescription` VARCHAR(255) NOT NULL DEFAULT \'\','
                  . '`post_id` INT NOT NULL DEFAULT \'0\','
                  . '`position` INT(11) NOT NULL DEFAULT \'0\','
                  . 'PRIMARY KEY (id)'
@@ -122,7 +101,7 @@ if(defined('WB_URL'))
         $field_info = serialize($field_info);
         $database->query("INSERT INTO ".TABLE_PREFIX."search (name,value,extra) VALUES ('module', 'news_img', '$field_info')");
         // Query start
-        $query_start_code = "SELECT [TP]pages.page_id, [TP]pages.page_title, [TP]pages.link, [TP]pages.description, [TP]pages.modified_when, [TP]pages.modified_by    FROM [TP]mod_news_img_posts, [TP]mod_news_img_groups, [TP]mod_news_img_comments, [TP]mod_news_img_settings, [TP]pages WHERE ";
+        $query_start_code = "SELECT [TP]pages.page_id, [TP]pages.page_title, [TP]pages.link, [TP]pages.description, [TP]pages.modified_when, [TP]pages.modified_by    FROM [TP]mod_news_img_posts, [TP]mod_news_img_groups, [TP]mod_news_img_settings, [TP]pages WHERE ";
         $database->query("INSERT INTO ".TABLE_PREFIX."search (name,value,extra) VALUES ('query_start', '$query_start_code', 'news_img')");
         // Query body
         $query_body_code = "
@@ -130,14 +109,10 @@ if(defined('WB_URL'))
         OR [TP]pages.page_id = [TP]mod_news_img_posts.page_id AND [TP]mod_news_img_posts.content_short LIKE \'%[STRING]%\'
         OR [TP]pages.page_id = [TP]mod_news_img_posts.page_id AND [TP]mod_news_img_posts.content_long LIKE \'%[STRING]%\'
         OR [TP]pages.page_id = [TP]mod_news_img_posts.page_id AND [TP]mod_news_img_posts.content_block2 LIKE \'%[STRING]%\'
-        OR [TP]pages.page_id = [TP]mod_news_img_comments.page_id AND [TP]mod_news_img_comments.title LIKE \'%[STRING]%\'
-        OR [TP]pages.page_id = [TP]mod_news_img_comments.page_id AND [TP]mod_news_img_comments.comment LIKE \'%[STRING]%\'
         OR [TP]pages.page_id = [TP]mod_news_img_settings.page_id AND [TP]mod_news_img_settings.header LIKE \'%[STRING]%\'
         OR [TP]pages.page_id = [TP]mod_news_img_settings.page_id AND [TP]mod_news_img_settings.footer LIKE \'%[STRING]%\'
         OR [TP]pages.page_id = [TP]mod_news_img_settings.page_id AND [TP]mod_news_img_settings.post_header LIKE \'%[STRING]%\'
-        OR [TP]pages.page_id = [TP]mod_news_img_settings.page_id AND [TP]mod_news_img_settings.post_footer LIKE \'%[STRING]%\'
-        OR [TP]pages.page_id = [TP]mod_news_img_settings.page_id AND [TP]mod_news_img_settings.comments_header LIKE \'%[STRING]%\'
-        OR [TP]pages.page_id = [TP]mod_news_img_settings.page_id AND [TP]mod_news_img_settings.comments_footer LIKE \'%[STRING]%\'";
+        OR [TP]pages.page_id = [TP]mod_news_img_settings.page_id AND [TP]mod_news_img_settings.post_footer LIKE \'%[STRING]%\'";
         $database->query("INSERT INTO ".TABLE_PREFIX."search (name,value,extra) VALUES ('query_body', '$query_body_code', 'news_img')");
         // Query end
         $query_end_code = "";
@@ -146,7 +121,6 @@ if(defined('WB_URL'))
         // Insert blank row (there needs to be at least on row for the search to work)
         $database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_posts` (`section_id`,`page_id`) VALUES ('0', '0')");
         $database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_groups` (`section_id`,`page_id`) VALUES ('0', '0')");
-        $database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_comments` (`section_id`,`page_id`) VALUES ('0', '0')");
         $database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_settings` (`section_id`,`page_id`) VALUES ('0', '0')");
     }
 
@@ -157,26 +131,19 @@ if(defined('WB_URL'))
         $content = ''.
 "<?php
 
-/*
-
- Website Baker Project <http://www.websitebaker.org/>
- Copyright (C) 2004-2009, Ryan Djurovich
-
- Website Baker is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
- (at your option) any later version.
-
- Website Baker is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Website Baker; if not, write to the Free Software
- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
+/**
+ *
+ * @category        modules
+ * @package         news_img
+ * @author          WBCE Community
+ * @copyright       2004-2009, Ryan Djurovich
+ * @copyright       2009-2010, Website Baker Org. e.V.
+ * @copyright       2019-, WBCE Community
+ * @link            https://www.wbce.org/
+ * @license         http://www.gnu.org/licenses/gpl.html
+ * @platform        WBCE
+ *
+ */
 
 header('Location: ../');
 ?>";
@@ -193,26 +160,19 @@ header('Location: ../');
         $content = ''.
 "<?php
 
-/*
-
- Website Baker Project <http://www.websitebaker.org/>
- Copyright (C) 2004-2009, Ryan Djurovich
-
- Website Baker is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
- (at your option) any later version.
-
- Website Baker is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Website Baker; if not, write to the Free Software
- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
+/**
+ *
+ * @category        modules
+ * @package         news_img
+ * @author          WBCE Community
+ * @copyright       2004-2009, Ryan Djurovich
+ * @copyright       2009-2010, Website Baker Org. e.V.
+ * @copyright       2019-, WBCE Community
+ * @link            https://www.wbce.org/
+ * @license         http://www.gnu.org/licenses/gpl.html
+ * @platform        WBCE
+ *
+ */
 
 header('Location: ../');
 ?>";

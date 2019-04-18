@@ -53,5 +53,4 @@ if($query_details->numRows() == 1) {
 
 $database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `section_id` = '$section_id'");
 $database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_groups` WHERE `section_id` = '$section_id'");
-$database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_comments` WHERE `section_id` = '$section_id'");
 $database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '$section_id'");

@@ -146,13 +146,16 @@ if(function_exists('edit_module_css'))
 			<td class="setting_name"><?php echo $MOD_NEWS_IMG['GALLERY'] ?>:</td>
 			<td class="setting_value">
 				<select name="gallery" style="width: 98%;">
-                    <option value="fotorama">Fotorama</option>
-                    <option value="masonry">Masonry</option>
+                    <option value="fotorama"<?php if($fetch_content['gallery']=='fotorama'): ?> selected="selected"<?php endif; ?>>Fotorama</option>
+                    <option value="masonry"<?php if($fetch_content['gallery']=='masonry'): ?> selected="selected"<?php endif; ?>>Masonry</option>
                 </select>
 			</td>
 		</tr>
-		
-		  <tr>
+		<tr>
+            <td></td>
+            <td><i><?php echo $MOD_NEWS_IMG['GALLERY_INFO'] ?></i></td>
+        </tr>
+		<tr>
 			<td class="setting_name"><?php echo $TEXT['IMAGE'].' '.$TEXT['LOOP']; ?>:</td>
 			<td class="setting_value">
 				<textarea name="image_loop" rows="10" cols="1" style="width: 98%; height: 60px;"><?php echo str_replace($raw, $friendly, ($fetch_content['image_loop'])); ?></textarea>
@@ -187,72 +190,7 @@ if(function_exists('edit_module_css'))
                 <label for="crop_preview"><input type="checkbox" name="crop_preview" id="crop_preview"<?php if($fetch_content['crop_preview']=='Y'):?> checked="checked"<?php endif; ?> title="<?php echo $MOD_NEWS_IMG['TEXT_CROP'] ?>" /> <?php echo $MOD_NEWS_IMG['CROP'] ?></label>
 			</td>
 		</tr>
-		<?php } ?>
-	<tr><td colspan="2"><h3><?php echo $MOD_NEWS_IMG['COMMENTS_SETTINGS']?></h3></td></tr>
-		<tr>
-			<td class="setting_name"><?php echo $TEXT['COMMENTING']; ?>:</td>
-			<td class="setting_value">
-				<select name="commenting" style="width: 98%;">
-					<option value="none"><?php echo $TEXT['DISABLED']; ?></option>
-					<option value="public" <?php if($fetch_content['commenting'] == 'public') { echo ' selected="selected"'; } ?>><?php echo $TEXT['PUBLIC']; ?></option>
-					<option value="private" <?php if($fetch_content['commenting'] == 'private') { echo 'selected="selected"'; } ?>><?php echo $TEXT['PRIVATE']; ?></option>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td class="setting_name"><?php echo $TEXT['CAPTCHA_VERIFICATION']; ?>:</td>
-			<td>
-				<input type="radio" name="use_captcha" id="use_captcha_true" value="1"<?php if($fetch_content['use_captcha'] == true) { echo ' checked="checked"'; } ?> />
-				<label for="use_captcha_true"><?php echo $TEXT['ENABLED']; ?></label>
-				<input type="radio" name="use_captcha" id="use_captcha_false" value="0"<?php if($fetch_content['use_captcha'] == false) { echo ' checked="checked"'; } ?> />
-				<label for="use_captcha_false"><?php echo $TEXT['DISABLED']; ?></label>
-			</td>
-		</tr>
-        <?php if(extension_loaded('gd') AND function_exists('imageCreateFromJpeg')) { /* Make's sure GD library is installed */ ?>
-		<tr>
-			<td class="setting_name"><?php echo $TEXT['RESIZE_IMAGE_TO']; ?>:</td>
-			<td class="setting_value">
-				<select name="resize" style="width: 98%;">
-					<option value=""><?php echo $TEXT['NONE']; ?></option>
-					<?php
-					$SIZES['50'] = '50x50px';
-					$SIZES['75'] = '75x75px';
-					$SIZES['100'] = '100x100px';
-					$SIZES['125'] = '125x125px';
-					$SIZES['150'] = '150x150px';
-					foreach($SIZES AS $size => $size_name) {
-						if($fetch_content['resize'] == $size) { $selected = ' selected="selected"'; } else { $selected = ''; }
-						echo '<option value="'.$size.'"'.$selected.'>'.$size_name.'</option>';
-					}
-					?>
-				</select>
-			</td>
-		</tr>
-		<?php } ?>
-		<tr>
-			<td class="setting_name"><?php echo $TEXT['COMMENTS'].' '.$TEXT['HEADER']; ?>:</td>
-			<td class="setting_value">
-				<textarea name="comments_header" rows="10" cols="1" style="width: 98%; height: 60px;"><?php echo str_replace($raw, $friendly, ($fetch_content['comments_header'])); ?></textarea>
-			</td>
-		</tr>
-		<tr>
-			<td class="setting_name"><?php echo $TEXT['COMMENTS'].' '.$TEXT['LOOP']; ?>:</td>
-			<td class="setting_value">
-				<textarea name="comments_loop" rows="10" cols="1" style="width: 98%; height: 60px;"><?php echo str_replace($raw, $friendly, ($fetch_content['comments_loop'])); ?></textarea>
-			</td>
-		</tr>
-		<tr>
-			<td class="setting_name"><?php echo $TEXT['COMMENTS'].' '.$TEXT['FOOTER']; ?>:</td>
-			<td class="setting_value">
-				<textarea name="comments_footer" rows="10" cols="1" style="width: 98%; height: 60px;"><?php echo str_replace($raw, $friendly, ($fetch_content['comments_footer'])); ?></textarea>
-			</td>
-		</tr>
-		<tr>
-			<td class="setting_name"><?php echo $TEXT['COMMENTS'].' '.$TEXT['PAGE']; ?>:</td>
-			<td class="setting_value">
-				<textarea name="comments_page" rows="10" cols="1" style="width: 98%; height: 80px;"><?php echo str_replace($raw, $friendly, ($fetch_content['comments_page'])); ?></textarea>
-			</td>
-		</tr>
+<?php } ?>
 	</table>
     	<table>
 		<tr>
