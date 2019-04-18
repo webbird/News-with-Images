@@ -143,8 +143,67 @@ require(WB_PATH."/index.php");
     //            remove all commenting settings and table
     $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_news_img_comments`");
     $database->query("ALTER TABLE `".TABLE_PREFIX."mod_news_img_posts` DROP COLUMN `commenting`");
-    $database->query("ALTER TABLE `".TABLE_PREFIX."mod_news_img_settings` DROP COLUMN `comments_header`, DROP COLUMN `comments_loop`, DROP COLUMN `comments_footer`, DROP COLUMN `commenting`");
+    $database->query("ALTER TABLE `".TABLE_PREFIX."mod_news_img_settings` DROP COLUMN `comments_header`, DROP COLUMN `comments_loop`, DROP COLUMN `comments_footer`, DROP COLUMN `commenting`, DROP COLUMN `use_captcha`, DROP COLUMN `resize`");
+    $database->query("ALTER TABLE `".TABLE_PREFIX."mod_news_img_settings` ADD COLUMN `imgthumbsize` VARCHAR(50) NULL DEFAULT NULL AFTER `gallery`, ADD COLUMN `imgmaxwidth` VARCHAR(50) NULL DEFAULT NULL AFTER `imgthumbsize`, ADD COLUMN `imgmaxheight` VARCHAR(50) NULL DEFAULT NULL AFTER `imgmaxwidth`, ADD COLUMN `imgmaxsize` VARCHAR(50) NULL DEFAULT NULL AFTER `imgmaxheight`");
 
+    // 2019-04-18 Bianka Martinovic
+    //            image directory
+    if(!is_dir(WB_PATH.MEDIA_DIRECTORY.'/news_img')) {
+        require_once WB_PATH.'/framework/functions.php';
+        if(make_dir(WB_PATH.MEDIA_DIRECTORY.'/news_img')) {
+            // Add a index.php file to prevent directory spoofing
+            $content = ''.
+"<?php
+
+/**
+ *
+ * @category        modules
+ * @package         news_img
+ * @author          WBCE Community
+ * @copyright       2004-2009, Ryan Djurovich
+ * @copyright       2009-2010, Website Baker Org. e.V.
+ * @copyright       2019-, WBCE Community
+ * @link            https://www.wbce.org/
+ * @license         http://www.gnu.org/licenses/gpl.html
+ * @platform        WBCE
+ *
+ */
+
+header('Location: ../');
+?>";
+            $handle = fopen(WB_PATH.MEDIA_DIRECTORY.'/news_img/index.php', 'w');
+            fwrite($handle, $content);
+            fclose($handle);
+            change_mode(WB_PATH.MEDIA_DIRECTORY.'/news_img/index.php', 'file');
+        }
+
+        if(make_dir(WB_PATH.MEDIA_DIRECTORY.'/news_img/thumb')) {
+            // Add a index.php file to prevent directory spoofing
+            $content = ''.
+"<?php
+
+/**
+ *
+ * @category        modules
+ * @package         news_img
+ * @author          WBCE Community
+ * @copyright       2004-2009, Ryan Djurovich
+ * @copyright       2009-2010, Website Baker Org. e.V.
+ * @copyright       2019-, WBCE Community
+ * @link            https://www.wbce.org/
+ * @license         http://www.gnu.org/licenses/gpl.html
+ * @platform        WBCE
+ *
+ */
+
+header('Location: ../../');
+?>";
+            $handle = fopen(WB_PATH.MEDIA_DIRECTORY.'/news_img/thumb/index.php', 'w');
+            fwrite($handle, $content);
+            fclose($handle);
+            change_mode(WB_PATH.MEDIA_DIRECTORY.'/news_img/thumb/index.php', 'file');
+        }
+    }
 
     // Print admin footer
     $admin->print_footer();

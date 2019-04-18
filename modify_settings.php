@@ -34,9 +34,25 @@ if(!file_exists(WB_PATH .'/modules/news_img/languages/'.LANGUAGE .'.php')) {
 $query_content = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '$section_id'");
 $fetch_content = $query_content->fetchRow();
 
+$previewwidth = $previewheight = $thumbwidth = $thumbheight = '';
+if(substr_count($fetch_content['resize_preview'],'x')>0) {
+    list($previewwidth,$previewheight) = explode('x',$fetch_content['resize_preview'],2);
+}
+if(substr_count($fetch_content['imgthumbsize'],'x')>0) {
+    list($thumbwidth,$thumbheight) = explode('x',$fetch_content['imgthumbsize'],2);
+}
+
 // Set raw html <'s and >'s to be replace by friendly html code
 $raw = array('<', '>');
 $friendly = array('&lt;', '&gt;');
+
+// default image sizes
+$SIZES['50'] = '50x50px';
+$SIZES['75'] = '75x75px';
+$SIZES['100'] = '100x100px';
+$SIZES['125'] = '125x125px';
+$SIZES['150'] = '150x150px';
+$SIZES['220'] = '200x200px';
 
 // check if backend.css file needs to be included into the <body></body> of modify.php
 if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."/modules/news_img/backend.css")) {
@@ -116,7 +132,25 @@ if(function_exists('edit_module_css'))
 				<textarea name="footer" rows="10" cols="1" style="width: 98%; height: 80px;"><?php echo str_replace($raw, $friendly, ($fetch_content['footer'])); ?></textarea>
 			</td>
 		</tr>
-		
+<?php if(extension_loaded('gd') AND function_exists('imageCreateFromJpeg')) { ?>
+        <tr>
+			<td class="setting_name"><?php echo $MOD_NEWS_IMG['RESIZE_PREVIEW_IMAGE_TO']; ?>:</td>
+			<td class="setting_value">
+                <label for="resize_width"><?php echo $TEXT['WIDTH'] ?></label>
+                    <input type="text" maxlength="4" name="resize_width" id="resize_width" style="width:80px" value="<?php echo $previewwidth ?>" /> x
+                <label for="resize_height"><?php echo $TEXT['HEIGHT'] ?></label>
+                    <input type="text" maxlength="4" name="resize_height" id="resize_height" style="width:80px" value="<?php echo $previewheight ?>" /> Pixel<br />
+                    <span title="<?php echo $MOD_NEWS_IMG['TEXT_DEFAULTS_CLICK']; ?>"><?php echo $MOD_NEWS_IMG['TEXT_DEFAULTS'] ?>:&nbsp;
+<?php
+					foreach($SIZES AS $size => $size_name) {
+						echo '[<span class="resize_defaults" data-value="'.$size.'">'.$size_name.'</span>] ';
+					}
+?>
+				  </span>
+			</td>
+		</tr>
+<?php } ?>
+
 		<tr><td colspan="2"><h3><?php echo $MOD_NEWS_IMG['POST_SETTINGS']?></h3></td></tr>
 		
 		<tr>
@@ -161,35 +195,45 @@ if(function_exists('edit_module_css'))
 				<textarea name="image_loop" rows="10" cols="1" style="width: 98%; height: 60px;"><?php echo str_replace($raw, $friendly, ($fetch_content['image_loop'])); ?></textarea>
 			</td>
 		</tr>
-		
-		<?php if(extension_loaded('gd') AND function_exists('imageCreateFromJpeg')) { /* Make's sure GD library is installed */
-            $previewwidth = $previewheight = '';
-		    if(substr_count($fetch_content['resize_preview'],'x')>0) {
-                list($previewwidth,$previewheight) = explode('x',$fetch_content['resize_preview'],2);
-            }
-        ?>
-		<tr>
-			<td class="setting_name"><?php echo $MOD_NEWS_IMG['RESIZE_PREVIEW_IMAGE_TO']; ?>:</td>
+        <tr>
+			<td class="setting_name"><?php echo $MOD_NEWS_IMG['IMAGE_MAX_SIZE']; ?>:</td>
 			<td class="setting_value">
-                <label for="resize_width"><?php echo $TEXT['WIDTH'] ?></label>
-                    <input type="text" maxlength="4" name="resize_width" id="resize_width" style="width:80px" value="<?php echo $previewwidth ?>" /> x
-                <label for="resize_height"><?php echo $TEXT['HEIGHT'] ?></label>
-                    <input type="text" maxlength="4" name="resize_height" id="resize_height" style="width:80px" value="<?php echo $previewheight ?>" /> Pixel |
-                    <span title="<?php echo $MOD_NEWS_IMG['TEXT_DEFAULTS_CLICK']; ?>"><?php echo $MOD_NEWS_IMG['TEXT_DEFAULTS'] ?>
-                	<?php
-					$SIZES['50'] = '50x50px';
-					$SIZES['75'] = '75x75px';
-					$SIZES['100'] = '100x100px';
-					$SIZES['125'] = '125x125px';
-					$SIZES['150'] = '150x150px';
-					foreach($SIZES AS $size => $size_name) {
-						echo '[<span class="resize_defaults" data-value="'.$size.'">'.$size_name.'</span>] ';
-					}
-					?>
-				  </span>
-                <label for="crop_preview"><input type="checkbox" name="crop_preview" id="crop_preview"<?php if($fetch_content['crop_preview']=='Y'):?> checked="checked"<?php endif; ?> title="<?php echo $MOD_NEWS_IMG['TEXT_CROP'] ?>" /> <?php echo $MOD_NEWS_IMG['CROP'] ?></label>
+                <input type="text" name="gal_img_max_size" value="<?php echo $fetch_content['imgmaxsize'] ?>" />
 			</td>
 		</tr>
+		
+<?php if(extension_loaded('gd') AND function_exists('imageCreateFromJpeg')) { /* Make's sure GD library is installed */ ?>
+        <tr>
+			<td class="setting_name"><?php echo $MOD_NEWS_IMG['RESIZE_GALLERY_IMAGES_TO']; ?>:</td>
+			<td class="setting_value">
+                <label for="gal_img_resize_width"><?php echo $TEXT['WIDTH'] ?></label>
+                    <input type="text" maxlength="4" name="gal_img_resize_width" id="gal_img_resize_width" style="width:80px" value="<?php echo $fetch_content['imgmaxwidth'] ?>" /> x
+                <label for="gal_img_resize_height"><?php echo $TEXT['HEIGHT'] ?></label>
+                    <input type="text" maxlength="4" name="gal_img_resize_height" id="gal_img_resize_height" style="width:80px" value="<?php echo $fetch_content['imgmaxheight'] ?>" /> Pixel
+			</td>
+		</tr>
+        <tr>
+			<td class="setting_name"><?php echo $MOD_NEWS_IMG['THUMB_SIZE']; ?>:</td>
+			<td class="setting_value">
+                <label for="thumb_width"><?php echo $TEXT['WIDTH'] ?></label>
+                    <input type="text" maxlength="4" name="thumb_width" id="thumb_width" style="width:80px" value="<?php echo $thumbwidth ?>" /> x
+                <label for="thumb_height"><?php echo $TEXT['HEIGHT'] ?></label>
+                    <input type="text" maxlength="4" name="thumb_height" id="thumb_height" style="width:80px" value="<?php echo $thumbheight ?>" /> Pixel <br />
+                    <span title="<?php echo $MOD_NEWS_IMG['TEXT_DEFAULTS_CLICK']; ?>"><?php echo $MOD_NEWS_IMG['TEXT_DEFAULTS'] ?>:&nbsp;
+<?php
+					foreach($SIZES AS $size => $size_name) {
+						echo '[<span class="resize_defaults_thumb" data-value="'.$size.'">'.$size_name.'</span>] ';
+					}
+?>
+				  </span>
+			</td>
+		</tr>
+        <tr>
+            <td class="setting_name"><?php echo $MOD_NEWS_IMG['CROP']; ?>:</td>
+			<td class="setting_value">
+                <label for="crop_preview"><input type="checkbox" name="crop_preview" id="crop_preview"<?php if($fetch_content['crop_preview']=='Y'):?> checked="checked"<?php endif; ?> title="<?php echo $MOD_NEWS_IMG['TEXT_CROP'] ?>" /> <?php echo $MOD_NEWS_IMG['CROP'] ?></label><br />
+                <i><?php echo $MOD_NEWS_IMG['TEXT_CROP']; ?></i>
+        </tr>
 <?php } ?>
 	</table>
     	<table>

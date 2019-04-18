@@ -35,16 +35,23 @@ $MOD_NEWS_IMG['OPTIONS'] ='Einstellungen';
 $MOD_NEWS_IMG['ORDERBY']  = 'Sortierung';
 $MOD_NEWS_IMG['ORDER_CUSTOM_INFO'] = 'Die Einstellung &quot;benutzerdefiniert&quot; erlaubt das manuelle Sortieren der Beitr&auml;ge &uuml;ber auf-/ab-Pfeile.';
 $MOD_NEWS_IMG['OVERVIEW_SETTINGS'] ='&Uuml;bersichtsseite';
+$MOD_NEWS_IMG['POST_CONTENT'] = 'Nachrichten-Inhalt';
 $MOD_NEWS_IMG['POST_SETTINGS'] = 'Beitragsansicht';
 $MOD_NEWS_IMG['PREVIEWIMAGE'] = 'Beitragsbild';
 $MOD_NEWS_IMG['SAVEGOBACK'] = 'Speichern und Zur&uuml;ck';
 $MOD_NEWS_IMG['SETTINGS'] = 'News Einstellungen';
 
-//additional settings
-$MOD_NEWS_IMG['POST_CONTENT'] = 'Nachrichten-Inhalt';
+//image settings
+$MOD_NEWS_IMG['CROP'] = 'Beschneiden';
 $MOD_NEWS_IMG['GALLERY'] = 'Bildergalerie';
 $MOD_NEWS_IMG['GALLERY_INFO'] = 'Nach dem &Auml;ndern der Galerie-Einstellung speichern; danach wird automatisch das Markup angepasst.';
-
+$MOD_NEWS_IMG['IMAGE_MAX_SIZE'] = 'Max. Bildgr&ouml;&szlig;e in Bytes';
+$MOD_NEWS_IMG['RESIZE_GALLERY_IMAGES_TO'] = 'Galeriebilder Gr&ouml;&szlig;e &auml;ndern auf';
+$MOD_NEWS_IMG['RESIZE_PREVIEW_IMAGE_TO'] = 'Vorschaubild Gr&ouml;&szlig;e &auml;ndern auf';
+$MOD_NEWS_IMG['TEXT_CROP'] = 'Wenn das Seitenverh&auml;ltnis des Originals nicht zum eingestellten Seitenverh&auml;ltnis passt, wird der &Uuml;berstand der l&auml;ngeren Seite abgeschnitten.';
+$MOD_NEWS_IMG['TEXT_DEFAULTS'] = 'Vorschl&auml;ge';
+$MOD_NEWS_IMG['TEXT_DEFAULTS_CLICK'] = 'Anklicken um Gr&ouml;&szlig;e zu w&auml;hlen';
+$MOD_NEWS_IMG['THUMB_SIZE'] = 'Gr&ouml;&szlig;e der Thumbnails';
 
 //Variables for the frontend
 $MOD_NEWS_IMG['TEXT_READ_MORE'] = 'Details anzeigen';
@@ -56,10 +63,4 @@ $MOD_NEWS_IMG['TEXT_BACK'] = 'Zur&uuml;ck zur &Uuml;bersicht';
 $MOD_NEWS_IMG['TEXT_BY'] = 'von';
 $MOD_NEWS_IMG['PAGE_NOT_FOUND'] = 'Seite nicht gefunden';
 $TEXT['UNKNOWN'] = 'Gast';
-
-$MOD_NEWS_IMG['TEXT_DEFAULTS'] = 'Standardgr&ouml;&szlig;en';
-$MOD_NEWS_IMG['CROP'] = 'Beschneiden';
-$MOD_NEWS_IMG['TEXT_CROP'] = 'Wenn das Seitenverh&auml;ltnis des Originals nicht zum eingestellten Seitenverh&auml;ltnis passt, wird der &Uuml;berstand der l&auml;ngeren Seite abgeschnitten.';
-$MOD_NEWS_IMG['RESIZE_PREVIEW_IMAGE_TO'] = 'Vorschaubild Gr&ouml;&szlig;e &auml;ndern auf';
-$MOD_NEWS_IMG['TEXT_DEFAULTS_CLICK'] = 'Anklicken um Standardgr&ouml;&szlig;e zu w&auml;hlen';
 

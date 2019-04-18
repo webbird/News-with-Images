@@ -3,16 +3,21 @@
 .nixhier {
 	display:none;
 }
-
 .mod_nwi_default {
 }
-
 .mod_nwi_default .mod_nwi_group {
-	width:100%;
+  width:100%;
   clear:both;
 }
 .mod_nwi_default .mod_nwi_teaserpic {
   float:left;  
+}
+.mod_nwi_default .mod_nwi_grouppic {
+  float:right;
+}
+.mod_nwi_default .mod_nwi_grouppic img {
+  width:150px;
+  height:150px;
 }
 .mod_nwi_default .mod_nwi_teaserpic img {
   max-width:80%;
@@ -33,4 +38,4 @@
 }
 .mod_nwi_default .mod_nwi_spacer {
   padding:1em 0;
-}
+}		

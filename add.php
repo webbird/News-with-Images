@@ -15,6 +15,8 @@
 
 if(defined('WB_PATH') == false) { exit("Cannot access this file directly"); }
 
+require_once __DIR__.'/functions.inc.php';
+
 $header = ''."\n";
 $post_loop = '<div class="mod_nwi_group">
     <div class="mod_nwi_teaserpic">
@@ -54,5 +56,11 @@ $post_footer = '<div class="div_link">
 </div>';
 
 $resize_preview = '125x125';
+$iniset = ini_get('upload_max_filesize');
+$iniset = return_bytes($iniset);
 
-$database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_settings` (`section_id`,`page_id`,`header`,`post_loop`,`footer`,`post_header`,`post_content`,`image_loop`,`post_footer`,`gallery`,`resize_preview`) VALUES ('$section_id','$page_id','$header','$post_loop','$footer','$post_header','$post_content','$image_loop','$post_footer','$resize_preview')");
+$database->query(
+    "INSERT INTO `".TABLE_PREFIX."mod_news_img_settings` ".
+    "(`section_id` ,`page_id` ,`header` ,`post_loop` ,`footer` ,`post_header` ,`post_content` ,`image_loop` ,`post_footer` ,`gallery` ,`resize_preview` ,`imgmaxwidth`,`imgmaxheight`,`imgmaxsize`) VALUES ".
+    "('$section_id','$page_id','$header','$post_loop','$footer','$post_header','$post_content','$image_loop','$post_footer','fotorama','$resize_preview','900'        ,'900'         ,'$iniset')"
+);

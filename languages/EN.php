@@ -35,16 +35,24 @@ $MOD_NEWS_IMG['OPTIONS'] ='Options';
 $MOD_NEWS_IMG['ORDERBY']  = 'Order by';
 $MOD_NEWS_IMG['ORDER_CUSTOM_INFO'] = 'The setting &quot;custom&quot; allows the manual sorting of articles via up/down arrows.';
 $MOD_NEWS_IMG['OVERVIEW_SETTINGS'] ='Overview page settings';
+$MOD_NEWS_IMG['POST_CONTENT'] = 'Post content';
 $MOD_NEWS_IMG['POST_SETTINGS'] = 'Post settings';
 $MOD_NEWS_IMG['PREVIEWIMAGE'] = 'Preview image';
 $MOD_NEWS_IMG['SAVEGOBACK'] = 'Save and go back';
 $MOD_NEWS_IMG['SETTINGS'] = 'News Settings';
 $MOD_NEWS_IMG['SETTINGS'] = 'Options';
 
-//additional settings
-$MOD_NEWS_IMG['POST_CONTENT'] = 'Post content';
+//image settings
+$MOD_NEWS_IMG['CROP'] = 'Crop';
 $MOD_NEWS_IMG['GALLERY'] = 'Image gallery';
 $MOD_NEWS_IMG['GALLERY_INFO'] = 'After changing the gallery setting, hit save; the markup for the image loop will be adjusted automatically.';
+$MOD_NEWS_IMG['IMAGE_MAX_SIZE'] = 'Max. image size in bytes';
+$MOD_NEWS_IMG['RESIZE_PREVIEW_IMAGE_TO'] = 'Resize preview image to';
+$MOD_NEWS_IMG['RESIZE_GALLERY_IMAGES_TO'] = 'Resize gallery images to';
+$MOD_NEWS_IMG['TEXT_CROP'] = 'If the aspect ratio of the original does not match the specified aspect ratio, the overlap of the longer edge will be cut off.';
+$MOD_NEWS_IMG['TEXT_DEFAULTS'] = 'Default sizes';
+$MOD_NEWS_IMG['TEXT_DEFAULTS_CLICK'] = 'Click to choose from the defaults';
+$MOD_NEWS_IMG['THUMB_SIZE'] = 'Thumbnail size';
 
 //Variables for the frontend
 $MOD_NEWS_IMG['PAGE_NOT_FOUND'] = 'Page not found';
@@ -57,10 +65,6 @@ $MOD_NEWS_IMG['TEXT_POSTED_BY'] = 'Posted by';
 $MOD_NEWS_IMG['TEXT_READ_MORE'] = 'Read More';
 $TEXT['UNKNOWN'] = 'Guest';
 
-$MOD_NEWS_IMG['CROP'] = 'Crop';
-$MOD_NEWS_IMG['RESIZE_PREVIEW_IMAGE_TO'] = 'Resize preview image to';
-$MOD_NEWS_IMG['TEXT_CROP'] = 'If the aspect ratio of the original does not match the specified aspect ratio, the overlap of the longer edge will be cut off.';
-$MOD_NEWS_IMG['TEXT_DEFAULTS'] = 'Default sizes';
-$MOD_NEWS_IMG['TEXT_DEFAULTS_CLICK'] = 'Click to choose from the defaults';
+
 
 

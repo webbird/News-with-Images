@@ -33,7 +33,7 @@ $module_description = 'This page type is designed for making a news page with Im
  *        - Bianka Martinovic 
  *          + moved images folder to MEDIA_DIRECTORY/news_img
  *        - Florian Meerwinck
- *          + CHanges to frontend display
+ *          + Changes to frontend display
  *          + add default preview size
  *
  * v3.7.5 - 2019-04-15 Martin Hecht

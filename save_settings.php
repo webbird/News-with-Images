@@ -32,24 +32,34 @@ $image_loop = $admin->add_slashes(str_replace($friendly, $raw, $_POST['image_loo
 $post_footer = $admin->add_slashes(str_replace($friendly, $raw, $_POST['post_footer']));
 $posts_per_page = $admin->add_slashes($_POST['posts_per_page']);
 $gallery = $admin->add_slashes($_POST['gallery']);
+$gal_img_resize_width = $admin->add_slashes($_POST['gal_img_resize_width']);
+$gal_img_resize_height = $admin->add_slashes($_POST['gal_img_resize_height']);
+$gal_img_max_size = $admin->add_slashes($_POST['gal_img_max_size']);
 
 $resize_preview = '';
 $crop = 'N';
-if(extension_loaded('gd') AND function_exists('imageCreateFromJpeg')) {
-    $width = $_POST['resize_width'];
-    $height = $_POST['resize_height'];
-    $crop = (isset($_POST['crop_preview']) ? $_POST['crop_preview'] : 'N');
-    if(is_numeric($width) && is_numeric($height)) {
-        if($height>0 && $width>0) {
-            $resize_preview = $width.'x'.$height;
-        }
-    }
-    if($crop=='on') {
-        $crop = 'Y';
-    } else {
-        $crop = 'N';
+
+$width = $_POST['resize_width'];
+$height = $_POST['resize_height'];
+$thumbwidth = $_POST['thumb_width'];
+$thumbheight = $_POST['thumb_height'];
+$crop = (isset($_POST['crop_preview']) ? $_POST['crop_preview'] : 'N');
+if(is_numeric($width) && is_numeric($height)) {
+    if($height>0 && $width>0) {
+        $resize_preview = $width.'x'.$height;
     }
 }
+if(is_numeric($thumbwidth) && is_numeric($thumbheight)) {
+    if($thumbheight>0 && $thumbwidth>0) {
+        $thumbsize = $thumbwidth.'x'.$thumbheight;
+    }
+}
+if($crop=='on') {
+    $crop = 'Y';
+} else {
+    $crop = 'N';
+}
+
 if($posts_per_page=='') {
     $posts_per_page = 0; // unlimited
 }
@@ -61,13 +71,19 @@ if($fetch_content['gallery'] != $gallery) {
     include WB_PATH.'/modules/news_img/js/'.$gallery.'/settings.php';
 }
 
+$gal_img_max_size = intval($gal_img_max_size);
+$gal_img_resize_width = intval($gal_img_resize_width);
+$gal_img_resize_height = intval($gal_img_resize_height);
+
 // Update settings
 $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_settings` SET ".
     "`header` = '$header', `post_loop` = '$post_loop', `view_order` = '$view_order', `footer` = '$footer', ".
     "`posts_per_page` = '$posts_per_page', `post_header` = '$post_header', ".
     "`post_content` = '$post_content', `image_loop` = '$image_loop', ".
     "`post_footer` = '$post_footer', `resize_preview` = '$resize_preview', ".
-    "`crop_preview` = '$crop', `gallery` = '$gallery' ".
+    "`crop_preview` = '$crop', `gallery` = '$gallery', `imgmaxsize`='$gal_img_max_size', ".
+    "`imgmaxwidth`='$gal_img_resize_width', `imgmaxheight`='$gal_img_resize_height', ".
+    "`imgthumbsize`='$thumbsize' ".
     "WHERE `section_id` = '$section_id'");
 
 // Check if there is a db error, otherwise say successful
