@@ -41,6 +41,7 @@ $MOD_NEWS_IMG['PREVIEWIMAGE'] = 'Beitragsbild';
 $MOD_NEWS_IMG['SAVEGOBACK'] = 'Speichern und Zur&uuml;ck';
 $MOD_NEWS_IMG['SETTINGS'] = 'News Einstellungen';
 $MOD_NEWS_IMG['LINK'] = 'Link';
+$MOD_NEWS_IMG['EXPIRED_NOTE'] = 'Der Beitrag wird im Frontend nicht mehr angezeigt, da das Ablaufdatum überschritten ist.';
 
 //image settings
 $MOD_NEWS_IMG['CROP'] = 'Beschneiden';
