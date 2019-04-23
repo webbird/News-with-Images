@@ -93,41 +93,42 @@ if (!defined('WYSIWYG_EDITOR') or WYSIWYG_EDITOR=="none" or !file_exists(WB_PATH
 $jscal_use_time = true; // whether to use a clock, too
 require_once(WB_PATH."/include/jscalendar/wb-setup.php");
 ?>
-<h2><?php echo $TEXT['ADD'].'/'.$TEXT['MODIFY'].' '.$TEXT['POST']; ?></h2>
-<div class="jsadmin jcalendar hide"></div> 
-<form name="modify" action="<?php echo WB_URL; ?>/modules/news_img/save_post.php" method="post" enctype="multipart/form-data">
+<div class="mod_news_img">
+    <h2><?php echo $TEXT['ADD'].'/'.$TEXT['MODIFY'].' '.$TEXT['POST']; ?></h2>
+    <div class="jsadmin jcalendar hide"></div>
+    <form name="modify" action="<?php echo WB_URL; ?>/modules/news_img/save_post.php" method="post" enctype="multipart/form-data">
 
-<input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
-<input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
-<input type="hidden" name="post_id" value="<?php echo $post_id; ?>" />
-<input type="hidden" name="link" value="<?php echo $fetch_content['link']; ?>" />
-<input type="hidden" name="savegoback" id="savegoback" value="" />
+    <input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
+    <input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
+    <input type="hidden" name="post_id" value="<?php echo $post_id; ?>" />
+    <input type="hidden" name="link" value="<?php echo $fetch_content['link']; ?>" />
+    <input type="hidden" name="savegoback" id="savegoback" value="" />
 
-<table>
-<tr>
-	<td><?php echo $TEXT['TITLE']; ?>:</td>
-	<td width="80%">
-		<input type="text" name="title" value="<?php echo(htmlspecialchars($fetch_content['title'])); ?>" style="width: 98%;" maxlength="255" />
-	</td>
-</tr>
-<tr>
-	<td><?php echo $MOD_NEWS_IMG['PREVIEWIMAGE']; ?>:</td>
-	<td width="80%">
-	   <?php
+    <table>
+    <tr>
+    	<td class="setting_name"><?php echo $TEXT['TITLE']; ?>:</td>
+    	<td class="setting_value">
+    		<input type="text" name="title" value="<?php echo(htmlspecialchars($fetch_content['title'])); ?>" maxlength="255" />
+    	</td>
+    </tr>
+    <tr>
+    	<td class="setting_name"><?php echo $MOD_NEWS_IMG['PREVIEWIMAGE']; ?>:</td>
+    	<td class="setting_value">
+<?php
          if ($fetch_content['image'] != "") {
-             echo '<img class="img_list" src="'.WB_URL.$file_dir.$fetch_content['image'].'" /> '.$fetch_content['image'].' <a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&post_img='.$fetch_content['image'].'">l&ouml;schen</a>';
+             echo '<img class="img_list" style="float:left;margin-right:15px" src="'.WB_URL.$file_dir.$fetch_content['image'].'" /> '.$fetch_content['image'].'<br /><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&post_img='.$fetch_content['image'].'">l&ouml;schen</a>';
              echo '<input type="hidden" name="previewimage" value="'.$fetch_content['image'].'" />';
          } else {
              echo '<input type="file" name="postfoto" accept="image/*" />  <br />';
          }
-      ?>
+?>
 		</td>
-</tr>
-<tr>
-    <td><?php echo $TEXT['GROUP']; ?>:</td>
-    <td>
-        <select name="group" style="width: 100%;">
-            <?php
+    </tr>
+    <tr>
+        <td class="setting_name"><?php echo $TEXT['GROUP']; ?>:</td>
+        <td class="setting_value">
+            <select name="group">
+<?php
         // We encode the group_id, section_id and page_id into an urlencoded serialized array.
         // So we have a single string that we can submit safely and decode it when receiving.
             echo '<option value="'.urlencode(serialize(array('g' => 0, 's' => $section_id, 'p' => $page_id))).'">'
@@ -188,86 +189,86 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
                     }
                 }
             }
-            ?>
-        </select>
-    </td>
-</tr>
-<tr>
-	<td><?php echo $TEXT['ACTIVE']; ?>:</td>
-	<td>
-		<input type="radio" name="active" id="active_true" value="1" <?php if ($fetch_content['active'] == 1) {
-                echo ' checked="checked"';
-            } ?> />
-		<a href="#" onclick="javascript: document.getElementById('active_true').checked = true;">
-		<?php echo $TEXT['YES']; ?>
-		</a>
-		&nbsp;
-		<input type="radio" name="active" id="active_false" value="0" <?php if ($fetch_content['active'] == 0) {
-                echo ' checked="checked"';
-            } ?> />
-		<a href="#" onclick="javascript: document.getElementById('active_false').checked = true;">
-		<?php echo $TEXT['NO']; ?>
-		</a>
-	</td>
-</tr>
-<tr>
-	<td><?php echo $TEXT['PUBL_START_DATE']; ?>:</td>
-	<td>
-	<input type="text" id="publishdate" name="publishdate" value="<?php if ($fetch_content['published_when']==0) {
-                print date($jscal_format, strtotime((date('Y-m-d H:i'))));
-            } else {
-                print date($jscal_format, $fetch_content['published_when']);
-            }?>" style="width: 120px;" />
-	<img src="<?php echo THEME_URL ?>/images/clock_16.png" id="publishdate_trigger" style="cursor: pointer;" title="<?php echo $TEXT['CALENDAR']; ?>" alt="<?php echo $TEXT['CALENDAR']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" />
-	<img src="<?php echo THEME_URL ?>/images/clock_del_16.png" style="cursor: pointer;" title="<?php echo $TEXT['DELETE_DATE']; ?>" alt="<?php echo $TEXT['DELETE_DATE']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" onclick="document.modify.publishdate.value=''" />
-	</td>
-</tr>
-<tr>
-	<td><?php echo $TEXT['PUBL_END_DATE']; ?>:</td>
-	<td>
-	<input type="text" id="enddate" name="enddate" value="<?php if ($fetch_content['published_until']==0) {
-                print "";
-            } else {
-                print date($jscal_format, $fetch_content['published_until']);
-            }?>" style="width: 120px;" />
-	<img src="<?php echo THEME_URL ?>/images/clock_16.png" id="enddate_trigger" style="cursor: pointer;" title="<?php echo $TEXT['CALENDAR']; ?>" alt="<?php echo $TEXT['CALENDAR']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" />
-	<img src="<?php echo THEME_URL ?>/images/clock_del_16.png" style="cursor: pointer;" title="<?php echo $TEXT['DELETE_DATE']; ?>" alt="<?php echo $TEXT['DELETE_DATE']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" onclick="document.modify.enddate.value=''" />
-	</td>
-</tr>
-</table>
+?>
+            </select>
+        </td>
+    </tr>
+    <tr>
+    	<td class="setting_name"><?php echo $TEXT['ACTIVE']; ?>:</td>
+    	<td class="setting_value">
+    		<input type="radio" name="active" id="active_true" value="1" <?php if ($fetch_content['active'] == 1) {
+                    echo ' checked="checked"';
+                } ?> />
+    		<a href="#" onclick="javascript: document.getElementById('active_true').checked = true;">
+    		<?php echo $TEXT['YES']; ?>
+    		</a>
+    		&nbsp;
+    		<input type="radio" name="active" id="active_false" value="0" <?php if ($fetch_content['active'] == 0) {
+                    echo ' checked="checked"';
+                } ?> />
+    		<a href="#" onclick="javascript: document.getElementById('active_false').checked = true;">
+    		<?php echo $TEXT['NO']; ?>
+    		</a>
+    	</td>
+    </tr>
+    <tr>
+    	<td class="setting_name"><?php echo $TEXT['PUBL_START_DATE']; ?>:</td>
+    	<td class="setting_value">
+    	   <input type="text" id="publishdate" name="publishdate" value="<?php if ($fetch_content['published_when']==0) {
+                    print date($jscal_format, strtotime((date('Y-m-d H:i'))));
+                } else {
+                    print date($jscal_format, $fetch_content['published_when']);
+                }?>" style="width:33%;" />
+        	<img src="<?php echo THEME_URL ?>/images/clock_16.png" id="publishdate_trigger" style="cursor: pointer;" title="<?php echo $TEXT['CALENDAR']; ?>" alt="<?php echo $TEXT['CALENDAR']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" />
+        	<img src="<?php echo THEME_URL ?>/images/clock_del_16.png" style="cursor: pointer;" title="<?php echo $TEXT['DELETE_DATE']; ?>" alt="<?php echo $TEXT['DELETE_DATE']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" onclick="document.modify.publishdate.value=''" />
+    	</td>
+    </tr>
+    <tr>
+    	<td class="setting_name"><?php echo $TEXT['PUBL_END_DATE']; ?>:</td>
+    	<td class="setting_value">
+    	   <input type="text" id="enddate" name="enddate" value="<?php if ($fetch_content['published_until']==0) {
+                    print "";
+                } else {
+                    print date($jscal_format, $fetch_content['published_until']);
+                }?>" style="width:33%;" />
+        	<img src="<?php echo THEME_URL ?>/images/clock_16.png" id="enddate_trigger" style="cursor: pointer;" title="<?php echo $TEXT['CALENDAR']; ?>" alt="<?php echo $TEXT['CALENDAR']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" />
+        	<img src="<?php echo THEME_URL ?>/images/clock_del_16.png" style="cursor: pointer;" title="<?php echo $TEXT['DELETE_DATE']; ?>" alt="<?php echo $TEXT['DELETE_DATE']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" onclick="document.modify.enddate.value=''" />
+    	</td>
+    </tr>
+    </table>
 
-<table class="row_a" cellpadding="2" cellspacing="0" border="0" width="100%">
-<tr>
-	<td valign="top"><?php echo $TEXT['SHORT']; ?>:</td>
-</tr>
-<tr>
-	<td>
-	<?php
-    show_wysiwyg_editor("short", "short", htmlspecialchars($fetch_content['content_short']), "100%", "350px");
-    ?>
-	</td>
-</tr>
-<tr>
-	<td valign="top"><?php echo $TEXT['LONG']; ?>:</td>
-</tr>
-<tr>
-	<td>
-	<?php
+    <table>
+    <tr>
+    	<td valign="top"><?php echo $TEXT['SHORT']; ?>:</td>
+    </tr>
+    <tr>
+    	<td>
+    	<?php
+        show_wysiwyg_editor("short", "short", htmlspecialchars($fetch_content['content_short']), "100%", "350px");
+        ?>
+    	</td>
+    </tr>
+    <tr>
+    	<td valign="top"><?php echo $TEXT['LONG']; ?>:</td>
+    </tr>
+    <tr>
+    	<td>
+<?php
     show_wysiwyg_editor("long", "long", htmlspecialchars($fetch_content['content_long']), "100%", "650px");
-    ?>
-	</td>
-</tr>
-<tr>
-	<td valign="top"><?php echo $TEXT['BLOCK']; ?> 2:</td>
-</tr>
-<tr>
-	<td>
-	<?php
-    show_wysiwyg_editor("block2", "block2", htmlspecialchars($fetch_content['content_block2']), "100%", "350px");
-    ?>
-	</td>
-</tr>
-</table>
+?>
+    	</td>
+    </tr>
+    <tr>
+    	<td valign="top"><?php echo $TEXT['BLOCK']; ?> 2:</td>
+    </tr>
+    <tr>
+    	<td>
+<?php
+        show_wysiwyg_editor("block2", "block2", htmlspecialchars($fetch_content['content_block2']), "100%", "350px");
+?>
+    	</td>
+    </tr>
+    </table>
 
 <?php
 
@@ -285,7 +286,7 @@ if ($query_img->numRows() > 0) {
     $first=true;
     $last=$query_img->numRows();
 
-    while ($row = $query_img->fetchRow()) {
+    while($row = $query_img->fetchRow()) {
         $up='<span style="display:inline-block;width:20px;"></span>';
         $down=$up;
         if (!$first) {
@@ -296,10 +297,12 @@ if ($query_img->numRows() > 0) {
             $down = '<a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&id='.$row['id'].'&down=1">'
                   . '<img src="'.THEME_URL.'/images/down_16.png" /></a>';
         }
-        echo '<tr><td>'.$up.$down.'</td>',
-             '<td width="100"><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'" onmouseover="XBT(this, {id:\'tt'.$i.'\'})"><img class="img_list" src="'.WB_URL.$thumb_dir.$row["picname"].'" /></a><div id="tt'.$i.'" class="xbtooltip"><img src="'.WB_URL.$file_dir.$row["picname"].'" /></div></td>',
+        echo '<tr>'.
+             '<td>'.$up.$down.'</td>',
+             '<td><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'" onmouseover="XBT(this, {id:\'tt'.$i.'\'})"><img class="img_list" src="'.WB_URL.$thumb_dir.$row["picname"].'" /></a><div id="tt'.$i.'" class="xbtooltip"><img src="'.WB_URL.$file_dir.$row["picname"].'" /></div></td>',
              '<td>'.$row["picname"].'<br /><input type="text" name="picdesc['.$row["id"].']" value="'.$row["picdesc"].'"></td>',
-             '<td><a onclick="return confirm(\''.$MOD_NEWS_IMG['DELETEIMAGE'].'\')" href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&img_id='.$row["id"].'#fs"><img src="'.THEME_URL.'/images/delete_16.png" /></a></td><tr>';
+             '<td><a onclick="return confirm(\''.$MOD_NEWS_IMG['DELETEIMAGE'].'\')" href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&img_id='.$row["id"].'#fs"><img src="'.THEME_URL.'/images/delete_16.png" /></a></td>'.
+             '</tr>';
         $i++;
         $first=false;
     }
@@ -307,29 +310,28 @@ if ($query_img->numRows() > 0) {
 }
 ?>
 
-<!-- Formular -->
-<div id="fotos"><h3><?php echo $MOD_NEWS_IMG['IMAGEUPLOAD']?></h3>
-      <input type="file" name="foto[]" accept="image/*" />  <br />
-      <input type="file" name="foto[]" accept="image/*" />  <br />
-      <input type="file" name="foto[]" accept="image/*" />  <br />
-      <input type="file" name="foto[]" accept="image/*" />   <br />                                                           
-      <input type="file" name="foto[]" accept="image/*" />   <br />
-      <input type="file" name="foto[]" accept="image/*" />   <br />
-</div>
+    <!-- Formular -->
+    <div id="fotos"><h3><?php echo $MOD_NEWS_IMG['IMAGEUPLOAD']?></h3>
+          <input type="file" name="foto[]" accept="image/*" />  <br />
+          <input type="file" name="foto[]" accept="image/*" />  <br />
+          <input type="file" name="foto[]" accept="image/*" />  <br />
+          <input type="file" name="foto[]" accept="image/*" />   <br />
+          <input type="file" name="foto[]" accept="image/*" />   <br />
+          <input type="file" name="foto[]" accept="image/*" />   <br />
+    </div>
 
-<table cellpadding="2" cellspacing="0" border="0" width="100%">
-<tr>
-	<td align="left">
-		<input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>" style="width: 100px; margin-top: 5px;" />
-		<input name="save" type="submit" onclick="document.getElementById('savegoback').value='1'" value="<?php echo $MOD_NEWS_IMG['SAVEGOBACK']; ?>" style="width: 200px; margin-top: 5px;" />
-		
-	</td>
-	<td align="right">
-		<input type="button" value="<?php echo $MOD_NEWS_IMG['GOBACK'] ?>" onclick="javascript: window.location = '<?php echo ADMIN_URL; ?>/pages/modify.php?page_id=<?php echo $page_id; ?>';" style="width: 100px; margin-top: 5px;" />
-	</td>
-</tr>
-</table>
-</form>
+    <table>
+    <tr>
+    	<td align="left">
+    		<input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>" style="width: 100px; margin-top: 5px;" />
+    		<input name="save" type="submit" onclick="document.getElementById('savegoback').value='1'" value="<?php echo $MOD_NEWS_IMG['SAVEGOBACK']; ?>" style="width: 200px; margin-top: 5px;" />
+    	</td>
+    	<td align="right">
+    		<input type="button" value="<?php echo $MOD_NEWS_IMG['GOBACK'] ?>" onclick="javascript: window.location = '<?php echo ADMIN_URL; ?>/pages/modify.php?page_id=<?php echo $page_id; ?>';" style="width: 100px; margin-top: 5px;" />
+    	</td>
+    </tr>
+    </table>
+    </form>
 
 <script type="text/javascript">
     
@@ -417,6 +419,7 @@ if ($query_img->numRows() > 0) {
 
   
   </script>
+</div>
 
 <?php
 // Print admin footer
