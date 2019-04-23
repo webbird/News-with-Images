@@ -61,6 +61,7 @@ $active = $fetch_content['active'];
 $group_id = $fetch_content['group_id'];
 $publishedwhen =  $fetch_content['published_when'];
 $publisheduntil =  $fetch_content['published_until'];
+$imageErrorMessage = '';
 
 // Update row
 $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `page_id` = '$page_id', `section_id` = '$section_id', `group_id` = '$group_id', `title` = '$title', `content_short` = '$short', `content_long` = '$long', `content_block2` = '$block2', `image` = '$image', `active` = '$active', `published_when` = '$publishedwhen', `published_until` = '$publisheduntil', `posted_when` = '".time()."', `posted_by` = '".$admin->get_user_id()."' WHERE `post_id` = '$post_id'");

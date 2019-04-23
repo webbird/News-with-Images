@@ -40,6 +40,7 @@ $MOD_NEWS_IMG['POST_SETTINGS'] = 'Beitragsansicht';
 $MOD_NEWS_IMG['PREVIEWIMAGE'] = 'Beitragsbild';
 $MOD_NEWS_IMG['SAVEGOBACK'] = 'Speichern und Zur&uuml;ck';
 $MOD_NEWS_IMG['SETTINGS'] = 'News Einstellungen';
+$MOD_NEWS_IMG['LINK'] = 'Link';
 
 //image settings
 $MOD_NEWS_IMG['CROP'] = 'Beschneiden';

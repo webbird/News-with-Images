@@ -147,7 +147,8 @@ require(WB_PATH."/index.php");
     $database->query("ALTER TABLE `".TABLE_PREFIX."mod_news_img_settings` ADD COLUMN `imgthumbsize` VARCHAR(50) NULL DEFAULT NULL AFTER `gallery`, ADD COLUMN `imgmaxwidth` VARCHAR(50) NULL DEFAULT NULL AFTER `imgthumbsize`, ADD COLUMN `imgmaxheight` VARCHAR(50) NULL DEFAULT NULL AFTER `imgmaxwidth`, ADD COLUMN `imgmaxsize` VARCHAR(50) NULL DEFAULT NULL AFTER `imgmaxheight`");
 
     // 2019-04-18 Bianka Martinovic
-    //            rename columns (from German to neutral)
+    //            rename columns (from German to neutral) in mod_news_img_img table
+    //            add permalink column to mod_news_img_posts table
     $database->query("ALTER TABLE `".TABLE_PREFIX."mod_news_img_img` CHANGE COLUMN `bildname` `picname` VARCHAR(255) NOT NULL DEFAULT '' AFTER `id`, CHANGE COLUMN `bildbeschreibung` `picdesc` VARCHAR(255) NOT NULL DEFAULT '' AFTER `picname`");
 
     // 2019-04-18 Bianka Martinovic

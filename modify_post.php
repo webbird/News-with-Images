@@ -89,11 +89,22 @@ if (!defined('WYSIWYG_EDITOR') or WYSIWYG_EDITOR=="none" or !file_exists(WB_PATH
     require(WB_PATH.'/modules/'.WYSIWYG_EDITOR.'/include.php');
 }
 
+// split link
+$link = $fetch_content['link'];
+$parts = explode('/', $link);
+$link = array_pop($parts);
+$linkbase = implode('/',$parts);
+$parts = explode(PAGE_SPACER,$link);
+array_pop($parts);
+$link = implode(PAGE_SPACER,$parts);
+
 // include jscalendar-setup
 $jscal_use_time = true; // whether to use a clock, too
 require_once(WB_PATH."/include/jscalendar/wb-setup.php");
 ?>
 <div class="mod_news_img">
+    <script src="<?php echo WB_URL; ?>/modules/news_img/js/jquery.furl.js"></script>
+    
     <h2><?php echo $TEXT['ADD'].'/'.$TEXT['MODIFY'].' '.$TEXT['POST']; ?></h2>
     <div class="jsadmin jcalendar hide"></div>
     <form name="modify" action="<?php echo WB_URL; ?>/modules/news_img/save_post.php" method="post" enctype="multipart/form-data">
@@ -101,19 +112,28 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
     <input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
     <input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
     <input type="hidden" name="post_id" value="<?php echo $post_id; ?>" />
-    <input type="hidden" name="link" value="<?php echo $fetch_content['link']; ?>" />
     <input type="hidden" name="savegoback" id="savegoback" value="" />
 
     <table>
     <tr>
     	<td class="setting_name"><?php echo $TEXT['TITLE']; ?>:</td>
     	<td class="setting_value">
-    		<input type="text" name="title" value="<?php echo(htmlspecialchars($fetch_content['title'])); ?>" maxlength="255" />
+    		<input type="text" name="title" id="title<?php echo $page_id ?>" value="<?php echo(htmlspecialchars($fetch_content['title'])); ?>" maxlength="255" />
     	</td>
     </tr>
+<?php
+    //if(!strlen($fetch_content['title']) && !strlen($fetch_content['link'])): // new post
+?>
+    <tr>
+    	<td class="setting_name"><?php echo $MOD_NEWS_IMG['LINK']; ?>:</td>
+    	<td class="setting_value">
+    		<?php echo $linkbase ?>/<input type="text" name="link" id="link<?php echo $page_id ?>" value="<?php echo(htmlspecialchars($link)); ?>" maxlength="255" style="width:80%" /><?php echo PAGE_SPACER.$post_id.PAGE_EXTENSION ?>
+    	</td>
+    </tr>
+<?php // endif; ?>
     <tr>
     	<td class="setting_name"><?php echo $MOD_NEWS_IMG['PREVIEWIMAGE']; ?>:</td>
-    	<td class="setting_value">
+    	<td>
 <?php
          if ($fetch_content['image'] != "") {
              echo '<img class="img_list" style="float:left;margin-right:15px" src="'.WB_URL.$file_dir.$fetch_content['image'].'" /> '.$fetch_content['image'].'<br /><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&post_img='.$fetch_content['image'].'">l&ouml;schen</a>';
@@ -334,6 +354,8 @@ if ($query_img->numRows() > 0) {
     </form>
 
 <script type="text/javascript">
+
+    $('#title<?php echo $page_id ?>').furl({id:'link<?php echo $page_id ?>', seperate: '<?php echo PAGE_SPACER ?>' });
     
     /* Cross-Browser Tooltip von Mathias Karstädt steht unter einer Creative Commons Namensnennung 3.0 Unported Lizenz.
   http://webmatze.de/ein-einfacher-cross-browser-tooltip-mit-javascript-und-css/ */

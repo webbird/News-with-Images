@@ -251,7 +251,6 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
 
                 // Work-out the post link
                 $post_link = page_link($post['link']);
-
                 $post_link_path = str_replace(WB_URL, WB_PATH, $post_link);
                 if (file_exists($post_link_path)) {
                     $create_date = date(DATE_FORMAT, filemtime($post_link_path));

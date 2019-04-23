@@ -75,12 +75,12 @@ if ($admin->get_post('title') == '' and $admin->get_post('url') == '') {
     $admin->print_error($MESSAGE['GENERIC']['FILL_IN_ALL'], WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$id);
 } else {
     $title = $admin->get_post_escaped('title');
+    $link = $admin->get_post_escaped('link');
     $short = $admin->get_post_escaped('short');
     $long = $admin->get_post_escaped('long');
     $block2 = $admin->get_post_escaped('block2');
     $image = $admin->get_post_escaped('image');
     $active = $admin->get_post_escaped('active');
-    $old_link = $admin->get_post_escaped('link');
     $group = $admin->get_post_escaped('group');
 }
 
@@ -108,11 +108,20 @@ $page = $query_page->fetchRow();
 $page_level = $page['level'];
 $page_link = $page['link'];
 
+// get old link
+$query_post = $database->query("SELECT `link` FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `post_id`='$post_id'");
+$post = $query_post->fetchRow();
+$old_link = $post['link'];
+
 // Include WB functions file
 require_once WB_PATH.'/framework/functions.php';
 
-// Work-out what the link should be
-$post_link = '/posts/'.page_filename($title).PAGE_SPACER.$post_id;
+// potential new link
+$post_link = '/posts/'.page_filename($link);
+// make sure to have the post_id as suffix; this will make the link unique (hopefully...)
+if(substr_compare($post_link,$post_id,-(strlen($post_id)),strlen($post_id))!=0) {
+    $post_link .= PAGE_SPACER.$post_id;
+}
 
 // Make sure the post link is set and exists
 // Make news post access files dir
@@ -125,6 +134,7 @@ if (!is_writable(WB_PATH.PAGES_DIRECTORY.'/posts/')) {
     // First, delete old file if it exists
     if (file_exists(WB_PATH.PAGES_DIRECTORY.$old_link.PAGE_EXTENSION)) {
         $file_create_time = filemtime(WB_PATH.PAGES_DIRECTORY.$old_link.PAGE_EXTENSION);
+
         unlink(WB_PATH.PAGES_DIRECTORY.$old_link.PAGE_EXTENSION);
     }
 

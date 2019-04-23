@@ -41,6 +41,7 @@ $MOD_NEWS_IMG['PREVIEWIMAGE'] = 'Preview image';
 $MOD_NEWS_IMG['SAVEGOBACK'] = 'Save and go back';
 $MOD_NEWS_IMG['SETTINGS'] = 'News Settings';
 $MOD_NEWS_IMG['SETTINGS'] = 'Options';
+$MOD_NEWS_IMG['LINK'] = 'Link';
 
 //image settings
 $MOD_NEWS_IMG['CROP'] = 'Crop';
