@@ -50,7 +50,6 @@ if(defined('WB_URL'))
                 . ' )';
     $database->query($mod_news);
     
-    // $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_news_img_settings`");
     $mod_news = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_news_img_settings` ( '
                      . '`section_id` INT NOT NULL DEFAULT \'0\','
                      . '`page_id` INT NOT NULL DEFAULT \'0\','
@@ -63,11 +62,13 @@ if(defined('WB_URL'))
                      . '`post_content` TEXT NOT NULL,'
                      . '`image_loop` TEXT NOT NULL,'
                      . '`post_footer` TEXT NOT NULL,'
-                     . '`resize` INT NOT NULL DEFAULT \'0\','
                      . '`resize_preview` VARCHAR(50) NULL, '
                      . '`crop_preview` CHAR(1) NOT NULL DEFAULT \'N\', '
-                     . '`use_captcha` INT NOT NULL DEFAULT \'0\','
                      . '`gallery` TEXT NOT NULL,'
+                     . '`imgthumbsize` VARCHAR(50) NULL DEFAULT NULL, '
+                     . '`imgmaxwidth` VARCHAR(50) NULL DEFAULT NULL, '
+                     . '`imgmaxheight` VARCHAR(50) NULL DEFAULT NULL, '
+                     . '`imgmaxsize` VARCHAR(50) NULL DEFAULT NULL, '
                      . 'PRIMARY KEY (section_id)'
                 . ' )';
 
