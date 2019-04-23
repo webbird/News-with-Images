@@ -208,7 +208,7 @@ if (isset($_FILES["foto"])) {
                             $position = $order->get_new($post_id);
 
                             // DB insert
-                            $database->query("INSERT INTO ".TABLE_PREFIX."mod_news_img_img (bildname, post_id, position) VALUES ('".$imagename."', ".$post_id.", ".$position.')');
+                            $database->query("INSERT INTO ".TABLE_PREFIX."mod_news_img_img (picname, post_id, position) VALUES ('".$imagename."', ".$post_id.", ".$position.')');
                         }
                     }
                 }
@@ -300,10 +300,10 @@ if (!($database->is_error())) {
             $row_id = $row['id'];
             // var_dump($row_id);
             //var_dump($_POST['bildbeschreibung'][$row_id]);
-            $bildbeschreibung = isset($_POST['bildbeschreibung'][$row_id])
-                          ? $_POST['bildbeschreibung'][$row_id]
+            $picdesc = isset($_POST['picdesc'][$row_id])
+                          ? $_POST['picdesc'][$row_id]
                           : '';
-            $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_img` SET `bildbeschreibung` = '$bildbeschreibung' WHERE id = '$row_id'");
+            $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_img` SET `picdesc` = '$picdesc' WHERE id = '$row_id'");
         }
     }
 }

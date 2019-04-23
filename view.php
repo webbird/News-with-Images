@@ -482,7 +482,7 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
         $images = array();
         if ($sql_result->numRows() > 0) {
             while ($row = $sql_result->fetchRow()) {
-                $images[] = str_replace(array('[IMAGE]','[DESCRIPTION]'), array(WB_URL.MEDIA_DIRECTORY.'/news_img/'.$row['bildname'],$row['bildbeschreibung']), $setting_image_loop);
+                $images[] = str_replace(array('[IMAGE]','[DESCRIPTION]'), array(WB_URL.MEDIA_DIRECTORY.'/news_img/'.POST_ID.'/'.$row['picname'],$row['picdesc']), $setting_image_loop);
             }
         }
 

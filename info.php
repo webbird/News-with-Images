@@ -23,6 +23,9 @@ $module_license     = 'GNU General Public License';
 $module_description = 'This page type is designed for making a news page with Images and Lightboxeffect.';
 
 /**
+ * v3.7.8 - 2019-04-23 Bianka Martinovic
+ *          + renamed db column "bildname" to "picname", "bildbeschreibung" to "picdesc"
+ *
  * v3.7.7 - 2019-04-18 Bianka Martinovic
  *          + removed all commenting options / tables / columns / files
  *

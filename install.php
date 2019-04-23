@@ -76,8 +76,8 @@ if(defined('WB_URL'))
     //table images
     $mod_news = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_news_img_img` ( '
                  . '`id` INT NOT NULL AUTO_INCREMENT,'
-                 . '`imgname` VARCHAR(255) NOT NULL DEFAULT \'\','
-                 . '`imgdescription` VARCHAR(255) NOT NULL DEFAULT \'\','
+                 . '`picname` VARCHAR(255) NOT NULL DEFAULT \'\','
+                 . '`picdesc` VARCHAR(255) NOT NULL DEFAULT \'\','
                  . '`post_id` INT NOT NULL DEFAULT \'0\','
                  . '`position` INT(11) NOT NULL DEFAULT \'0\','
                  . 'PRIMARY KEY (id)'

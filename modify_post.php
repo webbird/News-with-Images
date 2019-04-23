@@ -47,8 +47,8 @@ if (isset($_GET['img_id'])) {
     if (!$row) {
         echo "Datei existiert nicht!";
     } else {
-        unlink(WB_PATH.$file_dir.$row['bildname']);
-        unlink(WB_PATH.$thumb_dir.$row['bildname']);
+        @unlink(WB_PATH.$file_dir.$row['picname']);
+        @unlink(WB_PATH.$thumb_dir.$row['picname']);
     }
   
     $database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `id` = '$img_id'");
@@ -58,8 +58,8 @@ if (isset($_GET['img_id'])) {
 if (isset($_GET['post_img'])) {
     $post_img = $_GET['post_img'];
     $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `image` = '' WHERE `post_id` = '$post_id'");
-    unlink(WB_PATH.$file_dir.$post_img);
-    unlink(WB_PATH.$thumb_dir.$post_img);
+    @unlink(WB_PATH.$file_dir.$post_img);
+    @unlink(WB_PATH.$thumb_dir.$post_img);
 }   //end delete  preview
 
 // re-order images
@@ -297,8 +297,8 @@ if ($query_img->numRows() > 0) {
                   . '<img src="'.THEME_URL.'/images/down_16.png" /></a>';
         }
         echo '<tr><td>'.$up.$down.'</td>',
-             '<td width="100"><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'" onmouseover="XBT(this, {id:\'tt'.$i.'\'})"><img class="img_list" src="'.WB_URL.$thumb_dir.$row["bildname"].'" /></a><div id="tt'.$i.'" class="xbtooltip"><img src="'.WB_URL.$file_dir.$row["bildname"].'" /></div></td>',
-             '<td>'.$row["bildname"].'<br /><input type="text" name="bildbeschreibung['.$row["id"].']" value="'.$row["bildbeschreibung"].'"></td>',
+             '<td width="100"><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'" onmouseover="XBT(this, {id:\'tt'.$i.'\'})"><img class="img_list" src="'.WB_URL.$thumb_dir.$row["picname"].'" /></a><div id="tt'.$i.'" class="xbtooltip"><img src="'.WB_URL.$file_dir.$row["picname"].'" /></div></td>',
+             '<td>'.$row["picname"].'<br /><input type="text" name="picdesc['.$row["id"].']" value="'.$row["picdesc"].'"></td>',
              '<td><a onclick="return confirm(\''.$MOD_NEWS_IMG['DELETEIMAGE'].'\')" href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&img_id='.$row["id"].'#fs"><img src="'.THEME_URL.'/images/delete_16.png" /></a></td><tr>';
         $i++;
         $first=false;
