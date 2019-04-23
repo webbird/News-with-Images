@@ -16,7 +16,7 @@
 $module_directory   = 'news_img';
 $module_name        = 'News with Images';
 $module_function    = 'page';
-$module_version     = '3.7.7';
+$module_version     = '3.7.8';
 $module_platform    = '2.8.x';
 $module_author      = 'Ryan Djurovich, Rob Smith, Silvia Reins, Martin Hecht, Florian Meerwinck, Bianka Martinovic';
 $module_license     = 'GNU General Public License';
@@ -25,6 +25,7 @@ $module_description = 'This page type is designed for making a news page with Im
 /**
  * v3.7.8 - 2019-04-23 Bianka Martinovic
  *          + renamed db column "bildname" to "picname", "bildbeschreibung" to "picdesc"
+ *          + show publishing dates in backend -> list view
  *
  * v3.7.7 - 2019-04-18 Bianka Martinovic
  *          + removed all commenting options / tables / columns / files
