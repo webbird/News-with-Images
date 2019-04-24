@@ -41,17 +41,10 @@ if(is_writable(WB_PATH.PAGES_DIRECTORY.$get_details['link'].PAGE_EXTENSION)) {
 	unlink(WB_PATH.PAGES_DIRECTORY.$get_details['link'].PAGE_EXTENSION);
 }
 
-//get and remove all images created by posts in section
-$query_img = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = ".$post_id);
-    if($query_img->numRows() > 0) {
-        while($result = $query_img->fetchRow()) {
-            if(is_writable(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$result['picname'])) {
-                unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$result['picname']);
-                unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb/thumb_'.$result['picname']);
-            }
-            $database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = ".$post_id);
-        }
-}
+// delete images
+$mod_nwi_file_dir .= "$post_id";
+rm_full_dir($mod_nwi_file_dir);
+$database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = ".$post_id);
 
 // Delete post
 $database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `post_id` = '$post_id' LIMIT 1");

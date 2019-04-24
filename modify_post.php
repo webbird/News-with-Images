@@ -26,6 +26,9 @@ if (!isset($_GET['post_id']) or !is_numeric($_GET['post_id'])) {
 // Include WB admin wrapper script
 require WB_PATH.'/modules/admin.php';
 
+$mod_nwi_file_dir .= "$post_id/";
+$mod_nwi_thumb_dir = $mod_nwi_file_dir . "thumb/";
+
 // delete image
 if (isset($_GET['img_id'])) {
     $img_id = $_GET['img_id'];
@@ -35,10 +38,9 @@ if (isset($_GET['img_id'])) {
     if (!$row) {
         echo "Datei existiert nicht!";
     } else {
-        @unlink(WB_PATH.$mod_nwi_file_dir.$row['picname']);
-        @unlink(WB_PATH.$mod_nwi_thumb_dir.$row['picname']);
+        unlink($mod_nwi_file_dir.$row['picname']);
+        unlink($mod_nwi_thumb_dir.$row['picname']);
     }
-  
     $database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `id` = '$img_id'");
 }   //end delete
 
@@ -46,12 +48,11 @@ if (isset($_GET['img_id'])) {
 if (isset($_GET['post_img'])) {
     $post_img = $_GET['post_img'];
     $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `image` = '' WHERE `post_id` = '$post_id'");
-    @unlink(WB_PATH.$mod_nwi_file_dir.$post_img);
-    @unlink(WB_PATH.$mod_nwi_thumb_dir.$post_img);
+    @unlink($mod_nwi_file_dir.$post_img);
+    @unlink($mod_nwi_thumb_dir.$post_img);
 }   //end delete  preview
 
 // re-order images
-// 2014-04-10 by BlackBird Webprogrammierung
 if (isset($_GET['id']) && (isset($_GET['up']) || isset($_GET['down']))) {
     require WB_PATH.'/framework/class.order.php';
     $order = new order(TABLE_PREFIX.'mod_news_img_img', 'position', 'id', 'post_id');
@@ -61,7 +62,6 @@ if (isset($_GET['id']) && (isset($_GET['up']) || isset($_GET['down']))) {
         $order->move_down($_GET['id']);
     }
 }
-// 2014-04-10 ---end---
 
 // Get header and footer
 $query_content = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `post_id` = '$post_id'");
@@ -81,10 +81,10 @@ if (!defined('WYSIWYG_EDITOR') or WYSIWYG_EDITOR=="none" or !file_exists(WB_PATH
 $link = $fetch_content['link'];
 $parts = explode('/', $link);
 $link = array_pop($parts);
-$linkbase = implode('/',$parts);
-$parts = explode(PAGE_SPACER,$link);
+$linkbase = implode('/', $parts);
+$parts = explode(PAGE_SPACER, $link);
 array_pop($parts);
-$link = implode(PAGE_SPACER,$parts);
+$link = implode(PAGE_SPACER, $parts);
 
 // include jscalendar-setup
 $jscal_use_time = true; // whether to use a clock, too
@@ -118,13 +118,13 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
     		<?php echo $linkbase ?>/<input type="text" name="link" id="link<?php echo $page_id ?>" value="<?php echo(htmlspecialchars($link)); ?>" maxlength="255" style="width:80%" /><?php echo PAGE_SPACER.$post_id.PAGE_EXTENSION ?>
     	</td>
     </tr>
-<?php // endif; ?>
+<?php // endif;?>
     <tr>
     	<td class="setting_name"><?php echo $MOD_NEWS_IMG['PREVIEWIMAGE']; ?>:</td>
     	<td>
 <?php
          if ($fetch_content['image'] != "") {
-             echo '<img class="img_list" style="float:left;margin-right:15px" src="'.WB_URL.$mod_nwi_file_dir.$fetch_content['image'].'" /> '.$fetch_content['image'].'<br /><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&post_img='.$fetch_content['image'].'">l&ouml;schen</a>';
+             echo '<img class="img_list" style="float:left;margin-right:15px" src="'.WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post_id.'/'.$fetch_content['image'].'" /> '.$fetch_content['image'].'<br /><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&post_img='.$fetch_content['image'].'">l&ouml;schen</a>';
              echo '<input type="hidden" name="previewimage" value="'.$fetch_content['image'].'" />';
          } else {
              echo '<input type="file" name="postfoto" accept="image/*" />  <br />';
@@ -206,14 +206,14 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
     	<td class="setting_value">
     		<input type="radio" name="active" id="active_true" value="1" <?php if ($fetch_content['active'] == 1) {
                     echo ' checked="checked"';
-                } ?> />
+} ?> />
     		<a href="#" onclick="javascript: document.getElementById('active_true').checked = true;">
     		<?php echo $TEXT['YES']; ?>
     		</a>
     		&nbsp;
     		<input type="radio" name="active" id="active_false" value="0" <?php if ($fetch_content['active'] == 0) {
                     echo ' checked="checked"';
-                } ?> />
+} ?> />
     		<a href="#" onclick="javascript: document.getElementById('active_false').checked = true;">
     		<?php echo $TEXT['NO']; ?>
     		</a>
@@ -224,9 +224,9 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
     	<td class="setting_value">
     	   <input type="text" id="publishdate" name="publishdate" value="<?php if ($fetch_content['published_when']==0) {
                     print date($jscal_format, strtotime((date('Y-m-d H:i'))));
-                } else {
+} else {
                     print date($jscal_format, $fetch_content['published_when']);
-                }?>" style="width:33%;" />
+}?>" style="width:33%;" />
         	<img src="<?php echo THEME_URL ?>/images/clock_16.png" id="publishdate_trigger" style="cursor: pointer;" title="<?php echo $TEXT['CALENDAR']; ?>" alt="<?php echo $TEXT['CALENDAR']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" />
         	<img src="<?php echo THEME_URL ?>/images/clock_del_16.png" style="cursor: pointer;" title="<?php echo $TEXT['DELETE_DATE']; ?>" alt="<?php echo $TEXT['DELETE_DATE']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" onclick="document.modify.publishdate.value=''" />
     	</td>
@@ -236,9 +236,9 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
     	<td class="setting_value">
     	   <input type="text" id="enddate" name="enddate" value="<?php if ($fetch_content['published_until']==0) {
                     print "";
-                } else {
+} else {
                     print date($jscal_format, $fetch_content['published_until']);
-                }?>" style="width:33%;" />
+}?>" style="width:33%;" />
         	<img src="<?php echo THEME_URL ?>/images/clock_16.png" id="enddate_trigger" style="cursor: pointer;" title="<?php echo $TEXT['CALENDAR']; ?>" alt="<?php echo $TEXT['CALENDAR']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" />
         	<img src="<?php echo THEME_URL ?>/images/clock_del_16.png" style="cursor: pointer;" title="<?php echo $TEXT['DELETE_DATE']; ?>" alt="<?php echo $TEXT['DELETE_DATE']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" onclick="document.modify.enddate.value=''" />
     	</td>
@@ -294,7 +294,7 @@ if ($query_img->numRows() > 0) {
     $first=true;
     $last=$query_img->numRows();
 
-    while($row = $query_img->fetchRow()) {
+    while ($row = $query_img->fetchRow()) {
         $up='<span style="display:inline-block;width:20px;"></span>';
         $down=$up;
         if (!$first) {
@@ -307,7 +307,7 @@ if ($query_img->numRows() > 0) {
         }
         echo '<tr>'.
              '<td>'.$up.$down.'</td>',
-             '<td><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'" onmouseover="XBT(this, {id:\'tt'.$i.'\'})"><img class="img_list" src="'.WB_URL.$mod_nwi_thumb_dir.$row["picname"].'" /></a><div id="tt'.$i.'" class="xbtooltip"><img src="'.WB_URL.$mod_nwi_file_dir.$row["picname"].'" /></div></td>',
+             '<td><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'" onmouseover="XBT(this, {id:\'tt'.$i.'\'})"><img class="img_list" src="'.WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post_id.'/thumb/'.$row["picname"].'" /></a><div id="tt'.$i.'" class="xbtooltip"><img src="'.WB_URL.$mod_nwi_file_dir.$row["picname"].'" /></div></td>',
              '<td>'.$row["picname"].'<br /><input type="text" name="picdesc['.$row["id"].']" value="'.$row["picdesc"].'"></td>',
              '<td><a onclick="return confirm(\''.$MOD_NEWS_IMG['DELETEIMAGE'].'\')" href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&img_id='.$row["id"].'#fs"><img src="'.THEME_URL.'/images/delete_16.png" /></a></td>'.
              '</tr>';

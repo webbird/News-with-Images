@@ -15,6 +15,8 @@
 
 require_once __DIR__.'/functions.inc.php';
 require_once WB_PATH."/include/jscalendar/jscalendar-functions.php";
+// Include WB functions file
+require_once WB_PATH.'/framework/functions.php';
 
 // Get id
 if (!isset($_POST['post_id']) or !is_numeric($_POST['post_id'])) {
@@ -99,9 +101,6 @@ $query_post = $database->query("SELECT `link` FROM `".TABLE_PREFIX."mod_news_img
 $post = $query_post->fetchRow();
 $old_link = $post['link'];
 
-// Include WB functions file
-require_once WB_PATH.'/framework/functions.php';
-
 // potential new link
 $post_link = '/posts/'.page_filename($link);
 // make sure to have the post_id as suffix; this will make the link unique (hopefully...)
@@ -142,8 +141,12 @@ if (!defined('ORDERING_CLASS_LOADED')) {
     require WB_PATH.'/framework/class.order.php';
 }
 
-//post images
+$mod_nwi_file_dir .= "$post_id/";
+$mod_nwi_thumb_dir = $mod_nwi_file_dir . "thumb/";
+
+// post images (gallery images)
 if (isset($_FILES["foto"])) {
+
     // make sure the folder exists
     if(!is_dir($mod_nwi_file_dir)) {
         mod_nwi_img_makedir($mod_nwi_file_dir);
@@ -156,7 +159,9 @@ if (isset($_FILES["foto"])) {
         }
         for ($i=0; $i<sizeof($picture['name']); $i++) {
             //wenn nur vorschaubild hochgeladen wird und alle galeriefotos leer sind.....
-            if (isset($picture['name'][$i]) && $picture['name'][$i] && (strlen($picture['name'][$i]) > 3)) {
+            if (isset($picture['name'][$i]) && $picture['name'][$i] && (strlen($picture['name'][$i]) > 3))
+            {
+                $pic_error = '';
                 //change special characters
                 $imagename = media_filename($picture['name'][$i]);
                 //small characters
@@ -175,36 +180,34 @@ if (isset($_FILES["foto"])) {
                 }
 
                 // check
-                if ($picture['size'][$i] > $imagemaxsize) {
-                    $pic_error.= $MOD_NEWS_IMG['IMAGE_LARGER_THAN'].mod_nwi_byte_convert($imagemaxsize).'<br />';
+                if (empty($picture['size'][$i]) || $picture['size'][$i] > $imagemaxsize) {
+                    $imageErrorMessage .= $MOD_NEWS_IMG['IMAGE_LARGER_THAN'].mod_nwi_byte_convert($imagemaxsize).'<br />';
                 } elseif (strlen($imagename) > '256') {
-                    $pic_error.= $MOD_NEWS_IMG['IMAGE_FILENAME_ERROR'].'1<br />';
+                    $imageErrorMessage .= $MOD_NEWS_IMG['IMAGE_FILENAME_ERROR'].'1<br />';
                 } else {
                     // move to media folder
                     if(true===move_uploaded_file($picture['tmp_name'][$i], $mod_nwi_file_dir.$imagename)) {
-
-                        // 2014-04-10 by BlackBird Webprogrammierung:
-                        //            resize image
+                        // resize image (if larger than max width and height)
                         if (list($w, $h) = getimagesize($mod_nwi_file_dir.$imagename)) {
                             if ($w>$imagemaxwidth || $h>$imagemaxheight) {
-                                mod_nwi_image_resize($mod_nwi_file_dir.$imagename, $mod_nwi_file_dir.$imagename, $imagemaxwidth, $imagemaxheight, $crop);
+                                if (true !== ($pic_error = @mod_nwi_image_resize($mod_nwi_file_dir.$imagename, $mod_nwi_file_dir.$imagename, $imagemaxwidth, $imagemaxheight, $crop))) {
+                                    $imageErrorMessage .= $pic_error.'<br />';
+                                    @unlink($mod_nwi_file_dir.$imagename); // delete image (cleanup)
+                                }
                             }
                         }
-
-                        //create thumb
+                        // create thumb
                         if (true !== ($pic_error = @mod_nwi_image_resize($mod_nwi_file_dir.$imagename, $mod_nwi_thumb_dir.$imagename, $thumbwidth, $thumbheight, $crop))) {
                             $imageErrorMessage.=$pic_error.'<br />';
-                            //@unlink($imagename);
+                            @unlink($mod_nwi_file_dir.$imagename); // delete image (cleanup)
                         } else {
-
-                            // 2014-04-10 by BlackBird Webprogrammierung:
                             //            image position
                             $order = new order(TABLE_PREFIX.'mod_news_img_img', 'position', 'id', 'post_id');
                             $position = $order->get_new($post_id);
-
-                            // DB insert
                             $database->query("INSERT INTO ".TABLE_PREFIX."mod_news_img_img (picname, post_id, position) VALUES ('".$imagename."', ".$post_id.", ".$position.')');
                         }
+                    } else {
+                        $imageErrorMessage .= "Unable to move uploaded image ".$picture['tmp_name'][$i]." to ".$mod_nwi_file_dir.$imagename."<br />";
                     }
                 }
             }
@@ -226,7 +229,6 @@ if (isset($_FILES["postfoto"]) && $_FILES["postfoto"]["name"] != "") {
             //small characters
             $postimgname = strtolower("$postimgname") ;
 
-            // 2014-04-10 by BlackBird Webprogrammierung:
             //            if file exists, find new name by adding a number
             if (file_exists($mod_nwi_file_dir.$postimgname)) {
                 $num = 1;
