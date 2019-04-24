@@ -1,5 +1,13 @@
 <?php
 
+require_once __DIR__.'/../../config.php';
+
+// load module language file
+$lang = (dirname(__FILE__)) . '/languages/' . LANGUAGE . '.php';
+require_once(!file_exists($lang) ? (dirname(__FILE__)) . '/languages/EN.php' : $lang);
+
+$mod_nwi_file_dir = WB_PATH.MEDIA_DIRECTORY.'/.news_img/';
+$mod_nwi_thumb_dir = WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb/';
 
 function mod_news_img_makedir($dir, $with_thumb=true)
 {

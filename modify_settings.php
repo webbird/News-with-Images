@@ -13,22 +13,13 @@
  *
  */
 
-require '../../config.php';
+require_once __DIR__.'/functions.inc.php';
 
 // Include WB admin wrapper script
 require WB_PATH.'/modules/admin.php';
 
 // include core functions of WB 2.7 to edit the optional module CSS files (frontend.css, backend.css)
 @include_once WB_PATH .'/framework/module.functions.php';
-
-// check if module language file exists for the language set by the user (e.g. DE, EN)
-if(!file_exists(WB_PATH .'/modules/news_img/languages/'.LANGUAGE .'.php')) {
-	// no module language file exists for the language set by the user, include default module language file EN.php
-	require_once WB_PATH .'/modules/news_img/languages/EN.php';
-} else {
-	// a module language file exists for the language defined by the user, load it
-	require_once WB_PATH .'/modules/news_img/languages/'.LANGUAGE .'.php';
-}
 
 // Get header and footer
 $query_content = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '$section_id'");

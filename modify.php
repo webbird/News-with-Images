@@ -16,14 +16,7 @@
 // Must include code to stop this file being access directly
 if(!defined('WB_PATH')) { exit("Cannot access this file directly"); }
 
-// check if module language file exists for the language set by the user (e.g. DE, EN)
-if(!file_exists(WB_PATH .'/modules/news_img/languages/'.LANGUAGE .'.php')) {
-	// no module language file exists for the language set by the user, include default module language file EN.php
-	require_once WB_PATH .'/modules/news_img/languages/EN.php';
-} else {
-	// a module language file exists for the language defined by the user, load it
-	require_once WB_PATH .'/modules/news_img/languages/'.LANGUAGE .'.php';
-}
+require_once __DIR__.'/functions.inc.php';
 
 $database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_posts`  WHERE `page_id` = '$page_id' and `section_id` = '$section_id' and `title`=''");
 $database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_groups`  WHERE `page_id` = '$page_id' and `section_id` = '$section_id' and `title`=''");

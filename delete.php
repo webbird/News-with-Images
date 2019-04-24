@@ -19,6 +19,8 @@ if(defined('WB_PATH') == false)
     exit("Cannot access this file directly");
 }
 
+require_once __DIR__.'/functions.inc.php';
+
 //get and remove all php files created for the news_img section
 $query_details = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `section_id` = '$section_id'");
 if($query_details->numRows() > 0) {

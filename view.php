@@ -18,8 +18,7 @@ if (defined('WB_PATH') == false) {
     exit("Cannot access this file directly");
 }
 
-$file_dir = MEDIA_DIRECTORY.'/.news_img/';
-$thumb_dir = MEDIA_DIRECTORY.'/.news_img/thumb/';
+require_once __DIR__.'/functions.inc.php';
 $usebrax = false;
 
 // Nur temporaer, spaeter ueber Optionen

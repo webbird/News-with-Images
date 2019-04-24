@@ -13,7 +13,7 @@
  *
  */
 
-require '../../config.php';
+require_once __DIR__.'/functions.inc.php';
 
 // Include WB admin wrapper script
 $update_when_modified = true; // Tells script to update when this page was last updated

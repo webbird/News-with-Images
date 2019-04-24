@@ -13,7 +13,7 @@
  *
  */
 
-require '../../config.php';
+require_once __DIR__.'/functions.inc.php';
 
 // Get id
 if(!isset($_POST['group_id']) OR !is_numeric($_POST['group_id']))
@@ -85,10 +85,10 @@ if(isset($_FILES['image']['tmp_name']) AND $_FILES['image']['tmp_name'] != '')
         if (list($w, $h) = getimagesize($new_filename)) {
             if ($w>$previewwidth || $h>$previewheight) {
                 image_resize($new_filename, $thumb_location, $previewwidth, $previewheight, $fetch_settings['crop_preview']);
-			unlink($new_filename);
+                unlink($new_filename);
                 rename($thumb_location,$new_filename);
             }
-		}
+        }
 	}
 }
 if(isset($_POST['delete_image']) AND $_POST['delete_image'] != '')

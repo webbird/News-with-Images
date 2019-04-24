@@ -13,7 +13,7 @@
  *
  */
 
-require('../../config.php');
+require_once __DIR__.'/functions.inc.php';
 
 // Get id
 if(!isset($_GET['group_id']) OR !is_numeric($_GET['group_id'])) {

@@ -13,7 +13,7 @@
  *
  */
 
-require '../../config.php';
+require_once __DIR__.'/functions.inc.php';
 
 // Get id
 if (!isset($_GET['post_id']) or !is_numeric($_GET['post_id'])) {
@@ -23,20 +23,8 @@ if (!isset($_GET['post_id']) or !is_numeric($_GET['post_id'])) {
     $post_id = $_GET['post_id'];
 }
 
-$file_dir  = MEDIA_DIRECTORY.'/.news_img/'.$post_id.'/';
-$thumb_dir = MEDIA_DIRECTORY.'/.news_img/'.$post_id.'/thumb/';
-
 // Include WB admin wrapper script
 require WB_PATH.'/modules/admin.php';
-
-// check if module language file exists for the language set by the user (e.g. DE, EN)
-if (!file_exists(WB_PATH .'/modules/news_img/languages/'.LANGUAGE .'.php')) {
-    // no module language file exists for the language set by the user, include default module language file EN.php
-    require_once WB_PATH .'/modules/news_img/languages/EN.php';
-} else {
-    // a module language file exists for the language defined by the user, load it
-    require_once WB_PATH .'/modules/news_img/languages/'.LANGUAGE .'.php';
-}
 
 // delete image
 if (isset($_GET['img_id'])) {
@@ -47,8 +35,8 @@ if (isset($_GET['img_id'])) {
     if (!$row) {
         echo "Datei existiert nicht!";
     } else {
-        @unlink(WB_PATH.$file_dir.$row['picname']);
-        @unlink(WB_PATH.$thumb_dir.$row['picname']);
+        @unlink(WB_PATH.$mod_nwi_file_dir.$row['picname']);
+        @unlink(WB_PATH.$mod_nwi_thumb_dir.$row['picname']);
     }
   
     $database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `id` = '$img_id'");
@@ -58,8 +46,8 @@ if (isset($_GET['img_id'])) {
 if (isset($_GET['post_img'])) {
     $post_img = $_GET['post_img'];
     $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `image` = '' WHERE `post_id` = '$post_id'");
-    @unlink(WB_PATH.$file_dir.$post_img);
-    @unlink(WB_PATH.$thumb_dir.$post_img);
+    @unlink(WB_PATH.$mod_nwi_file_dir.$post_img);
+    @unlink(WB_PATH.$mod_nwi_thumb_dir.$post_img);
 }   //end delete  preview
 
 // re-order images
@@ -136,7 +124,7 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
     	<td>
 <?php
          if ($fetch_content['image'] != "") {
-             echo '<img class="img_list" style="float:left;margin-right:15px" src="'.WB_URL.$file_dir.$fetch_content['image'].'" /> '.$fetch_content['image'].'<br /><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&post_img='.$fetch_content['image'].'">l&ouml;schen</a>';
+             echo '<img class="img_list" style="float:left;margin-right:15px" src="'.WB_URL.$mod_nwi_file_dir.$fetch_content['image'].'" /> '.$fetch_content['image'].'<br /><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&post_img='.$fetch_content['image'].'">l&ouml;schen</a>';
              echo '<input type="hidden" name="previewimage" value="'.$fetch_content['image'].'" />';
          } else {
              echo '<input type="file" name="postfoto" accept="image/*" />  <br />';
@@ -319,7 +307,7 @@ if ($query_img->numRows() > 0) {
         }
         echo '<tr>'.
              '<td>'.$up.$down.'</td>',
-             '<td><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'" onmouseover="XBT(this, {id:\'tt'.$i.'\'})"><img class="img_list" src="'.WB_URL.$thumb_dir.$row["picname"].'" /></a><div id="tt'.$i.'" class="xbtooltip"><img src="'.WB_URL.$file_dir.$row["picname"].'" /></div></td>',
+             '<td><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'" onmouseover="XBT(this, {id:\'tt'.$i.'\'})"><img class="img_list" src="'.WB_URL.$mod_nwi_thumb_dir.$row["picname"].'" /></a><div id="tt'.$i.'" class="xbtooltip"><img src="'.WB_URL.$mod_nwi_file_dir.$row["picname"].'" /></div></td>',
              '<td>'.$row["picname"].'<br /><input type="text" name="picdesc['.$row["id"].']" value="'.$row["picdesc"].'"></td>',
              '<td><a onclick="return confirm(\''.$MOD_NEWS_IMG['DELETEIMAGE'].'\')" href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&img_id='.$row["id"].'#fs"><img src="'.THEME_URL.'/images/delete_16.png" /></a></td>'.
              '</tr>';

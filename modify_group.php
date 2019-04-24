@@ -13,7 +13,7 @@
  *
  */
 
-require '../../config.php';
+require_once __DIR__.'/functions.inc.php';
 
 // Get id
 if(!isset($_GET['group_id']) OR !is_numeric($_GET['group_id'])) {
@@ -45,28 +45,28 @@ $fetch_content = $query_content->fetchRow();
     <tr>
     	<td style="width:80px"><?php echo $TEXT['TITLE']; ?>:</td>
     	<td colspan="2">
-		<input type="text" name="title" value="<?php echo (htmlspecialchars($fetch_content['title'])); ?>" style="width: 98%;" maxlength="255" />
-	</td>
+    		<input type="text" name="title" value="<?php echo (htmlspecialchars($fetch_content['title'])); ?>" style="width: 98%;" maxlength="255" />
+    	</td>
     </tr>
     <tr>
-	<td><?php echo $TEXT['ACTIVE']; ?>:</td>
+    	<td><?php echo $TEXT['ACTIVE']; ?>:</td>
     	<td colspan="2">
-		<input type="radio" name="active" id="active_true" value="1" <?php if($fetch_content['active'] == 1) { echo ' checked="checked"'; } ?> />
-		<a href="#" onclick="javascript: document.getElementById('active_true').checked = true;">
-		<?php echo $TEXT['YES']; ?>
-		</a>
-		-
-		<input type="radio" name="active" id="active_false" value="0" <?php if($fetch_content['active'] == 0) { echo ' checked="checked"'; } ?> />
-		<a href="#" onclick="javascript: document.getElementById('active_false').checked = true;">
-		<?php echo $TEXT['NO']; ?>
-		</a>
-	</td>
+    		<input type="radio" name="active" id="active_true" value="1" <?php if($fetch_content['active'] == 1) { echo ' checked="checked"'; } ?> />
+    		<a href="#" onclick="javascript: document.getElementById('active_true').checked = true;">
+    		<?php echo $TEXT['YES']; ?>
+    		</a>
+    		-
+    		<input type="radio" name="active" id="active_false" value="0" <?php if($fetch_content['active'] == 0) { echo ' checked="checked"'; } ?> />
+    		<a href="#" onclick="javascript: document.getElementById('active_false').checked = true;">
+    		<?php echo $TEXT['NO']; ?>
+    		</a>
+    	</td>
     </tr>
 
     <tr>
     	<td><?php echo $TEXT['IMAGE']; ?>:</td>
     	<?php if(file_exists(WB_PATH.MEDIA_DIRECTORY.'/.news_img/image'.$group_id.'.jpg')) { ?>
-    	<td>
+        <td>
             <img class="preview" src="<?php echo WB_URL.MEDIA_DIRECTORY; ?>/.news_img/image<?php echo $group_id; ?>.jpg" alt="<?php echo $TEXT['IMAGE']; ?>" /></div>
     		<input type="checkbox" name="delete_image" id="delete_image" value="true" />
     		<label for="delete_image"><?php echo $TEXT['DELETE'] ?></label>
@@ -82,12 +82,12 @@ $fetch_content = $query_content->fetchRow();
 
     <table>
     <tr>
-	<td align="left">
-		<input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>" style="width: 100px; margin-top: 5px;" />
-	</td>
-	<td align="right">
-		<input type="button" value="<?php echo $TEXT['CANCEL']; ?>" onclick="javascript: window.location = '<?php echo ADMIN_URL; ?>/pages/modify.php?page_id=<?php echo $page_id; ?>';" style="width: 100px; margin-top: 5px;" />
-	</td>
+    	<td align="left">
+    		<input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>" style="width: 100px; margin-top: 5px;" />
+    	</td>
+    	<td align="right">
+    		<input type="button" value="<?php echo $TEXT['CANCEL']; ?>" onclick="javascript: window.location = '<?php echo ADMIN_URL; ?>/pages/modify.php?page_id=<?php echo $page_id; ?>';" style="width: 100px; margin-top: 5px;" />
+    	</td>
     </tr>
     </table>
     </form>

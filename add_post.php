@@ -13,19 +13,10 @@
  *
  */
 
-require '../../config.php';
+require_once __DIR__.'/functions.inc.php';
 
 // Include WB admin wrapper script
 require WB_PATH.'/modules/admin.php';
-
-// check if module language file exists for the language set by the user (e.g. DE, EN)
-if(!file_exists(WB_PATH .'/modules/news_img/languages/'.LANGUAGE .'.php')) {
-	// no module language file exists for the language set by the user, include default module language file EN.php
-	require_once WB_PATH .'/modules/news_img/languages/EN.php';
-} else {
-	// a module language file exists for the language defined by the user, load it
-	require_once WB_PATH .'/modules/news_img/languages/'.LANGUAGE .'.php';
-}
 
 // Include the ordering class
 require WB_PATH.'/framework/class.order.php';

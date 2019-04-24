@@ -13,19 +13,8 @@
  *
  */
 
-require_once '../../config.php';
-
-// check if module language file exists for the language set by the user (e.g. DE, EN)
-if (!file_exists(WB_PATH .'/modules/news_img/languages/'.LANGUAGE .'.php')) {
-    // no module language file exists for the language set by the user, include default module language file EN.php
-    require_once WB_PATH .'/modules/news_img/languages/EN.php';
-} else {
-    // a module language file exists for the language defined by the user, load it
-    require_once WB_PATH .'/modules/news_img/languages/'.LANGUAGE .'.php';
-}
-
-require_once WB_PATH."/include/jscalendar/jscalendar-functions.php";
 require_once __DIR__.'/functions.inc.php';
+require_once WB_PATH."/include/jscalendar/jscalendar-functions.php";
 
 // Get id
 if (!isset($_POST['post_id']) or !is_numeric($_POST['post_id'])) {
@@ -35,10 +24,6 @@ if (!isset($_POST['post_id']) or !is_numeric($_POST['post_id'])) {
     $id = $_POST['post_id'];
     $post_id = $id;
 }
-
-$imageErrorMessage ='';
-$file_dir  = WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$post_id.'/';
-$thumb_dir = WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$post_id.'/thumb/';
 
 // Include WB admin wrapper script
 $update_when_modified = true; // Tells script to update when this page was last updated
@@ -160,8 +145,8 @@ if (!defined('ORDERING_CLASS_LOADED')) {
 //post images
 if (isset($_FILES["foto"])) {
     // make sure the folder exists
-    if(!is_dir($file_dir)) {
-        mod_news_img_makedir($file_dir);
+    if(!is_dir($mod_nwi_file_dir)) {
+        mod_news_img_makedir($mod_nwi_file_dir);
     }
     // 2014-04-10 by BlackBird Webprogrammierung:
     //            image position (order)
@@ -179,11 +164,11 @@ if (isset($_FILES["foto"])) {
 
                 // 2014-04-10 by BlackBird Webprogrammierung:
                 //            if file exists, find new name by adding a number
-                if (file_exists($file_dir.$imagename)) {
+                if (file_exists($mod_nwi_file_dir.$imagename)) {
                     $num = 1;
-                    $f_name = pathinfo($file_dir.$imagename, PATHINFO_FILENAME);
-                    $suffix = pathinfo($file_dir.$imagename, PATHINFO_EXTENSION);
-                    while (file_exists($file_dir.$f_name.'_'.$num.'.'.$suffix)) {
+                    $f_name = pathinfo($mod_nwi_file_dir.$imagename, PATHINFO_FILENAME);
+                    $suffix = pathinfo($mod_nwi_file_dir.$imagename, PATHINFO_EXTENSION);
+                    while (file_exists($mod_nwi_file_dir.$f_name.'_'.$num.'.'.$suffix)) {
                         $num++;
                     }
                     $imagename = $f_name.'_'.$num.'.'.$suffix;
@@ -196,18 +181,18 @@ if (isset($_FILES["foto"])) {
                     $pic_error.= $MOD_NEWS_IMG['IMAGE_FILENAME_ERROR'].'1<br />';
                 } else {
                     // move to media folder
-                    if(true===move_uploaded_file($picture['tmp_name'][$i], $file_dir.$imagename)) {
+                    if(true===move_uploaded_file($picture['tmp_name'][$i], $mod_nwi_file_dir.$imagename)) {
 
                         // 2014-04-10 by BlackBird Webprogrammierung:
                         //            resize image
-                        if (list($w, $h) = getimagesize($file_dir.$imagename)) {
+                        if (list($w, $h) = getimagesize($mod_nwi_file_dir.$imagename)) {
                             if ($w>$imagemaxwidth || $h>$imagemaxheight) {
-                                image_resize($file_dir.$imagename, $file_dir.$imagename, $imagemaxwidth, $imagemaxheight, $crop);
+                                image_resize($mod_nwi_file_dir.$imagename, $mod_nwi_file_dir.$imagename, $imagemaxwidth, $imagemaxheight, $crop);
                             }
                         }
 
                         //create thumb
-                        if (true !== ($pic_error = @image_resize($file_dir.$imagename, $thumb_dir.$imagename, $thumbwidth, $thumbheight, $crop))) {
+                        if (true !== ($pic_error = @image_resize($mod_nwi_file_dir.$imagename, $mod_nwi_thumb_dir.$imagename, $thumbwidth, $thumbheight, $crop))) {
                             $imageErrorMessage.=$pic_error.'<br />';
                             //@unlink($imagename);
                         } else {
@@ -230,8 +215,8 @@ if (isset($_FILES["foto"])) {
 // ----- post picture; shown on overview page ----------------------------------
 if (isset($_FILES["postfoto"]) && $_FILES["postfoto"]["name"] != "") {
     // make sure file_dir exists
-    if(!is_dir($file_dir)) {
-        mod_news_img_makedir($file_dir);
+    if(!is_dir($mod_nwi_file_dir)) {
+        mod_news_img_makedir($mod_nwi_file_dir);
     }
     // there should only be one...
     foreach ($_FILES as $postpicture) {
@@ -243,11 +228,11 @@ if (isset($_FILES["postfoto"]) && $_FILES["postfoto"]["name"] != "") {
 
             // 2014-04-10 by BlackBird Webprogrammierung:
             //            if file exists, find new name by adding a number
-            if (file_exists($file_dir.$postimgname)) {
+            if (file_exists($mod_nwi_file_dir.$postimgname)) {
                 $num = 1;
                 $f_name = pathinfo($postimgname, PATHINFO_FILENAME);
                 $suffix = pathinfo($postimgname, PATHINFO_EXTENSION);
-                while (file_exists($file_dir.$f_name.'_'.$num.'.'.$suffix)) {
+                while (file_exists($mod_nwi_file_dir.$f_name.'_'.$num.'.'.$suffix)) {
                     $num++;
                 }
                 $postimgname = $f_name.'_'.$num.'.'.$suffix;
@@ -261,21 +246,21 @@ if (isset($_FILES["postfoto"]) && $_FILES["postfoto"]["name"] != "") {
             } else {
                 // move to media folder
                 $tmpname = pathinfo($postpicture['tmp_name'],PATHINFO_FILENAME).'.'.pathinfo($postpicture['name'],PATHINFO_EXTENSION);
-                if(true===move_uploaded_file($postpicture['tmp_name'], $file_dir.$tmpname)) {
+                if(true===move_uploaded_file($postpicture['tmp_name'], $mod_nwi_file_dir.$tmpname)) {
                     // resize
                     if (substr_count($fetch_content['resize_preview'], 'x')>0) {
                         list($previewwidth, $previewheight) = explode('x', $fetch_content['resize_preview'], 2);
-                        if (true !== ($pic_error = @image_resize($file_dir.$tmpname, $file_dir.$postimgname, $previewwidth, $previewheight, $crop))) {
+                        if (true !== ($pic_error = @image_resize($mod_nwi_file_dir.$tmpname, $mod_nwi_file_dir.$postimgname, $previewwidth, $previewheight, $crop))) {
                             $imageErrorMessage .= 'resize image: '.$pic_error.'<br />';
-                            @unlink($file_dir.$tmpname);
-                            @unlink($file_dir.$postimgname);
+                            @unlink($mod_nwi_file_dir.$tmpname);
+                            @unlink($mod_nwi_file_dir.$postimgname);
                         } else {
                             $image = $postimgname;
-                            @unlink($file_dir.$tmpname);
+                            @unlink($mod_nwi_file_dir.$tmpname);
                         }
                     } else {
                         // just rename
-                        rename($file_dir.$tmpname,$file_dir.$postimgname);
+                        rename($mod_nwi_file_dir.$tmpname,$mod_nwi_file_dir.$postimgname);
                     }
                 }
             }

@@ -13,21 +13,10 @@
  *
  */
 
-require_once '../../config.php';
+require_once __DIR__.'/functions.inc.php';
 
 
-// check if module language file exists for the language set by the user (e.g. DE, EN)
-if(!file_exists(WB_PATH .'/modules/news_img/languages/'.LANGUAGE .'.php')) {
-	// no module language file exists for the language set by the user, include default module language file EN.php
-	require_once WB_PATH .'/modules/news_img/languages/EN.php';
-} else {
-	// a module language file exists for the language defined by the user, load it
-	require_once WB_PATH .'/modules/news_img/languages/'.LANGUAGE .'.php';
-}
 
-
-$file_dir = WB_PATH.MEDIA_DIRECTORY.'/.news_img/';
-$thumb_dir = WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb/';
 
 // Get id
 if(!isset($_POST['post_id']) OR !is_numeric($_POST['post_id']))
