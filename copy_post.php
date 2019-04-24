@@ -36,6 +36,9 @@ $imageErrorMessage = '';
 
 if($pid != 0){
 
+    $mod_nwi_file_dir .= "$post_id/";
+    $mod_nwi_thumb_dir = $mod_nwi_file_dir . "thumb/";
+
     $query_content = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `post_id` = '$pid'");
     $fetch_content = $query_content->fetchRow();
 
