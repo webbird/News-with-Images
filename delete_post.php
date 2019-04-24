@@ -14,7 +14,7 @@
  *
  */
 
-require '../../config.php';
+require_once __DIR__.'/functions.inc.php';
 
 // Get id
 if(!isset($_GET['post_id']) OR !is_numeric($_GET['post_id'])) {
@@ -45,9 +45,9 @@ if(is_writable(WB_PATH.PAGES_DIRECTORY.$get_details['link'].PAGE_EXTENSION)) {
 $query_img = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = ".$post_id);
     if($query_img->numRows() > 0) {
         while($result = $query_img->fetchRow()) {
-            if(is_writable(WB_PATH.MEDIA_DIRECTORY.'/news_img/'.$result['bildname'])) {
-                unlink(WB_PATH.MEDIA_DIRECTORY.'/news_img/'.$result['bildname']);
-                unlink(WB_PATH.MEDIA_DIRECTORY.'/news_img/thumb/thumb_'.$result['bildname']);
+            if(is_writable(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$result['picname'])) {
+                unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$result['picname']);
+                unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb/thumb_'.$result['picname']);
             }
             $database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = ".$post_id);
         }

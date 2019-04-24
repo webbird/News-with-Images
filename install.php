@@ -50,7 +50,6 @@ if(defined('WB_URL'))
                 . ' )';
     $database->query($mod_news);
     
-    // $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_news_img_settings`");
     $mod_news = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_news_img_settings` ( '
                      . '`section_id` INT NOT NULL DEFAULT \'0\','
                      . '`page_id` INT NOT NULL DEFAULT \'0\','
@@ -63,11 +62,13 @@ if(defined('WB_URL'))
                      . '`post_content` TEXT NOT NULL,'
                      . '`image_loop` TEXT NOT NULL,'
                      . '`post_footer` TEXT NOT NULL,'
-                     . '`resize` INT NOT NULL DEFAULT \'0\','
                      . '`resize_preview` VARCHAR(50) NULL, '
                      . '`crop_preview` CHAR(1) NOT NULL DEFAULT \'N\', '
-                     . '`use_captcha` INT NOT NULL DEFAULT \'0\','
                      . '`gallery` TEXT NOT NULL,'
+                     . '`imgthumbsize` VARCHAR(50) NULL DEFAULT NULL, '
+                     . '`imgmaxwidth` VARCHAR(50) NULL DEFAULT NULL, '
+                     . '`imgmaxheight` VARCHAR(50) NULL DEFAULT NULL, '
+                     . '`imgmaxsize` VARCHAR(50) NULL DEFAULT NULL, '
                      . 'PRIMARY KEY (section_id)'
                 . ' )';
 
@@ -76,8 +77,8 @@ if(defined('WB_URL'))
     //table images
     $mod_news = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_news_img_img` ( '
                  . '`id` INT NOT NULL AUTO_INCREMENT,'
-                 . '`imgname` VARCHAR(255) NOT NULL DEFAULT \'\','
-                 . '`imgdescription` VARCHAR(255) NOT NULL DEFAULT \'\','
+                 . '`picname` VARCHAR(255) NOT NULL DEFAULT \'\','
+                 . '`picdesc` VARCHAR(255) NOT NULL DEFAULT \'\','
                  . '`post_id` INT NOT NULL DEFAULT \'0\','
                  . '`position` INT(11) NOT NULL DEFAULT \'0\','
                  . 'PRIMARY KEY (id)'
@@ -126,7 +127,7 @@ if(defined('WB_URL'))
 
         // Make news post img files dir
     require_once(WB_PATH.'/framework/functions.php');
-    if(make_dir(WB_PATH.MEDIA_DIRECTORY.'/news_img')) {
+    if(make_dir(WB_PATH.MEDIA_DIRECTORY.'/.news_img')) {
         // Add a index.php file to prevent directory spoofing
         $content = ''.
 "<?php
@@ -147,15 +148,15 @@ if(defined('WB_URL'))
 
 header('Location: ../');
 ?>";
-        $handle = fopen(WB_PATH.MEDIA_DIRECTORY.'/news_img/index.php', 'w');
+        $handle = fopen(WB_PATH.MEDIA_DIRECTORY.'/.news_img/index.php', 'w');
         fwrite($handle, $content);
         fclose($handle);
-        change_mode(WB_PATH.MEDIA_DIRECTORY.'/news_img/index.php', 'file');
+        change_mode(WB_PATH.MEDIA_DIRECTORY.'/.news_img/index.php', 'file');
     }
         
         // Make news post img thumb files dir
     require_once(WB_PATH.'/framework/functions.php');
-    if(make_dir(WB_PATH.MEDIA_DIRECTORY.'/news_img/thumb')) {
+    if(make_dir(WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb')) {
         // Add a index.php file to prevent directory spoofing
         $content = ''.
 "<?php
@@ -176,9 +177,9 @@ header('Location: ../');
 
 header('Location: ../');
 ?>";
-        $handle = fopen(WB_PATH.MEDIA_DIRECTORY.'/news_img/thumb/index.php', 'w');
+        $handle = fopen(WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb/index.php', 'w');
         fwrite($handle, $content);
         fclose($handle);
-        change_mode(WB_PATH.MEDIA_DIRECTORY.'/news_img/thumb/index.php', 'file');
+        change_mode(WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb/index.php', 'file');
     }
 };

@@ -13,7 +13,7 @@
  *
  */
 
-require('../../config.php');
+require_once __DIR__.'/functions.inc.php';
 
 // Include WB admin wrapper script
 require(WB_PATH.'/modules/admin.php');

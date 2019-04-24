@@ -18,8 +18,7 @@ if (defined('WB_PATH') == false) {
     exit("Cannot access this file directly");
 }
 
-$file_dir = MEDIA_DIRECTORY.'/news_img/';
-$thumb_dir = MEDIA_DIRECTORY.'/news_img/thumb/';
+require_once __DIR__.'/functions.inc.php';
 $usebrax = false;
 
 // Nur temporaer, spaeter ueber Optionen
@@ -251,7 +250,6 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
 
                 // Work-out the post link
                 $post_link = page_link($post['link']);
-
                 $post_link_path = str_replace(WB_URL, WB_PATH, $post_link);
                 if (file_exists($post_link_path)) {
                     $create_date = date(DATE_FORMAT, filemtime($post_link_path));
@@ -293,7 +291,7 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
                 $wb->preprocess($short);
                 
                 if ($post['image'] != "") {
-                    $post_img = "<img src='".WB_URL.MEDIA_DIRECTORY.'/news_img/'.$post['post_id'].'/'.$post['image']."' alt='".$post['title']."' />";
+                    $post_img = "<img src='".WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post['post_id'].'/'.$post['image']."' alt='".$post['title']."' />";
                 } else {
                     $post_img = "<img src='".WB_URL."/modules/news_img/images/nopic.png' alt='empty placeholder' />";
                 }
@@ -424,7 +422,7 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
                 }
 
                 if ($post['image'] != "") {
-                    $post_img = "<img src='".WB_URL.MEDIA_DIRECTORY.'/news_img/'.$post['image']."' alt='".$post['title']."' />";
+                    $post_img = "<img src='".WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post['image']."' alt='".$post['title']."' />";
                 } else {
                     $post_img = "";
                 }
@@ -482,7 +480,7 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
         $images = array();
         if ($sql_result->numRows() > 0) {
             while ($row = $sql_result->fetchRow()) {
-                $images[] = str_replace(array('[IMAGE]','[DESCRIPTION]'), array(WB_URL.MEDIA_DIRECTORY.'/news_img/'.$row['bildname'],$row['bildbeschreibung']), $setting_image_loop);
+                $images[] = str_replace(array('[IMAGE]','[DESCRIPTION]'), array(WB_URL.MEDIA_DIRECTORY.'/.news_img/'.POST_ID.'/'.$row['picname'],$row['picdesc']), $setting_image_loop);
             }
         }
 

@@ -1,17 +1,14 @@
 .mod_news_img table{width:100%}
-.mod_news_img th, .mod_news_img td{padding:2px 5px;}
+.mod_news_img th, .mod_news_img td{padding:2px 5px;text-align:left;}
 .mod_news_img table.striped tr:nth-child(odd){background-color:#ececec}
 .mod_news_img table.striped tr:nth-child(even){background-color:#fff}
 .mod_news_img table img.preview{height:50px;max-height:50px;}
 
-.setting_name {
-	vertical-align: top;
-	width: 20%;
-}
-.setting_value {
-	vertical-align: top;
-	width: 80%;
-}
+.setting_name{vertical-align:top;width:20%;}
+.setting_value{vertical-align:top;width:80%;}
+.setting_value input[type="text"],.setting_value select{width:98%}
+
+.mod_news_img_icon{display:inline-block;min-width:24px;overflow:hidden}
 
 .resize_defaults {
 	cursor:pointer;
@@ -55,7 +52,6 @@ input.mod_news_img_edit_css {
 .img_list {
         width: 80px;
 }
-
 #fotos {
     float:left;
 }
@@ -77,3 +73,4 @@ input.mod_news_img_edit_css {
     border-bottom:1px solid grey;
    padding: 2px;
 }
+#fotoshow table tbody tr:last-child td {border-bottom:0}

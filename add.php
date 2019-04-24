@@ -40,13 +40,8 @@ $footer = '<table class="page-header" style="display: [DISPLAY_PREVIOUS_NEXT_LIN
 </tr>
 </table>';
 $post_header = addslashes('<h2>[TITLE]</h2>');
-$post_content = '
-<div class="fotorama"
-     id="keyboard"
-     data-navposition="top"
-     data-nav="thumbs"
-     data-width="700"
-     data-ratio="3/2">
+$post_content = '[CONTENT]<br />
+<div class="fotorama" data-keyboard="true" data-navposition="top" data-nav="thumbs">
 [IMAGES]
 </div>
 ';
@@ -61,6 +56,6 @@ $iniset = return_bytes($iniset);
 
 $database->query(
     "INSERT INTO `".TABLE_PREFIX."mod_news_img_settings` ".
-    "(`section_id` ,`page_id` ,`header` ,`post_loop` ,`footer` ,`post_header` ,`post_content` ,`image_loop` ,`post_footer` ,`gallery` ,`resize_preview` ,`imgmaxwidth`,`imgmaxheight`,`imgmaxsize`) VALUES ".
-    "('$section_id','$page_id','$header','$post_loop','$footer','$post_header','$post_content','$image_loop','$post_footer','fotorama','$resize_preview','900'        ,'900'         ,'$iniset')"
+    "(`section_id` ,`page_id` ,`header` ,`post_loop` ,`footer` ,`post_header` ,`post_content` ,`image_loop` ,`post_footer` ,`gallery` ,`imgthumbsize`,`resize_preview` ,`imgmaxwidth`,`imgmaxheight`,`imgmaxsize`) VALUES ".
+    "('$section_id','$page_id','$header','$post_loop','$footer','$post_header','$post_content','$image_loop','$post_footer','fotorama','100x100'     ,'$resize_preview','900'        ,'900'         ,'$iniset')"
 );

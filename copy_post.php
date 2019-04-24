@@ -13,7 +13,7 @@
  *
  */
 
-require_once '../../config.php';
+require_once __DIR__.'/functions.inc.php';
 
 
 // check if module language file exists for the language set by the user (e.g. DE, EN)
@@ -64,6 +64,7 @@ $active = $fetch_content['active'];
 $group_id = $fetch_content['group_id'];
 $publishedwhen =  $fetch_content['published_when'];
 $publisheduntil =  $fetch_content['published_until'];
+$imageErrorMessage = '';
 
 
 if(!is_dir($file_dir)) {

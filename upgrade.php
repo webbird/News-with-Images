@@ -147,10 +147,15 @@ require(WB_PATH."/index.php");
     $database->query("ALTER TABLE `".TABLE_PREFIX."mod_news_img_settings` ADD COLUMN `imgthumbsize` VARCHAR(50) NULL DEFAULT NULL AFTER `gallery`, ADD COLUMN `imgmaxwidth` VARCHAR(50) NULL DEFAULT NULL AFTER `imgthumbsize`, ADD COLUMN `imgmaxheight` VARCHAR(50) NULL DEFAULT NULL AFTER `imgmaxwidth`, ADD COLUMN `imgmaxsize` VARCHAR(50) NULL DEFAULT NULL AFTER `imgmaxheight`");
 
     // 2019-04-18 Bianka Martinovic
+    //            rename columns (from German to neutral) in mod_news_img_img table
+    //            add permalink column to mod_news_img_posts table
+    $database->query("ALTER TABLE `".TABLE_PREFIX."mod_news_img_img` CHANGE COLUMN `bildname` `picname` VARCHAR(255) NOT NULL DEFAULT '' AFTER `id`, CHANGE COLUMN `bildbeschreibung` `picdesc` VARCHAR(255) NOT NULL DEFAULT '' AFTER `picname`");
+
+    // 2019-04-18 Bianka Martinovic
     //            image directory
-    if(!is_dir(WB_PATH.MEDIA_DIRECTORY.'/news_img')) {
+    if(!is_dir(WB_PATH.MEDIA_DIRECTORY.'/.news_img')) {
         require_once WB_PATH.'/framework/functions.php';
-        if(make_dir(WB_PATH.MEDIA_DIRECTORY.'/news_img')) {
+        if(make_dir(WB_PATH.MEDIA_DIRECTORY.'/.news_img')) {
             // Add a index.php file to prevent directory spoofing
             $content = ''.
 "<?php
@@ -171,13 +176,13 @@ require(WB_PATH."/index.php");
 
 header('Location: ../');
 ?>";
-            $handle = fopen(WB_PATH.MEDIA_DIRECTORY.'/news_img/index.php', 'w');
+            $handle = fopen(WB_PATH.MEDIA_DIRECTORY.'/.news_img/index.php', 'w');
             fwrite($handle, $content);
             fclose($handle);
-            change_mode(WB_PATH.MEDIA_DIRECTORY.'/news_img/index.php', 'file');
+            change_mode(WB_PATH.MEDIA_DIRECTORY.'/.news_img/index.php', 'file');
         }
 
-        if(make_dir(WB_PATH.MEDIA_DIRECTORY.'/news_img/thumb')) {
+        if(make_dir(WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb')) {
             // Add a index.php file to prevent directory spoofing
             $content = ''.
 "<?php
@@ -198,10 +203,10 @@ header('Location: ../');
 
 header('Location: ../../');
 ?>";
-            $handle = fopen(WB_PATH.MEDIA_DIRECTORY.'/news_img/thumb/index.php', 'w');
+            $handle = fopen(WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb/index.php', 'w');
             fwrite($handle, $content);
             fclose($handle);
-            change_mode(WB_PATH.MEDIA_DIRECTORY.'/news_img/thumb/index.php', 'file');
+            change_mode(WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb/index.php', 'file');
         }
     }
 
