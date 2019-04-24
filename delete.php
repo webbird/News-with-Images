@@ -31,14 +31,14 @@ if($query_details->numRows() > 0) {
         $query_img = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = ".$link['post_id']);
         if($query_img->numRows() > 0) {
             while($result = $query_img->fetchRow()) {
-                if(is_writable(WB_PATH.MEDIA_DIRECTORY.'/news_img/'.$result['picname'])) {
-                    unlink(WB_PATH.MEDIA_DIRECTORY.'/news_img/'.$result['picname']);
-                    unlink(WB_PATH.MEDIA_DIRECTORY.'/news_img/thumb/thumb_'.$result['picname']);
+                if(is_writable(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$result['picname'])) {
+                    unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$result['picname']);
+                    unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb/thumb_'.$result['picname']);
                 }
                 $database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = ".$link['post_id']);
             }
         }
-        unlink(WB_PATH.MEDIA_DIRECTORY.'/news_img/'.$link['image']);
+        unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['image']);
     }
 }
 //check to see if any other sections are part of the news page, if only 1 news is there delete it

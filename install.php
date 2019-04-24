@@ -127,7 +127,7 @@ if(defined('WB_URL'))
 
         // Make news post img files dir
     require_once(WB_PATH.'/framework/functions.php');
-    if(make_dir(WB_PATH.MEDIA_DIRECTORY.'/news_img')) {
+    if(make_dir(WB_PATH.MEDIA_DIRECTORY.'/.news_img')) {
         // Add a index.php file to prevent directory spoofing
         $content = ''.
 "<?php
@@ -148,15 +148,15 @@ if(defined('WB_URL'))
 
 header('Location: ../');
 ?>";
-        $handle = fopen(WB_PATH.MEDIA_DIRECTORY.'/news_img/index.php', 'w');
+        $handle = fopen(WB_PATH.MEDIA_DIRECTORY.'/.news_img/index.php', 'w');
         fwrite($handle, $content);
         fclose($handle);
-        change_mode(WB_PATH.MEDIA_DIRECTORY.'/news_img/index.php', 'file');
+        change_mode(WB_PATH.MEDIA_DIRECTORY.'/.news_img/index.php', 'file');
     }
         
         // Make news post img thumb files dir
     require_once(WB_PATH.'/framework/functions.php');
-    if(make_dir(WB_PATH.MEDIA_DIRECTORY.'/news_img/thumb')) {
+    if(make_dir(WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb')) {
         // Add a index.php file to prevent directory spoofing
         $content = ''.
 "<?php
@@ -177,9 +177,9 @@ header('Location: ../');
 
 header('Location: ../');
 ?>";
-        $handle = fopen(WB_PATH.MEDIA_DIRECTORY.'/news_img/thumb/index.php', 'w');
+        $handle = fopen(WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb/index.php', 'w');
         fwrite($handle, $content);
         fclose($handle);
-        change_mode(WB_PATH.MEDIA_DIRECTORY.'/news_img/thumb/index.php', 'file');
+        change_mode(WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb/index.php', 'file');
     }
 };

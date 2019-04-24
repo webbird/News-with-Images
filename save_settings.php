@@ -43,6 +43,8 @@ $width = $_POST['resize_width'];
 $height = $_POST['resize_height'];
 $thumbwidth = $_POST['thumb_width'];
 $thumbheight = $_POST['thumb_height'];
+$thumbsize = "100x100"; // default
+
 $crop = (isset($_POST['crop_preview']) ? $_POST['crop_preview'] : 'N');
 if(is_numeric($width) && is_numeric($height)) {
     if($height>0 && $width>0) {

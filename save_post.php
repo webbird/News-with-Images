@@ -37,8 +37,8 @@ if (!isset($_POST['post_id']) or !is_numeric($_POST['post_id'])) {
 }
 
 $imageErrorMessage ='';
-$file_dir  = WB_PATH.MEDIA_DIRECTORY.'/news_img/'.$post_id.'/';
-$thumb_dir = WB_PATH.MEDIA_DIRECTORY.'/news_img/'.$post_id.'/thumb/';
+$file_dir  = WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$post_id.'/';
+$thumb_dir = WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$post_id.'/thumb/';
 
 // Include WB admin wrapper script
 $update_when_modified = true; // Tells script to update when this page was last updated

@@ -33,6 +33,8 @@ require WB_PATH.'/modules/admin.php';
 // Include WB functions file
 require_once WB_PATH.'/framework/functions.php';
 
+require_once __DIR__.'/functions.inc.php';
+
 // Vagroup_idate all fields
 if($admin->get_post('title') == '')
 {
@@ -70,18 +72,22 @@ if(isset($_FILES['image']['tmp_name']) AND $_FILES['image']['tmp_name'] != '')
 	// Upload image
 	move_uploaded_file($_FILES['image']['tmp_name'], $new_filename);
 	// Check if we need to create a thumb
-	$query_settings = $database->query("SELECT `resize` FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '$section_id'");
+	$query_settings = $database->query("SELECT `resize_preview`,`crop_preview` FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '$section_id'");
 	$fetch_settings = $query_settings->fetchRow();
-	$resize = $fetch_settings['resize'];
-	if($resize != 0)
+    $previewwidth = $previewheight = 0;
+    if(substr_count($fetch_settings['resize_preview'],'x')>0) {
+        list($previewwidth,$previewheight) = explode('x',$fetch_settings['resize_preview'],2);
+    }
+	if($previewwidth != 0)
     {
 		// Resize the image
 		$thumb_location = WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb'.$group_id.'.jpg';
-		if(make_thumb($new_filename, $thumb_location, $resize))
-        {
-			// Delete the actual image and replace with the resized version
+        if (list($w, $h) = getimagesize($new_filename)) {
+            if ($w>$previewwidth || $h>$previewheight) {
+                image_resize($new_filename, $thumb_location, $previewwidth, $previewheight, $fetch_settings['crop_preview']);
 			unlink($new_filename);
-			rename($thumb_location, $new_filename);
+                rename($thumb_location,$new_filename);
+            }
 		}
 	}
 }

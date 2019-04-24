@@ -26,8 +26,8 @@ if(!file_exists(WB_PATH .'/modules/news_img/languages/'.LANGUAGE .'.php')) {
 }
 
 
-$file_dir = WB_PATH.MEDIA_DIRECTORY.'/news_img/';
-$thumb_dir = WB_PATH.MEDIA_DIRECTORY.'/news_img/thumb/';
+$file_dir = WB_PATH.MEDIA_DIRECTORY.'/.news_img/';
+$thumb_dir = WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb/';
 
 // Get id
 if(!isset($_POST['post_id']) OR !is_numeric($_POST['post_id']))

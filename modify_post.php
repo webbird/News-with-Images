@@ -23,8 +23,8 @@ if (!isset($_GET['post_id']) or !is_numeric($_GET['post_id'])) {
     $post_id = $_GET['post_id'];
 }
 
-$file_dir  = MEDIA_DIRECTORY.'/news_img/'.$post_id.'/';
-$thumb_dir = MEDIA_DIRECTORY.'/news_img/'.$post_id.'/thumb/';
+$file_dir  = MEDIA_DIRECTORY.'/.news_img/'.$post_id.'/';
+$thumb_dir = MEDIA_DIRECTORY.'/.news_img/'.$post_id.'/thumb/';
 
 // Include WB admin wrapper script
 require WB_PATH.'/modules/admin.php';

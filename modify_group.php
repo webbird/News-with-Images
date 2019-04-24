@@ -67,12 +67,11 @@ $fetch_content = $query_content->fetchRow();
     	<td><?php echo $TEXT['IMAGE']; ?>:</td>
     	<?php if(file_exists(WB_PATH.MEDIA_DIRECTORY.'/.news_img/image'.$group_id.'.jpg')) { ?>
     	<td>
+            <img class="preview" src="<?php echo WB_URL.MEDIA_DIRECTORY; ?>/.news_img/image<?php echo $group_id; ?>.jpg" alt="<?php echo $TEXT['IMAGE']; ?>" /></div>
     		<input type="checkbox" name="delete_image" id="delete_image" value="true" />
     		<label for="delete_image"><?php echo $TEXT['DELETE'] ?></label>
     	</td>
-        <td>
-            <img class="preview" src="<?php echo WB_URL.MEDIA_DIRECTORY; ?>/.news_img/image<?php echo $group_id; ?>.jpg" alt="<?php echo $TEXT['IMAGE']; ?>" /></div>
-        </td>
+
     	<?php } else { ?>
     	<td colspan="2">
     		<input type="file" name="image" />
