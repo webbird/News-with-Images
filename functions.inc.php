@@ -9,6 +9,27 @@ require_once(!file_exists($lang) ? (dirname(__FILE__)) . '/languages/EN.php' : $
 $mod_nwi_file_dir = WB_PATH.MEDIA_DIRECTORY.'/.news_img/';
 $mod_nwi_thumb_dir = WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb/';
 
+function mod_news_img_copy($source, $dest){
+    if(is_dir($source)) {
+        $dir_handle=opendir($source);
+        while($file=readdir($dir_handle)){
+            if($file!="." && $file!=".."){
+                if(is_dir($source."/".$file)){
+                    if(!is_dir($dest."/".$file)){
+                        mkdir($dest."/".$file);
+                    }
+                    mod_news_img_copy($source."/".$file, $dest."/".$file);
+                } else {
+                    copy($source."/".$file, $dest."/".$file);
+                }
+            }
+        }
+        closedir($dir_handle);
+    } else {
+        copy($source, $dest);
+    }
+}
+
 function mod_news_img_makedir($dir, $with_thumb=true)
 {
     if (make_dir($dir)) {
