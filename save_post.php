@@ -167,7 +167,6 @@ if (isset($_FILES["foto"])) {
                 //small characters
                 $imagename = strtolower($imagename) ;
 
-                // 2014-04-10 by BlackBird Webprogrammierung:
                 //            if file exists, find new name by adding a number
                 if (file_exists($mod_nwi_file_dir.$imagename)) {
                     $num = 1;
@@ -298,7 +297,7 @@ if (!($database->is_error())) {
             // var_dump($row_id);
             //var_dump($_POST['bildbeschreibung'][$row_id]);
             $picdesc = isset($_POST['picdesc'][$row_id])
-                          ? $_POST['picdesc'][$row_id]
+                          ? strip_tags($_POST['picdesc'][$row_id])
                           : '';
             $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_img` SET `picdesc` = '$picdesc' WHERE id = '$row_id'");
         }
