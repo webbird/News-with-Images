@@ -3,11 +3,11 @@
 
 <script>
     $.include(WB_URL+"/modules/news_img/js/masonry/masonry.css");
-    var $grid = $('.grid').imagesLoaded( function() {
+    var $grid = $('.masonry-grid').imagesLoaded( function() {
       $grid.masonry({
-        itemSelector: '.grid-item',
+        itemSelector: '.masonry-grid-item',
         percentPosition: true,
-        columnWidth: '.grid-sizer'
+        columnWidth: '.masonry-grid-sizer'
       });
     });
 </script>
