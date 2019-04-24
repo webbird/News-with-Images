@@ -66,13 +66,21 @@ if(function_exists('ini_set')) {
 
 <?php
     // Loop through existing posts
+
+// Include the ordering class
+require_once(WB_PATH.'/framework/class.order.php');
+// Create new order object and reorder
+$order = new order(TABLE_PREFIX.'mod_news_img_posts', 'position', 'post_id', 'section_id');
+$order->clean($section_id);
+    
     $query_posts = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `section_id` = '$section_id' ORDER BY `$order_by` DESC");
     if($query_posts->numRows() > 0) {
     	$num_posts = $query_posts->numRows();
 ?>
-    	<table class="striped">
+    	<table class="striped dragdrop_form">
             <thead>
                 <tr>
+                    <th></th>
                     <th></th>
                     <th>PostID</th>
                     <th><?php echo $TEXT['TITLE'] ?></th>
@@ -81,13 +89,15 @@ if(function_exists('ini_set')) {
                     <th><?php echo $TEXT['PUBL_START_DATE']; ?></th>
                     <th><?php echo $TEXT['PUBL_END_DATE']; ?></th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
     	<?php
     	while($post = $query_posts->fetchRow()) {
     		?>
-    		<tr>
+    		<tr id="post_id:<?php echo  $admin->getIDKEY($post['post_id']); ?>">
+			<td class="dragdrop_item">&nbsp;</td>
     			<td>
     				<a href="<?php echo WB_URL; ?>/modules/news_img/modify_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>" title="<?php echo $TEXT['MODIFY']; ?>">
     					<img src="<?php echo THEME_URL; ?>/images/modify_16.png" border="0" alt="Modify - " />
@@ -136,32 +146,43 @@ if(function_exists('ini_set')) {
     		<td style="text-align:right"><?php echo $icon ?>
 <?php
     // Icons
+/*  disable due to drag&drop
     if(($post['position'] != $num_posts)&&($setting_view_order == 0)) {
 ?>
     				<a href="<?php echo WB_URL; ?>/modules/news_img/move_down.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>" title="<?php echo $TEXT['MOVE_UP']; ?>">
     					<img src="<?php echo THEME_URL; ?>/images/up_16.png" border="0" alt="^" class="mod_news_img_icon" />
     				</a>
 <?php } else {
+*/
     echo '<span class="mod_news_img_icon"></span>';
+/*  disable due to drag&drop
 }
     if(($post['position'] != 1)&&($setting_view_order == 0)) { ?>
     				<a href="<?php echo WB_URL; ?>/modules/news_img/move_up.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>" title="<?php echo $TEXT['MOVE_DOWN']; ?>">
     					<img src="<?php echo THEME_URL; ?>/images/down_16.png" border="0" alt="v" class="mod_news_img_icon" />
     				</a>
 <?php } else {
+*/
     echo '<span class="mod_news_img_icon"></span>';
-}
+//}
 ?>
     				<a href="javascript: confirm_link('<?php echo $TEXT['ARE_YOU_SURE']; ?>', '<?php echo WB_URL; ?>/modules/news_img/delete_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>');" title="<?php echo $TEXT['DELETE']; ?>">
     					<img src="<?php echo THEME_URL; ?>/images/delete_16.png" border="0" alt="X" class="mod_news_img_icon" />
     				</a>
     			</td>
+			<td class="dragdrop_item">&nbsp;</td>
     		</tr>
 <?php
 	}
 ?>
         </tbody>
         </table>
+
+<script type="text/javascript">
+        var LOAD_DRAGDROP = true;
+        var ICONS = '<?php echo WB_URL."/modules/news_img/images" ?>';
+</script>
+	
 <?php
 } else {
 	echo $TEXT['NONE_FOUND'];

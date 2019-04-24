@@ -4,6 +4,19 @@
 .mod_news_img table.striped tr:nth-child(even){background-color:#fff}
 .mod_news_img table img.preview{height:50px;max-height:50px;}
 
+
+.dragdrop_handle {
+    background-color: #ccc;
+    background-image: url("images/dd_grip.gif");
+    background-position: right center;
+    cursor: move;
+    padding: 0;
+    width: 20px !important;
+    border-style: solid;
+    border-width: 2px 2px 3px;
+    border-color: #cad2d9 #bac5ce
+}
+
 .setting_name{vertical-align:top;width:20%;}
 .setting_value{vertical-align:top;width:80%;}
 .setting_value input[type="text"],.setting_value select{width:98%}
@@ -52,6 +65,69 @@ input.mod_news_img_edit_css {
 .img_list {
         width: 80px;
 }
+
+
+.jsadmin_drag {
+    cursor: move;
+}
+
+.jsadmin_drag a,
+.jsadmin_drag input,
+.jsadmin_drag select {
+    cursor: pointer;
+}
+
+
+
+/*
+item row hover onmouseover
+*/
+tr.frow_hover { background-color: #f5f8dc }
+
+/*-----------------------------------------------------------*/
+#dragableResult  {
+    color: #000;
+    font-size: 8px;
+    font-family: Courier;
+    background-color: #e0fbcf;
+    margin-top: 80px;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 5px 5px 5px 20%;
+    border: dashed 1px #19861a
+}
+#dragableTable ul {
+    background-color: #fff;
+    padding:0 ! important
+}
+
+#dragableTable ul li, #firstgroup  {
+    margin:0 ! important;
+    padding:0 ! important;
+}
+#dragableTable li, #firstgroup {
+    list-style: none;
+    margin-top: 3px;
+    width: 100%;
+    padding: 2px;
+    color:#fff;
+    border-bottom: 1px dotted #999999;
+    background-color: #E0ECBE;
+}
+
+#dragableTable li .sortgroup td,
+#firstgroup {
+    background-color: #eee;
+    font-size: 14px;
+}
+#dragableTable li.sortgroup {
+    margin-top:10px;
+}
+#dragableTable hr {
+    line-height:4px;
+}
+
+
 #fotos {
     float:left;
 }

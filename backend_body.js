@@ -10,3 +10,18 @@ $(function() {
         $("input#thumb_height").val(size);
     });
 });
+
+// drag & drop
+
+var MODULE_URL = WB_URL + '/modules/news_img';
+var ICONS = WB_URL + '/modules/news_img/images';
+var AJAX_PLUGINS =  WB_URL + '/modules/news_img/ajax';
+
+
+$(function() {
+        // Load external ajax_dragdrop file
+    if($('.dragdrop_form').length > 0){
+        $.insert(AJAX_PLUGINS +"/ajax_dragdrop.js");
+    }
+});
+
