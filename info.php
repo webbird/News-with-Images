@@ -16,13 +16,19 @@
 $module_directory   = 'news_img';
 $module_name        = 'News with Images';
 $module_function    = 'page';
-$module_version     = '3.7.10';
+$module_version     = '3.7.11';
 $module_platform    = '2.8.x';
 $module_author      = 'Ryan Djurovich, Rob Smith, Silvia Reins, Martin Hecht, Florian Meerwinck, Bianka Martinovic';
 $module_license     = 'GNU General Public License';
 $module_description = 'This page type is designed for making a news page with Images and Lightboxeffect.';
 
 /**
+ * v3.7.11 - 2019-04-24 Bianka Martinovic
+ *          + added "mod_nwi_" prefix to method names in functions.inc.php
+ *          + moved language loading and some vars to functions.inc.php
+ *          + most script now require functions.inc.php
+ *          + manually merged PR #17
+ *
  * v3.7.10 - 2019-04-24 Bianka Martinovic
  *          + moved media/news_img to already existing media/.news_img
  *          + fix for renamed database columns

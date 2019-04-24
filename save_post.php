@@ -35,7 +35,7 @@ $fetch_content = $query_content->fetchRow();
 
 $fetch_content['imgmaxsize'] = intval($fetch_content['imgmaxsize']);
 $iniset = ini_get('upload_max_filesize');
-$iniset = return_bytes($iniset);
+$iniset = mod_nwi_return_bytes($iniset);
 
 $previewwidth = $previewheight = $thumbwidth = $thumbheight = '';
 if(substr_count($fetch_content['resize_preview'],'x')>0) {
@@ -45,6 +45,7 @@ if(substr_count($fetch_content['imgthumbsize'],'x')>0) {
     list($thumbwidth,$thumbheight) = explode('x',$fetch_content['imgthumbsize'],2);
 }
 
+$imageErrorMessage = '';
 $imagemaxsize  = ($fetch_content['imgmaxsize']>0 && $fetch_content['imgmaxsize'] < $iniset)
     ? $fetch_content['imgmaxsize']
     : $iniset;
@@ -119,13 +120,12 @@ if (!is_writable(WB_PATH.PAGES_DIRECTORY.'/posts/')) {
     // First, delete old file if it exists
     if (file_exists(WB_PATH.PAGES_DIRECTORY.$old_link.PAGE_EXTENSION)) {
         $file_create_time = filemtime(WB_PATH.PAGES_DIRECTORY.$old_link.PAGE_EXTENSION);
-
         unlink(WB_PATH.PAGES_DIRECTORY.$old_link.PAGE_EXTENSION);
     }
 
     // Specify the filename
     $filename = WB_PATH.PAGES_DIRECTORY.'/'.$post_link.PAGE_EXTENSION;
-    create_file($filename, $file_create_time);
+    mod_nwi_create_file($filename, $file_create_time);
 }
 
 // get publisedwhen and publisheduntil
@@ -146,7 +146,7 @@ if (!defined('ORDERING_CLASS_LOADED')) {
 if (isset($_FILES["foto"])) {
     // make sure the folder exists
     if(!is_dir($mod_nwi_file_dir)) {
-        mod_news_img_makedir($mod_nwi_file_dir);
+        mod_nwi_img_makedir($mod_nwi_file_dir);
     }
     // 2014-04-10 by BlackBird Webprogrammierung:
     //            image position (order)
@@ -176,7 +176,7 @@ if (isset($_FILES["foto"])) {
 
                 // check
                 if ($picture['size'][$i] > $imagemaxsize) {
-                    $pic_error.= $MOD_NEWS_IMG['IMAGE_LARGER_THAN'].byte_convert($imagemaxsize).'<br />';
+                    $pic_error.= $MOD_NEWS_IMG['IMAGE_LARGER_THAN'].mod_nwi_byte_convert($imagemaxsize).'<br />';
                 } elseif (strlen($imagename) > '256') {
                     $pic_error.= $MOD_NEWS_IMG['IMAGE_FILENAME_ERROR'].'1<br />';
                 } else {
@@ -187,12 +187,12 @@ if (isset($_FILES["foto"])) {
                         //            resize image
                         if (list($w, $h) = getimagesize($mod_nwi_file_dir.$imagename)) {
                             if ($w>$imagemaxwidth || $h>$imagemaxheight) {
-                                image_resize($mod_nwi_file_dir.$imagename, $mod_nwi_file_dir.$imagename, $imagemaxwidth, $imagemaxheight, $crop);
+                                mod_nwi_image_resize($mod_nwi_file_dir.$imagename, $mod_nwi_file_dir.$imagename, $imagemaxwidth, $imagemaxheight, $crop);
                             }
                         }
 
                         //create thumb
-                        if (true !== ($pic_error = @image_resize($mod_nwi_file_dir.$imagename, $mod_nwi_thumb_dir.$imagename, $thumbwidth, $thumbheight, $crop))) {
+                        if (true !== ($pic_error = @mod_nwi_image_resize($mod_nwi_file_dir.$imagename, $mod_nwi_thumb_dir.$imagename, $thumbwidth, $thumbheight, $crop))) {
                             $imageErrorMessage.=$pic_error.'<br />';
                             //@unlink($imagename);
                         } else {
@@ -216,7 +216,7 @@ if (isset($_FILES["foto"])) {
 if (isset($_FILES["postfoto"]) && $_FILES["postfoto"]["name"] != "") {
     // make sure file_dir exists
     if(!is_dir($mod_nwi_file_dir)) {
-        mod_news_img_makedir($mod_nwi_file_dir);
+        mod_nwi_img_makedir($mod_nwi_file_dir);
     }
     // there should only be one...
     foreach ($_FILES as $postpicture) {
@@ -240,7 +240,7 @@ if (isset($_FILES["postfoto"]) && $_FILES["postfoto"]["name"] != "") {
 
             // checks
             if ($postpicture['size'] > $imagemaxsize) {
-                $imageErrorMessage.= $MOD_NEWS_IMG['IMAGE_LARGER_THAN'].byte_convert($imagemaxsize).'<br />';
+                $imageErrorMessage.= $MOD_NEWS_IMG['IMAGE_LARGER_THAN'].mod_nwi_byte_convert($imagemaxsize).'<br />';
             } elseif (strlen($postimgname) > '256') {
                 $imageErrorMessage.= $MOD_NEWS_IMG['IMAGE_FILENAME_ERROR'].'<br />';
             } else {
@@ -250,7 +250,7 @@ if (isset($_FILES["postfoto"]) && $_FILES["postfoto"]["name"] != "") {
                     // resize
                     if (substr_count($fetch_content['resize_preview'], 'x')>0) {
                         list($previewwidth, $previewheight) = explode('x', $fetch_content['resize_preview'], 2);
-                        if (true !== ($pic_error = @image_resize($mod_nwi_file_dir.$tmpname, $mod_nwi_file_dir.$postimgname, $previewwidth, $previewheight, $crop))) {
+                        if (true !== ($pic_error = @mod_nwi_image_resize($mod_nwi_file_dir.$tmpname, $mod_nwi_file_dir.$postimgname, $previewwidth, $previewheight, $crop))) {
                             $imageErrorMessage .= 'resize image: '.$pic_error.'<br />';
                             @unlink($mod_nwi_file_dir.$tmpname);
                             @unlink($mod_nwi_file_dir.$postimgname);

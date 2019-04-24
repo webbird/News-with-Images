@@ -52,7 +52,7 @@ $post_footer = '<div class="div_link">
 
 $resize_preview = '125x125';
 $iniset = ini_get('upload_max_filesize');
-$iniset = return_bytes($iniset);
+$iniset = mod_nwi_return_bytes($iniset);
 
 $database->query(
     "INSERT INTO `".TABLE_PREFIX."mod_news_img_settings` ".
