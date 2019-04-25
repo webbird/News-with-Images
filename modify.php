@@ -97,7 +97,7 @@ $order->clean($section_id);
     	while($post = $query_posts->fetchRow()) {
     		?>
     		<tr id="post_id:<?php echo  $admin->getIDKEY($post['post_id']); ?>">
-			<td class="dragdrop_item">&nbsp;</td>
+			<td <?php if($setting_view_order == 0) echo 'class="dragdrop_item"';?>>&nbsp;</td>
     			<td>
     				<a href="<?php echo WB_URL; ?>/modules/news_img/modify_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>" title="<?php echo $TEXT['MODIFY']; ?>">
     					<img src="<?php echo THEME_URL; ?>/images/modify_16.png" border="0" alt="Modify - " />
@@ -170,7 +170,7 @@ $order->clean($section_id);
     					<img src="<?php echo THEME_URL; ?>/images/delete_16.png" border="0" alt="X" class="mod_news_img_icon" />
     				</a>
     			</td>
-			<td class="dragdrop_item">&nbsp;</td>
+			<td <?php if($setting_view_order == 0) echo 'class="dragdrop_item"';?>>&nbsp;</td>
     		</tr>
 <?php
 	}
