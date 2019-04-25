@@ -307,7 +307,7 @@ if ($query_img->numRows() > 0) {
         }
         echo '<tr>'.
              '<td>'.$up.$down.'</td>',
-             '<td><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'" onmouseover="XBT(this, {id:\'tt'.$i.'\'})"><img class="img_list" src="'.WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post_id.'/thumb/'.$row["picname"].'" /></a><div id="tt'.$i.'" class="xbtooltip"><img src="'.WB_URL.$mod_nwi_file_dir.$row["picname"].'" /></div></td>',
+             '<td><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'" onmouseover="XBT(this, {id:\'tt'.$i.'\'})"><img class="img_list" src="'.WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post_id.'/thumb/'.$row["picname"].'" /></a><div id="tt'.$i.'" class="xbtooltip"><img src="'.WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post_id.'/'.$row["picname"].'" /></div></td>',
              '<td>'.$row["picname"].'<br /><input type="text" name="picdesc['.$row["id"].']" value="'.$row["picdesc"].'"></td>',
              '<td><a onclick="return confirm(\''.$MOD_NEWS_IMG['DELETEIMAGE'].'\')" href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&img_id='.$row["id"].'#fs"><img src="'.THEME_URL.'/images/delete_16.png" /></a></td>'.
              '</tr>';
