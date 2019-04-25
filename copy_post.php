@@ -31,15 +31,15 @@ else
 $update_when_modified = true; // Tells script to update when this page was last updated
 require WB_PATH.'/modules/admin.php';
 
-$pid = intval($admin->get_post_escaped('pid'));
+$original_post_id = intval($admin->get_post_escaped('original_post_id'));
 $imageErrorMessage = '';
 
-if($pid != 0){
+if($original_post_id != 0){
 
     $mod_nwi_file_dir .= "$post_id/";
     $mod_nwi_thumb_dir = $mod_nwi_file_dir . "thumb/";
 
-    $query_content = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `post_id` = '$pid'");
+    $query_content = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `post_id` = '$original_post_id'");
     $fetch_content = $query_content->fetchRow();
 
     $title = $fetch_content['title'];
@@ -55,13 +55,13 @@ if($pid != 0){
     if(!is_dir($mod_nwi_file_dir)) {
     mod_nwi_img_makedir($mod_nwi_file_dir);
     }
-    mod_nwi_img_copy(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$pid,$mod_nwi_file_dir);
+    mod_nwi_img_copy(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$original_post_id,$mod_nwi_file_dir);
 
     // Update row
     $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `page_id` = '$page_id', `section_id` = '$section_id', `group_id` = '$group_id', `title` = '$title', `content_short` = '$short', `content_long` = '$long', `content_block2` = '$block2', `image` = '$image', `active` = '$active', `published_when` = '$publishedwhen', `published_until` = '$publisheduntil', `posted_when` = '".time()."', `posted_by` = '".$admin->get_user_id()."' WHERE `post_id` = '$post_id'");
     if(!($database->is_error())){
     //update table images
-   $database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_img` (`picname`, `picdesc`, `post_id`, `position`) SELECT `picname`, `picdesc`, '".$post_id."', `position` FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = '".$pid."'");
+   $database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_img` (`picname`, `picdesc`, `post_id`, `position`) SELECT `picname`, `picdesc`, '".$post_id."', `position` FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = '".$original_post_id."'");
     }
 
 }

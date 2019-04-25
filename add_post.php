@@ -49,7 +49,7 @@ if($database->is_error()) {
 <tr>
     <td><?php echo $MOD_NEWS_IMG['ADD_POST'] ?>:</td>
     <td>
-        <select name="pid" style="width: 100%;">
+        <select name="original_post_id" style="width: 100%;">
             <?php
             echo '<option value="0" selected="selected">'.$MOD_NEWS_IMG['NEW_POST']."</option>";
             $query = $database->query("SELECT `post_id`,`title`,`section_id` FROM `".TABLE_PREFIX."mod_news_img_posts`"
