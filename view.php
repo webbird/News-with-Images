@@ -138,6 +138,8 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
     }
 
     $t = time();
+    $group_id = 0;
+    
     // Get total number of posts
     $query_total_num = $database->query("SELECT `post_id`, `section_id` FROM `".TABLE_PREFIX."mod_news_img_posts`
         WHERE `section_id` = '$section_id' AND `active` = '1' AND `title` != '' $query_extra
@@ -150,12 +152,13 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
     } else {
         $limit_sql = "";
     }
-
+    
     // Query posts (for this page)
-    $query_posts = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts`
-        WHERE `section_id` = '$section_id' AND `active` = '1' AND `title` != ''$query_extra
-        AND (`published_when` = '0' OR `published_when` <= $t) AND (`published_until` = 0 OR `published_until` >= $t)
-        ORDER BY `$order_by` DESC".$limit_sql);
+    $query_posts = $database->query("SELECT p.*,g.active,g.title FROM `".TABLE_PREFIX."mod_news_img_posts` AS p
+        LEFT JOIN `".TABLE_PREFIX."mod_news_img_groups` AS g ON (g.group_id = p.group_id OR p.group_id = 0 AND g.group_id = NULL)
+        WHERE p.section_id = '$section_id' AND (g.active = 1 OR p.group_id = 0) AND p.active = 1 AND p.title != ''$query_extra
+        AND (p.published_when = 0 OR p.published_when <= $t) AND (p.published_until = 0 OR p.published_until >= $t)
+        ORDER BY p.group_id,p.$order_by DESC".$limit_sql);
     $num_posts = $query_posts->numRows();
 
     // Create previous and next links
