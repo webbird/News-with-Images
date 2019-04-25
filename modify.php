@@ -193,17 +193,20 @@ $order->clean($section_id);
     <h2><?php echo $TEXT['MODIFY'].'/'.$TEXT['DELETE'].' '.$TEXT['GROUP']; ?></h2>
 
 <?php
+$order = new order(TABLE_PREFIX.'mod_news_img_groups', 'position', 'group_id', 'section_id');
+$order->clean($section_id);
 
 // Loop through existing groups
 $query_groups = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_groups` WHERE `section_id` = '$section_id' ORDER BY `position` ASC");
 if($query_groups->numRows() > 0) {
 	$num_groups = $query_groups->numRows();
 	?>
-	<table class="striped">
+    	<table class="striped dragdrop_form">
 	<?php
 	while($group = $query_groups->fetchRow()) {
 		?>
-		<tr>
+    		<tr id="group_id:<?php echo  $admin->getIDKEY( $group['group_id']); ?>">
+			<td class="dragdrop_item">&nbsp;</td>
 			<td style="width:20px">
 				<a href="<?php echo WB_URL; ?>/modules/news_img/modify_group.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group['group_id']; ?>" title="<?php echo $TEXT['MODIFY']; ?>">
 					<img src="<?php echo THEME_URL; ?>/images/modify_16.png" border="0" alt="Modify - " />
@@ -217,6 +220,7 @@ if($query_groups->numRows() > 0) {
 			<td style="width:150px">
 				<?php echo $TEXT['ACTIVE'].': '; if($group['active'] == 1) { echo $TEXT['YES']; } else { echo $TEXT['NO']; } ?>
 			</td>
+<?php /* disabled due to drag&drop
 			<td style="width:20px">
 			<?php if($group['position'] != 1) { ?>
 				<a href="<?php echo WB_URL; ?>/modules/news_img/move_up.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group['group_id']; ?>" title="<?php echo $TEXT['MOVE_UP']; ?>">
@@ -231,11 +235,13 @@ if($query_groups->numRows() > 0) {
 				</a>
 			<?php } ?>
 			</td>
+*/ ?>
 			<td style="width:20px">
 				<a href="javascript: confirm_link('<?php echo $TEXT['ARE_YOU_SURE']; ?>', '<?php echo WB_URL; ?>/modules/news_img/delete_group.php?page_id=<?php echo $page_id; ?>&amp;group_id=<?php echo $group['group_id']; ?>');" title="<?php echo $TEXT['DELETE']; ?>">
 					<img src="<?php echo THEME_URL; ?>/images/delete_16.png" border="0" alt="X" />
 				</a>
 			</td>
+			<td class="dragdrop_item">&nbsp;</td>
 		</tr>
 <?php
 	}
