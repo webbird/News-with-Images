@@ -281,12 +281,18 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
 <?php
 
 
+// Include the ordering class
+require_once(WB_PATH.'/framework/class.order.php');
+// Create new order object and reorder
+$order = new order(TABLE_PREFIX.'mod_news_img_img', 'position', 'id', 'post_id');
+$order->clean($post_id);
+
 //show all images
 // 2014-04-10 by BlackBird Webprogrammierung: added position to sort order
 $query_img = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = ".$post_id." ORDER BY `position`,`id` ASC");
 
 if ($query_img->numRows() > 0) {
-    echo '<div id="fotoshow"><a name="fs"></a><h3>'.$MOD_NEWS_IMG['GALLERYIMAGES'].'</h3><table><tbody>';
+    echo '<div id="fotoshow"><a name="fs"></a><h3>'.$MOD_NEWS_IMG['GALLERYIMAGES'].'</h3><table class="dragdrop_form"><tbody>';
     $i=1;
 
     // 2014-04-10 by BlackBird Webprogrammierung:
@@ -305,12 +311,14 @@ if ($query_img->numRows() > 0) {
             $down = '<a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&id='.$row['id'].'&down=1">'
                   . '<img src="'.THEME_URL.'/images/down_16.png" /></a>';
         }
-        echo '<tr>'.
-             '<td>'.$up.$down.'</td>',
+        echo '<tr id="img_id:'.$admin->getIDKEY( $row['id']).'">'.
+	     '<td class="dragdrop_item">&nbsp;</td>'.
+//             '<td>'.$up.$down.'</td>',
              '<td><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'" onmouseover="XBT(this, {id:\'tt'.$i.'\'})"><img class="img_list" src="'.WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post_id.'/thumb/'.$row["picname"].'" /></a><div id="tt'.$i.'" class="xbtooltip"><img src="'.WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post_id.'/'.$row["picname"].'" /></div></td>',
              '<td>'.$row["picname"].'<br /><input type="text" name="picdesc['.$row["id"].']" value="'.$row["picdesc"].'"></td>',
              '<td><a onclick="return confirm(\''.$MOD_NEWS_IMG['DELETEIMAGE'].'\')" href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&img_id='.$row["id"].'#fs"><img src="'.THEME_URL.'/images/delete_16.png" /></a></td>'.
-             '</tr>';
+             '<td class="dragdrop_item">&nbsp;</td>'.
+	     '</tr>';
         $i++;
         $first=false;
     }

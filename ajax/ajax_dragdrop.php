@@ -8,7 +8,7 @@ $aJsonRespond['message'] = '';
 $aJsonRespond['icon'] = '';
 
 
-if(!isset($_POST['action']) || !isset($_POST['post_id']) && !isset($_POST['group_id']))
+if(!isset($_POST['action']) || !isset($_POST['post_id']) && !isset($_POST['group_id']) && !isset($_POST['img_id']))
 {
     $aJsonRespond['message'] = 'one of the parameters does not exist';
     exit(json_encode($aJsonRespond));
@@ -50,6 +50,19 @@ if(!isset($_POST['action']) || !isset($_POST['post_id']) && !isset($_POST['group
         	$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_groups`"
         	   . " SET `position` = '".$i."'"
         	   . " WHERE `group_id` = ".intval($id)." ");
+        	$i++;
+
+            }
+	}
+        if(isset($_POST['img_id'])){
+	    $aRows = $_POST['img_id'];
+            $i = 1;
+            foreach ($aRows as $recID) {
+        	$id = $admin->checkIDKEY($recID,0,'key',true);	    
+        	// now we sanitize array
+        	$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_img`"
+        	   . " SET `position` = '".$i."'"
+        	   . " WHERE `id` = ".intval($id)." ");
         	$i++;
 
             }
