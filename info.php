@@ -16,13 +16,44 @@
 $module_directory   = 'news_img';
 $module_name        = 'News with Images';
 $module_function    = 'page';
-$module_version     = '3.7.11';
+$module_version     = '3.7.12';
 $module_platform    = '2.8.x';
 $module_author      = 'Ryan Djurovich, Rob Smith, Silvia Reins, Martin Hecht, Florian Meerwinck, Bianka Martinovic';
 $module_license     = 'GNU General Public License';
 $module_description = 'This page type is designed for making a news page with Images and Lightboxeffect.';
 
 /**
+ * v3.7.12 - 2019-04-26 
+ *         - Martin Hecht
+ *           + implement drag&drop for gallery images
+ *           + reflect order of groups in the overview of posts in the frontend
+ *           + implement drag&drop for groups
+ *           + change variable $pid to $original_post_id
+ *           + fix for the titles in the overview
+ *           + fix preview of gallery images
+ *           + use groups in fact to group the posts in frontend overview
+ *           + show drag&drop handles only for "custom" ordering
+ *           + support drag&drop sorting of posts
+ *           + copy images together with the posts
+ *         - Bianka Martinovic
+ *           + renamed grid to masonry-grid
+ *           + added data-caption to fotorama image loop; added strip_tags() to image description before save
+ *           + fixed copy_post.php
+ *           + several fixes for image handling
+ *           + added "mod_nwi_" prefix to method names in functions.inc.php
+ *           + moved language loading and some vars to functions.inc.php
+ *           + most scripts now require functions.inc.php
+ *           + moved language loading and some central vars to functions.inc.php; most files include functions.inc.php
+ *           + moved media/news_img to already existing media/.news_img
+ *           + fix for renamed database columns
+ *           + added default preview size (100x100)
+ *           + added missing [CONTENT] placeholder
+ *           + fix for renamed database columns
+ *           + added default preview size (100x100)
+ *           + added missing [CONTENT] placeholder
+ *           + unified thumb creation in group handling (use module functions)
+ *           + fixed install.php
+ *     
  * v3.7.11 - 2019-04-24 Bianka Martinovic
  *          + added "mod_nwi_" prefix to method names in functions.inc.php
  *          + moved language loading and some vars to functions.inc.php
