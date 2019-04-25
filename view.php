@@ -154,11 +154,11 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
     }
     
     // Query posts (for this page)
-    $query_posts = $database->query("SELECT p.*,g.active FROM `".TABLE_PREFIX."mod_news_img_posts` AS p
+    $query_posts = $database->query("SELECT p.*,g.active,g.position FROM `".TABLE_PREFIX."mod_news_img_posts` AS p
         LEFT JOIN `".TABLE_PREFIX."mod_news_img_groups` AS g ON (g.group_id = p.group_id OR p.group_id = 0 AND g.group_id = NULL)
         WHERE p.section_id = '$section_id' AND (g.active = 1 OR p.group_id = 0) AND p.active = 1 AND p.title != ''$query_extra
         AND (p.published_when = 0 OR p.published_when <= $t) AND (p.published_until = 0 OR p.published_until >= $t)
-        ORDER BY p.group_id,p.$order_by DESC".$limit_sql);
+        ORDER BY g.position,p.$order_by DESC".$limit_sql);
     $num_posts = $query_posts->numRows();
 
     // Create previous and next links
