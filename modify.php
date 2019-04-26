@@ -214,7 +214,7 @@ if($query_groups->numRows() > 0) {
 			</td>		
 			<td>
 				<a href="<?php echo WB_URL; ?>/modules/news_img/modify_group.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group['group_id']; ?>">
-					<?php echo $group['title']; ?>
+					<?php echo $group['title'].' (ID: '.$group['group_id'].')'; ?>
 				</a>
 			</td>
 			<td style="width:150px">
