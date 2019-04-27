@@ -77,6 +77,11 @@ $order->clean($section_id);
     if($query_posts->numRows() > 0) {
     	$num_posts = $query_posts->numRows();
 ?>
+	<form name="modify_<?php echo $section_id; ?>" action="<?php echo WB_URL; ?>/modules/news_img/manage_posts.php" method="post" enctype="multipart/form-data">
+
+	<input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
+	<input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
+	<input type="hidden" name="savegoback" id="savegoback" value="" />
     	<table class="striped dragdrop_form">
             <thead>
                 <tr>
@@ -88,7 +93,7 @@ $order->clean($section_id);
                     <th><?php echo $TEXT['ACTIVE'] ?></th>
                     <th><?php echo $TEXT['PUBL_START_DATE']; ?></th>
                     <th><?php echo $TEXT['PUBL_END_DATE']; ?></th>
-                    <th></th>
+                    <th><?php echo $MOD_NEWS_IMG['ALL'] ?><input type="checkbox" name="manage_posts[]" id="<?php echo $section_id; ?>_all" value="all" onchange='javascript: var boxes = document.forms["modify_<?php echo $section_id; ?>"].elements[ "manage_posts[]" ]; for (var i=0, len=boxes.length; i<len; i++) { boxes[i].checked = this.checked;}' /></th>
                     <th></th>
                 </tr>
             </thead>
@@ -164,8 +169,10 @@ $order->clean($section_id);
 <?php } else {
 */
     echo '<span class="mod_news_img_icon"></span>';
+    echo "<input type=\"checkbox\" name=\"manage_posts[]\" value=".$post['post_id']." onchange='javascript: document.getElementById(\"${section_id}_all\").checked &= this.checked' />";
 //}
 ?>
+				
     				<a href="javascript: confirm_link('<?php echo $TEXT['ARE_YOU_SURE']; ?>', '<?php echo WB_URL; ?>/modules/news_img/delete_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>');" title="<?php echo $TEXT['DELETE']; ?>">
     					<img src="<?php echo THEME_URL; ?>/images/delete_16.png" border="0" alt="X" class="mod_news_img_icon" />
     				</a>
@@ -177,6 +184,32 @@ $order->clean($section_id);
 ?>
         </tbody>
         </table>
+
+
+	<table>
+	<tr>
+    	    <td class="setting_name"><?php echo $MOD_NEWS_IMG['ACTION'];  ?>:</td>
+    	    <td class="setting_value">
+    		    <input type="radio" name="action" id="action_copy" value="copy" />
+    		    <a href="#" onclick="javascript: document.getElementById('action_copy').checked = true;">
+    		    <?php echo $MOD_NEWS_IMG['COPY']; ?>
+    		    </a>
+    		    &nbsp;
+    		    <input type="radio" name="action" id="action_move" value="move" />
+    		    <a href="#" onclick="javascript: document.getElementById('action_move').checked = true;">
+    		    <?php echo $MOD_NEWS_IMG['MOVE']; ?>
+    		    </a>
+    	    </td>
+	</tr>
+	<tr>
+    	    <td align="left">
+    	    </td>
+    	    <td align="right">
+    		    <input name="continue" type="submit" value="<?php echo $MOD_NEWS_IMG['CONTINUE']; ?>" style="width: 100px; margin-top: 5px;" />
+    	    </td>
+	</tr>
+	</table>
+	</form>
 
 <script type="text/javascript">
         var LOAD_DRAGDROP = true;

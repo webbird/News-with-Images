@@ -42,6 +42,12 @@ $MOD_NEWS_IMG['SAVEGOBACK'] = 'Speichern und Zur&uuml;ck';
 $MOD_NEWS_IMG['SETTINGS'] = 'News Einstellungen';
 $MOD_NEWS_IMG['LINK'] = 'Link';
 $MOD_NEWS_IMG['EXPIRED_NOTE'] = 'Der Beitrag wird im Frontend nicht mehr angezeigt, da das Ablaufdatum überschritten ist.';
+$MOD_NEWS_IMG['ACTION'] = "Posts vewalten";
+$MOD_NEWS_IMG['COPY'] = "kopieren";
+$MOD_NEWS_IMG['MOVE'] = "verschieben";
+$MOD_NEWS_IMG['TO'] = "nach";
+$MOD_NEWS_IMG['CONTINUE'] = "Weiter";
+$MOD_NEWS_IMG['ALL'] = "Alle";
 
 //image settings
 $MOD_NEWS_IMG['CROP'] = 'Beschneiden';

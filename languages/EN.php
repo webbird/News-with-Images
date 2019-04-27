@@ -43,6 +43,12 @@ $MOD_NEWS_IMG['SETTINGS'] = 'News Settings';
 $MOD_NEWS_IMG['SETTINGS'] = 'Options';
 $MOD_NEWS_IMG['LINK'] = 'Link';
 $MOD_NEWS_IMG['EXPIRED_NOTE'] = 'The posting is no longer displayed in the frontend because the expiration date has passed.';
+$MOD_NEWS_IMG['ACTION'] = "Manage Posts";
+$MOD_NEWS_IMG['COPY'] = "Copy";
+$MOD_NEWS_IMG['MOVE'] = "Move";
+$MOD_NEWS_IMG['TO'] = "to";
+$MOD_NEWS_IMG['CONTINUE'] = "Next";
+$MOD_NEWS_IMG['ALL'] = "All";
 
 //image settings
 $MOD_NEWS_IMG['CROP'] = 'Crop';
