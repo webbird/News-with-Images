@@ -61,13 +61,14 @@ foreach($posts as $idx=>$pid) {
     $original_post_id = intval($pid);
 
     if($original_post_id != 0){
+        //trigger_error("copying $original_post_id");
 
 	// Get new order
 	$order = new order(TABLE_PREFIX.'mod_news_img_posts', 'position', 'post_id', 'section_id');
 	$position = $order->get_new($section_id);
 
 	// Insert new row into database
-	$sql = "INSERT INTO `".TABLE_PREFIX."mod_news_img_posts` (`section_id`,`page_id`,`group_id`,`position`,`link`,`content_short`,`content_long`,`content_block2`,`active`) VALUES ('$section_id','$page_id','$group_id','$position','','','','','1')";
+	$sql = "INSERT INTO `".TABLE_PREFIX."mod_news_img_posts` (`section_id`,`page_id`,`group_id`,`position`,`link`,`content_short`,`content_long`,`content_block2`,`active`) VALUES ('$section_id','$page_id','$group_id','$position','','','','','0')";
 	$database->query($sql);
 
 	$post_id = $database->get_one("SELECT LAST_INSERT_ID()");
@@ -79,11 +80,12 @@ foreach($posts as $idx=>$pid) {
 	$fetch_content = $query_content->fetchRow();
 
 	$title = $fetch_content['title'];
+	$link = $fetch_content['link'];
 	$short = $fetch_content['content_short'];
 	$long = $fetch_content['content_long'];
 	$block2 = $fetch_content['content_block2'];
 	$image = $fetch_content['image'];
-	$active = $fetch_content['active'];
+	$active = 0;
 	$publishedwhen =  $fetch_content['published_when'];
 	$publisheduntil =  $fetch_content['published_until'];
 
@@ -96,12 +98,10 @@ foreach($posts as $idx=>$pid) {
 	$page_link = $page['link'];
 
 	// get old link
-	$query_post = $database->query("SELECT `link` FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `post_id`='$post_id'");
-	$post = $query_post->fetchRow();
-	$old_link = $post['link'];
+	$old_link = $link;
 
-	// potential new link
-	$post_link = '/posts/'.page_filename($link);
+	// new link
+	$post_link = '/posts/'.page_filename(preg_replace('/-[0-9]*$/s', '', $link, 1));
 	// make sure to have the post_id as suffix; this will make the link unique (hopefully...)
 	if(substr_compare($post_link,$post_id,-(strlen($post_id)),strlen($post_id))!=0) {
 	    $post_link .= PAGE_SPACER.$post_id;
@@ -113,7 +113,7 @@ foreach($posts as $idx=>$pid) {
 	$file_create_time = '';
 	if (!is_writable(WB_PATH.PAGES_DIRECTORY.'/posts/')) {
 	    $admin->print_error($MESSAGE['PAGES']['CANNOT_CREATE_ACCESS_FILE']);
-	} elseif (($old_link != $post_link) or !file_exists(WB_PATH.PAGES_DIRECTORY.$post_link.PAGE_EXTENSION)) {
+	} else {
 	    // We need to create a new file
 	    // First, delete old file if it exists
 	    if (file_exists(WB_PATH.PAGES_DIRECTORY.$old_link.PAGE_EXTENSION)) {
@@ -133,7 +133,7 @@ foreach($posts as $idx=>$pid) {
 	mod_nwi_img_copy(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$original_post_id,$mod_nwi_file_dir);
 
 	// Update row
-	$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `page_id` = '$page_id', `section_id` = '$section_id', `group_id` = '$group_id', `title` = '$title', `content_short` = '$short', `content_long` = '$long', `content_block2` = '$block2', `image` = '$image', `active` = '$active', `published_when` = '$publishedwhen', `published_until` = '$publisheduntil', `posted_when` = '".time()."', `posted_by` = '".$admin->get_user_id()."' WHERE `post_id` = '$post_id'");
+	$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `page_id` = '$page_id', `section_id` = '$section_id', `group_id` = '$group_id', `title` = '$title', `link` = '$link', `content_short` = '$short', `content_long` = '$long', `content_block2` = '$block2', `image` = '$image', `active` = '$active', `published_when` = '$publishedwhen', `published_until` = '$publisheduntil', `posted_when` = '".time()."', `posted_by` = '".$admin->get_user_id()."' WHERE `post_id` = '$post_id'");
 	if(!($database->is_error())){
 	    //update table images
 	   $database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_img` (`picname`, `picdesc`, `post_id`, `position`) SELECT `picname`, `picdesc`, '".$post_id."', `position` FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = '".$original_post_id."'");
