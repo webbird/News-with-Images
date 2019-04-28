@@ -101,7 +101,7 @@ foreach($posts as $idx=>$pid) {
 	$old_link = $link;
 
 	// new link
-	$post_link = '/posts/'.page_filename(preg_replace('/-[0-9]*$/s', '', $link, 1));
+	$post_link = '/posts/'.page_filename(preg_replace('/^\/?posts\/?/s', '', preg_replace('/-[0-9]*$/s', '', $link, 1)));
 	// make sure to have the post_id as suffix; this will make the link unique (hopefully...)
 	if(substr_compare($post_link,$post_id,-(strlen($post_id)),strlen($post_id))!=0) {
 	    $post_link .= PAGE_SPACER.$post_id;
