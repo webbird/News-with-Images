@@ -73,7 +73,7 @@ foreach($posts as $idx=>$pid) {
 
 	$post_id = $database->get_one("SELECT LAST_INSERT_ID()");
 
-	$mod_nwi_file_dir .= "$post_id/";
+	$mod_nwi_file_dir = "$mod_nwi_file_base/$post_id/";
 	$mod_nwi_thumb_dir = $mod_nwi_file_dir . "thumb/";
 
 	$query_content = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `post_id` = '$original_post_id'");
