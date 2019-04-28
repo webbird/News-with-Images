@@ -63,11 +63,8 @@ $page_id = intval($_POST['page_id']);
                 // Loop through groups
                 while ($group = $query->fetchRow()) {
                     echo '<option value="'
-                . urlencode(serialize(array('g' => intval($group['group_id']), 's' => $section_id, 'p' => $page_id))).'"';
-                    if ($fetch_content['group_id'] == $group['group_id']) {
-                        echo ' selected="selected"';
-                    }
-                    echo '>'.$group['title'].' ('.$TEXT['CURRENT']." ".$TEXT['SECTION'].' '.$section_id.')</option>';
+                        . urlencode(serialize(array('g' => intval($group['group_id']), 's' => $section_id, 'p' => $page_id)))
+		        .'">'.$group['title'].' ('.$TEXT['CURRENT']." ".$TEXT['SECTION'].' '.$section_id.')</option>';
                 }
             }
             // this was just assignment to a group within the local section. Let's find out which sections exist
