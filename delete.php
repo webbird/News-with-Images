@@ -35,14 +35,16 @@ if($query_details->numRows() > 0) {
             while($result = $query_img->fetchRow()) {
                 if(is_writable(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/'.$result['picname'])) {
                     unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/'.$result['picname']);
-                    unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/thumb/thumb_'.$result['picname']);
+                    unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/thumb/'.$result['picname']);
                 }
                 $database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = ".$link['post_id']);
             }
         }
-	unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/thumb/');
+	unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/thumb/index.php');
+	rmdir(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/thumb/');
         unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/'.$link['image']);
-        unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id']);
+	unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/index.php');
+        rmdir(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id']);
     }
 }
 //check to see if any other sections are part of the news page, if only 1 news is there delete it
