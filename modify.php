@@ -146,8 +146,8 @@ $order->clean($section_id);
 		$icon='<img src="'.THEME_URL.'/images/clock_red_16.png" class="mod_news_img_icon" title="'.$MOD_NEWS_IMG['EXPIRED_NOTE'].'" alt="Clock image" />';
     }
 ?>
-                    <?php echo ( $start>0 ? date(DATE_FORMAT.' '.TIME_FORMAT, $start) : '') ?></td>
-                <td><?php echo ( $end>0   ? date(DATE_FORMAT.' '.TIME_FORMAT, $end)   : '') ?></td>
+                    <?php echo ( $start>0 ? gmdate(DATE_FORMAT.' '.TIME_FORMAT, $start+TIMEZONE) : '') ?></td>
+                <td><?php echo ( $end>0   ? gmdate(DATE_FORMAT.' '.TIME_FORMAT, $end+TIMEZONE)   : '') ?></td>
     		<td style="text-align:right"><?php echo $icon ?>
 <?php
     // Icons

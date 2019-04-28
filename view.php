@@ -248,15 +248,15 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
                     $post_time = gmdate(TIME_FORMAT, $post['posted_when']+TIMEZONE);
                 }
 
-                $publ_date = date(DATE_FORMAT, $post['published_when']);
-                $publ_time = date(TIME_FORMAT, $post['published_when']);
+                $publ_date = gmdate(DATE_FORMAT, $post['published_when']+TIMEZONE);
+                $publ_time = gmdate(TIME_FORMAT, $post['published_when']+TIMEZONE);
 
                 // Work-out the post link
                 $post_link = page_link($post['link']);
                 $post_link_path = str_replace(WB_URL, WB_PATH, $post_link);
                 if (file_exists($post_link_path)) {
-                    $create_date = date(DATE_FORMAT, filemtime($post_link_path));
-                    $create_time = date(TIME_FORMAT, filemtime($post_link_path));
+                    $create_date = gmdate(DATE_FORMAT, filemtime($post_link_path)+TIMEZONE);
+                    $create_time = gmdate(TIME_FORMAT, filemtime($post_link_path)+TIMEZONE);
                 } else {
                     $create_date = $publ_date;
                     $create_time = $publ_time;
@@ -431,16 +431,16 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
                 }
 
 
-                $publ_date = date(DATE_FORMAT, $post['published_when']);
-                $publ_time = date(TIME_FORMAT, $post['published_when']);
+                $publ_date = gmdate(DATE_FORMAT, $post['published_when']+TIMEZONE);
+                $publ_time = gmdate(TIME_FORMAT, $post['published_when']+TIMEZONE);
 
                 // Work-out the post link
                 $post_link = page_link($post['link']);
 
                 $post_link_path = str_replace(WB_URL, WB_PATH, $post_link);
                 if (file_exists($post_link_path)) {
-                    $create_date = date(DATE_FORMAT, filemtime($post_link_path));
-                    $create_time = date(TIME_FORMAT, filemtime($post_link_path));
+                    $create_date = gmdate(DATE_FORMAT, filemtime($post_link_path)+TIMEZONE);
+                    $create_time = gmdate(TIME_FORMAT, filemtime($post_link_path)+TIMEZONE);
                 } else {
                     $create_date = $publ_date;
                     $create_time = $publ_time;
