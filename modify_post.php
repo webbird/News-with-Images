@@ -223,9 +223,9 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
     	<td class="setting_name"><?php echo $TEXT['PUBL_START_DATE']; ?>:</td>
     	<td class="setting_value">
     	   <input type="text" id="publishdate" name="publishdate" value="<?php if ($fetch_content['published_when']==0) {
-                    print date($jscal_format, strtotime((date('Y-m-d H:i'))));
+                    print date($jscal_format, time()+TIMEZONE);
 } else {
-                    print date($jscal_format, $fetch_content['published_when']);
+                    print date($jscal_format, $fetch_content['published_when']+TIMEZONE);
 }?>" style="width:33%;" />
         	<img src="<?php echo THEME_URL ?>/images/clock_16.png" id="publishdate_trigger" style="cursor: pointer;" title="<?php echo $TEXT['CALENDAR']; ?>" alt="<?php echo $TEXT['CALENDAR']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" />
         	<img src="<?php echo THEME_URL ?>/images/clock_del_16.png" style="cursor: pointer;" title="<?php echo $TEXT['DELETE_DATE']; ?>" alt="<?php echo $TEXT['DELETE_DATE']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" onclick="document.modify.publishdate.value=''" />
@@ -237,7 +237,7 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
     	   <input type="text" id="enddate" name="enddate" value="<?php if ($fetch_content['published_until']==0) {
                     print "";
 } else {
-                    print date($jscal_format, $fetch_content['published_until']);
+                    print date($jscal_format, $fetch_content['published_until']+TIMEZONE);
 }?>" style="width:33%;" />
         	<img src="<?php echo THEME_URL ?>/images/clock_16.png" id="enddate_trigger" style="cursor: pointer;" title="<?php echo $TEXT['CALENDAR']; ?>" alt="<?php echo $TEXT['CALENDAR']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" />
         	<img src="<?php echo THEME_URL ?>/images/clock_del_16.png" style="cursor: pointer;" title="<?php echo $TEXT['DELETE_DATE']; ?>" alt="<?php echo $TEXT['DELETE_DATE']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" onclick="document.modify.enddate.value=''" />

@@ -131,10 +131,15 @@ if (!is_writable(WB_PATH.PAGES_DIRECTORY.'/posts/')) {
 $publishedwhen = jscalendar_to_timestamp($admin->get_post_escaped('publishdate'));
 if ($publishedwhen == '' || $publishedwhen < 1) {
     $publishedwhen=0;
+} else {
+    $publishedwhen -= TIMEZONE;
 }
+
 $publisheduntil = jscalendar_to_timestamp($admin->get_post_escaped('enddate'), $publishedwhen);
 if ($publisheduntil == '' || $publisheduntil < 1) {
     $publisheduntil=0;
+} else {
+    $publisheduntil -= TIMEZONE;
 }
 
 if (!defined('ORDERING_CLASS_LOADED')) {
