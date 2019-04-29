@@ -26,7 +26,7 @@ $variant = "default";
 
 // load module language file
 $lang = (dirname(__FILE__)) . '/languages/' . LANGUAGE . '.php';
-require_once(!file_exists($lang) ? (dirname(__FILE__)) . '/languages/EN.php' : $lang);
+require(!file_exists($lang) ? (dirname(__FILE__)) . '/languages/EN.php' : $lang);
 
 //overwrite php.ini on Apache servers for valid SESSION ID Separator
 if (function_exists('ini_set')) {
