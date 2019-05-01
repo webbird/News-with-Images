@@ -305,15 +305,15 @@ if ($query_img->numRows() > 0) {
         $down=$up;
         if (!$first) {
             $up = '<a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&id='.$row['id'].'&up=1">'
-                . '<img src="'.THEME_URL.'/images/up_16.png" /></a>';
+                . '<img src="'.THEME_URL.'/images/up_16.png"  class="mod_news_img_arrow" /></a>';
         }
         if ($i!=$last) {
             $down = '<a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&id='.$row['id'].'&down=1">'
-                  . '<img src="'.THEME_URL.'/images/down_16.png" /></a>';
+                  . '<img src="'.THEME_URL.'/images/down_16.png"  class="mod_news_img_arrow" /></a>';
         }
         echo '<tr id="img_id:'.$admin->getIDKEY( $row['id']).'">'.
 	     '<td class="dragdrop_item">&nbsp;</td>'.
-//             '<td>'.$up.$down.'</td>',
+             '<td>'.$up.$down.'</td>',
              '<td><a href="javascript:void(0);" onmouseover="XBT(this, {id:\'tt'.$i.'\'})"><img class="img_list" src="'.WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post_id.'/thumb/'.$row["picname"].'" /></a><div id="tt'.$i.'" class="xbtooltip"><img src="'.WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post_id.'/'.$row["picname"].'" /></div></td>',
              '<td>'.$row["picname"].'<br /><input type="text" name="picdesc['.$row["id"].']" value="'.$row["picdesc"].'"></td>',
              '<td><a onclick="return confirm(\''.$MOD_NEWS_IMG['DELETEIMAGE'].'\')" href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&img_id='.$row["id"].'#fs"><img src="'.THEME_URL.'/images/delete_16.png" /></a></td>'.

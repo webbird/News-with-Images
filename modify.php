@@ -151,26 +151,22 @@ $order->clean($section_id);
     		<td style="text-align:right"><?php echo $icon ?>
 <?php
     // Icons
-/*  disable due to drag&drop
     if(($post['position'] != $num_posts)&&($setting_view_order == 0)) {
 ?>
     				<a href="<?php echo WB_URL; ?>/modules/news_img/move_down.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>" title="<?php echo $TEXT['MOVE_UP']; ?>">
-    					<img src="<?php echo THEME_URL; ?>/images/up_16.png" border="0" alt="^" class="mod_news_img_icon" />
+    					<img src="<?php echo THEME_URL; ?>/images/up_16.png" border="0" alt="^" class="mod_news_img_arrow" />
     				</a>
 <?php } else {
-*/
     echo '<span class="mod_news_img_icon"></span>';
-/*  disable due to drag&drop
 }
     if(($post['position'] != 1)&&($setting_view_order == 0)) { ?>
     				<a href="<?php echo WB_URL; ?>/modules/news_img/move_up.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>" title="<?php echo $TEXT['MOVE_DOWN']; ?>">
-    					<img src="<?php echo THEME_URL; ?>/images/down_16.png" border="0" alt="v" class="mod_news_img_icon" />
+    					<img src="<?php echo THEME_URL; ?>/images/down_16.png" border="0" alt="v" class="mod_news_img_arrow" />
     				</a>
 <?php } else {
-*/
     echo '<span class="mod_news_img_icon"></span>';
+}
     echo "<input type=\"checkbox\" name=\"manage_posts[]\" value=".$post['post_id']." onchange='javascript: document.getElementById(\"${section_id}_all\").checked &= this.checked' />";
-//}
 ?>
 				
     				<a href="javascript: confirm_link('<?php echo $TEXT['ARE_YOU_SURE']; ?>', '<?php echo WB_URL; ?>/modules/news_img/delete_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>');" title="<?php echo $TEXT['DELETE']; ?>">
@@ -306,22 +302,20 @@ if($query_groups->numRows() > 0) {
 			<td style="width:150px">
 				<?php echo $TEXT['ACTIVE'].': '; if($group['active'] == 1) { echo $TEXT['YES']; } else { echo $TEXT['NO']; } ?>
 			</td>
-<?php /* disabled due to drag&drop
 			<td style="width:20px">
 			<?php if($group['position'] != 1) { ?>
 				<a href="<?php echo WB_URL; ?>/modules/news_img/move_up.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group['group_id']; ?>" title="<?php echo $TEXT['MOVE_UP']; ?>">
-					<img src="<?php echo THEME_URL; ?>/images/up_16.png" border="0" alt="^" />
+					<img src="<?php echo THEME_URL; ?>/images/up_16.png" border="0" alt="^"  class="mod_news_img_arrow" />
 				</a>
 			<?php } ?>
 			</td>
 			<td style="width:20px">
 			<?php if($group['position'] != $num_groups) { ?>
 				<a href="<?php echo WB_URL; ?>/modules/news_img/move_down.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group['group_id']; ?>" title="<?php echo $TEXT['MOVE_DOWN']; ?>">
-					<img src="<?php echo THEME_URL; ?>/images/down_16.png" border="0" alt="v" />
+					<img src="<?php echo THEME_URL; ?>/images/down_16.png" border="0" alt="v"  class="mod_news_img_arrow" />
 				</a>
 			<?php } ?>
 			</td>
-*/ ?>
 			<td style="width:20px">
 				<a href="javascript: confirm_link('<?php echo $TEXT['ARE_YOU_SURE']; ?>', '<?php echo WB_URL; ?>/modules/news_img/delete_group.php?page_id=<?php echo $page_id; ?>&amp;group_id=<?php echo $group['group_id']; ?>');" title="<?php echo $TEXT['DELETE']; ?>">
 					<img src="<?php echo THEME_URL; ?>/images/delete_16.png" border="0" alt="X" />

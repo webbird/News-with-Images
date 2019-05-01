@@ -25,3 +25,6 @@ $(function() {
     }
 });
 
+var sheet = document.createElement('style');
+sheet.innerHTML = ".mod_news_img_arrow {visibility:hidden;}"; 
+document.body.appendChild(sheet);

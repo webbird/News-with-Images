@@ -21,6 +21,7 @@
 .setting_value{vertical-align:top;width:80%;}
 .setting_value input[type="text"],.setting_value select{width:98%}
 
+.mod_news_img_arrow,
 .mod_news_img_icon{display:inline-block;min-width:24px;overflow:hidden}
 
 .resize_defaults {
