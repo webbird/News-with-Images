@@ -42,7 +42,7 @@ if($query_details->numRows() > 0) {
         }
 	unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/thumb/index.php');
 	rmdir(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/thumb/');
-        unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/'.$link['image']);
+        if($link['image']!='') unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/'.$link['image']);
 	unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/index.php');
         rmdir(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id']);
     }

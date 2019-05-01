@@ -223,6 +223,13 @@ $order->clean($section_id);
 	$num_groups = $query_groups->numRows();
 	if ($num_groups != 0) echo $TEXT['NONE_FOUND'];
 	else {
+            $query_nwi = $database->query("SELECT `section_id` FROM `".TABLE_PREFIX."sections`"
+            . " WHERE `module` = 'news_img' AND `section_id` != '$section_id' ORDER BY `section_id` ASC");
+	    $importable_sections = $query_nwi->numRows();
+            $query_news = $database->query("SELECT `section_id` FROM `".TABLE_PREFIX."sections`"
+            . " WHERE `module` = 'news' ORDER BY `section_id` ASC");
+	    $importable_sections += $query_news->numRows();
+	    if($importable_sections>0){
 ?>
     <h2><?php echo $MOD_NEWS_IMG['IMPORT'].' '.$TEXT['SECTION']; ?></h2>
     <form name="import" action="<?php echo WB_URL; ?>/modules/news_img/import.php" method="post" enctype="multipart/form-data">
@@ -234,12 +241,17 @@ $order->clean($section_id);
         <td class="setting_value">
             <select name="source_id">
 <?php
-            $query = $database->query("SELECT `section_id` FROM `".TABLE_PREFIX."sections`"
-            . " WHERE `module` = 'news_img' ORDER BY `section_id` ASC");
-            echo '<option disabled value="0">[--- News with Images ---]</option>';
-            if ($query->numRows() > 0) {
+            if ($query_nwi->numRows() > 0) {
+                echo '<option disabled value="0">[--- News with Images ---]</option>';
                 // Loop through possible sections
-                while ($source = $query->fetchRow()) {
+                while ($source = $query_nwi->fetchRow()) {
+                    echo '<option value="'.$source['section_id'].'">'.$TEXT['SECTION'].' '.$source['section_id'].'</option>';
+                }
+            }
+            if ($query_news->numRows() > 0) {
+                echo '<option disabled value="0">[--- (classical) News ---]</option>';
+                // Loop through possible sections
+                while ($source = $query_news->fetchRow()) {
                     echo '<option value="'.$source['section_id'].'">'.$TEXT['SECTION'].' '.$source['section_id'].'</option>';
                 }
             }
@@ -258,7 +270,7 @@ $order->clean($section_id);
 
     </form>
 <?php
-
+	    } else echo $TEXT['NONE_FOUND'];
 	}
 }
 

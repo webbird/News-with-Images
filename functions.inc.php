@@ -26,7 +26,8 @@ function mod_nwi_img_copy($source, $dest){
         }
         closedir($dir_handle);
     } else {
-        copy($source, $dest);
+        if(file_exists($source))
+            copy($source, $dest);
     }
 }
 
