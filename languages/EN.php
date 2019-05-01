@@ -71,8 +71,6 @@ $MOD_NEWS_IMG['TEXT_LAST_CHANGED'] = 'Last changed';
 $MOD_NEWS_IMG['TEXT_ON'] = 'on';
 $MOD_NEWS_IMG['TEXT_POSTED_BY'] = 'Posted by';
 $MOD_NEWS_IMG['TEXT_READ_MORE'] = 'Read More';
-$TEXT['UNKNOWN'] = 'Guest';
-
-
+$MOD_NEWS_IMG['IMPORT'] = 'import';
 
 

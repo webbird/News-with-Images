@@ -114,13 +114,6 @@ foreach($posts as $idx=>$pid) {
 	if (!is_writable(WB_PATH.PAGES_DIRECTORY.'/posts/')) {
 	    $admin->print_error($MESSAGE['PAGES']['CANNOT_CREATE_ACCESS_FILE']);
 	} else {
-	    // We need to create a new file
-	    // First, delete old file if it exists
-	    if (file_exists(WB_PATH.PAGES_DIRECTORY.$old_link.PAGE_EXTENSION)) {
-        	$file_create_time = filemtime(WB_PATH.PAGES_DIRECTORY.$old_link.PAGE_EXTENSION);
-        	unlink(WB_PATH.PAGES_DIRECTORY.$old_link.PAGE_EXTENSION);
-	    }
-
 	    // Specify the filename
 	    $filename = WB_PATH.PAGES_DIRECTORY.'/'.$post_link.PAGE_EXTENSION;
 	    mod_nwi_create_file($filename, $file_create_time);
@@ -133,7 +126,7 @@ foreach($posts as $idx=>$pid) {
 	mod_nwi_img_copy(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$original_post_id,$mod_nwi_file_dir);
 
 	// Update row
-	$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `page_id` = '$page_id', `section_id` = '$section_id', `group_id` = '$group_id', `title` = '$title', `link` = '$link', `content_short` = '$short', `content_long` = '$long', `content_block2` = '$block2', `image` = '$image', `active` = '$active', `published_when` = '$publishedwhen', `published_until` = '$publisheduntil', `posted_when` = '".time()."', `posted_by` = '".$admin->get_user_id()."' WHERE `post_id` = '$post_id'");
+	$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `page_id` = '$page_id', `section_id` = '$section_id', `group_id` = '$group_id', `title` = '$title', `link` = '$post_link', `content_short` = '$short', `content_long` = '$long', `content_block2` = '$block2', `image` = '$image', `active` = '$active', `published_when` = '$publishedwhen', `published_until` = '$publisheduntil', `posted_when` = '".time()."', `posted_by` = '".$admin->get_user_id()."' WHERE `post_id` = '$post_id'");
 	if(!($database->is_error())){
 	    //update table images
 	   $database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_img` (`picname`, `picdesc`, `post_id`, `position`) SELECT `picname`, `picdesc`, '".$post_id."', `position` FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = '".$original_post_id."'");

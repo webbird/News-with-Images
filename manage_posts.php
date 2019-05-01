@@ -38,7 +38,7 @@ $page_id = intval($_POST['page_id']);
 ?>
 <div class="mod_news_img">
    
-    <h2><?php echo $TEXT['MODIFY'].'/'.$TEXT['DELETE'].' '.$TEXT['POST']; ?></h2>
+    <h2><?php echo $MOD_NEWS_IMG['COPY'].'/'.$MOD_NEWS_IMG['MOVE'] ?></h2>
     <form name="manage" action="<?php echo WB_URL; ?>/modules/news_img/<?php echo $action; ?>_post.php" method="post" enctype="multipart/form-data">
 <?php
     $posts=array();

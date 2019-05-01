@@ -218,7 +218,48 @@ $order->clean($section_id);
 	
 <?php
 } else {
-	echo $TEXT['NONE_FOUND'];
+	// count groups
+	$query_groups = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_groups` WHERE `section_id` = '$section_id'");
+	$num_groups = $query_groups->numRows();
+	if ($num_groups != 0) echo $TEXT['NONE_FOUND'];
+	else {
+?>
+    <h2><?php echo $MOD_NEWS_IMG['IMPORT'].' '.$TEXT['SECTION']; ?></h2>
+    <form name="import" action="<?php echo WB_URL; ?>/modules/news_img/import.php" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
+    <input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
+    <table>
+    <tr>
+        <td class="setting_name"><?php echo $MOD_NEWS_IMG['IMPORT']; ?>:</td>
+        <td class="setting_value">
+            <select name="source_id">
+<?php
+            $query = $database->query("SELECT `section_id` FROM `".TABLE_PREFIX."sections`"
+            . " WHERE `module` = 'news_img' ORDER BY `section_id` ASC");
+            echo '<option disabled value="0">[--- News with Images ---]</option>';
+            if ($query->numRows() > 0) {
+                // Loop through possible sections
+                while ($source = $query->fetchRow()) {
+                    echo '<option value="'.$source['section_id'].'">'.$TEXT['SECTION'].' '.$source['section_id'].'</option>';
+                }
+            }
+?>
+            </select>
+        </td>
+    </tr>
+    <tr>
+    	<td align="left">
+    		<input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>" style="width: 100px; margin-top: 5px;" />
+    	</td>
+    	<td>
+    	</td>
+    </tr>
+    </table>
+
+    </form>
+<?php
+
+	}
 }
 
 ?>

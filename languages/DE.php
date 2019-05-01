@@ -70,5 +70,5 @@ $MOD_NEWS_IMG['TEXT_AT'] = 'um';
 $MOD_NEWS_IMG['TEXT_BACK'] = 'Zur&uuml;ck zur &Uuml;bersicht';
 $MOD_NEWS_IMG['TEXT_BY'] = 'von';
 $MOD_NEWS_IMG['PAGE_NOT_FOUND'] = 'Seite nicht gefunden';
-$TEXT['UNKNOWN'] = 'Gast';
+$MOD_NEWS_IMG['IMPORT'] = 'importieren';
 

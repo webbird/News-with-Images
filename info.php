@@ -16,13 +16,34 @@
 $module_directory   = 'news_img';
 $module_name        = 'News with Images';
 $module_function    = 'page';
-$module_version     = '3.7.12';
+$module_version     = '3.7.13';
 $module_platform    = '2.8.x';
 $module_author      = 'Ryan Djurovich, Rob Smith, Silvia Reins, Martin Hecht, Florian Meerwinck, Bianka Martinovic';
 $module_license     = 'GNU General Public License';
 $module_description = 'This page type is designed for making a news page with Images and Lightboxeffect.';
 
+
 /**
+ * v3.7.13 - 2019-05-01 
+ *         - Martin Hecht
+ *           + implement importing of complete sections (in a first step NWI sections)
+ *           + when copying posts do not delete the old access file of the source post
+ *           + when copying posts set the correct link in database
+ *           + show time in modify_post as the timezone used by the current user and store as gmt
+ *           + explicitly include language files in the frontend each time using require()
+ *           + when copying posts create the access file with the right name
+ *           + copy the galleries to the correct folder when copying a post
+ *           + use gmtime(date+TIMEZONE) throughout the module when generating output of time
+ *           + delete page - once more fix warnings about images
+ *           + fix notice on manage_posts page
+ *           + bugfixes for copying posts:    
+ *             - make sure to copy the link and update it to the new post_id
+ *             - disable the copy of the post so that it does not appear immediately in FE
+ *             - ensure the new post access file is created
+ *           + new directory structure in delete.php
+ *        - Florian Meerwinck
+ *           + Minor UI fixes
+ *
  * v3.7.12 - 2019-04-26 
  *         - Martin Hecht
  *           + implement drag&drop for gallery images
