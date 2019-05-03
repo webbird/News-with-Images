@@ -40,6 +40,7 @@ if($query_details->numRows() > 0) {
                 $database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = ".$link['post_id']);
             }
         }
+        if($link['image']!='') unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/thumb/'.$link['image']);
 	unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/thumb/index.php');
 	rmdir(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/thumb/');
         if($link['image']!='') unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/'.$link['image']);

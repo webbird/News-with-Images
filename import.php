@@ -40,6 +40,20 @@ if($query_module->numRows()==1){
     $module_type = $module_result['module'];
 }
 
+// handle topics names
+$topics_name = "topics";
+$query_tables = $database->query("SHOW TABLES");
+while ($table_info = $query_tables->fetchRow()) {
+    $table_name = $table_info[0];    
+    $topics_name=preg_replace('/'.TABLE_PREFIX.'mod_/','',$table_name);
+    $res = $database->query("SHOW COLUMNS FROM `$table_name` LIKE 'topic_id'");
+    if (($res->numRows() > 0) && ($module_type == $topics_name)) {
+       $module_type = "topics";
+       break;
+    }
+}
+
+
 if($module_type == "news_img"){
 
 // =========================================== News with images ======================================
@@ -54,6 +68,7 @@ $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_settings` SET ".
     "`post_loop` = '".$database->escapeString($fetch_settings['post_loop'])."', ".
     "`view_order` = ".$fetch_settings['view_order'].", ".
     "`footer` = '".$database->escapeString($fetch_settings['footer'])."', ".
+    "`block2` = '".$database->escapeString($fetch_settings['block2'])."', ".
     "`posts_per_page` = ".$fetch_settings['posts_per_page'].", ".
     "`post_header` = '".$database->escapeString($fetch_settings['post_header'])."', ".
     "`post_content` = '".$database->escapeString($fetch_settings['post_content'])."', ".
@@ -334,7 +349,131 @@ if($database->is_error())
 // Print admin footer
 $admin->print_footer();
 
+} else if($module_type == "topics"){
+
+    // ==================================================== topics ===============================================
+
+$query_settings = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_".$topics_name."_settings` WHERE `section_id` = '$source_id'");
+$fetch_settings = $query_settings->fetchRow();
+
+$view_order = 0;
+if(($fetch_settings['sort_topics']==1)||($fetch_settings['sort_topics']==3)) $view_order=$fetch_settings['sort_topics'];
+
+// Update settings
+$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_settings` SET ".
+    "`header` = '".$database->escapeString($fetch_settings['header'])."', ".
+    "`post_loop` = '".$database->escapeString($fetch_settings['topics_loop'])."', ".
+    "`footer` = '".$database->escapeString($fetch_settings['footer'])."', ".
+    "`block2` = '".$database->escapeString($fetch_settings['topic_block2'])."', ".
+    "`view_order` = ".$view_order.", ".    
+    "`posts_per_page` = ".$fetch_settings['topics_per_page'].", ".
+    "`post_header` = '".$database->escapeString($fetch_settings['topic_header'])."', ".
+    "`post_footer` = '".$database->escapeString($fetch_settings['topic_footer'])." ".
+    "WHERE `section_id` = '$section_id'");
+
+// Include the ordering class
+require_once(WB_PATH.'/framework/class.order.php');
+// Create new order object and reorder
+$order = new order(TABLE_PREFIX.'mod_news_img_posts', 'position', 'post_id', 'section_id');
+$order->clean($source_id);
+$query_posts = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_".$topics_name."` WHERE `section_id` = '$source_id' ORDER BY `topic_id`");
+if($query_posts->numRows() > 0) {
+    $num_posts = $query_posts->numRows();
+    while($post = $query_posts->fetchRow()) {
+// Get new order
+	$order = new order(TABLE_PREFIX.'mod_news_img_posts', 'position', 'post_id', 'section_id');
+	$position = $order->get_new($section_id);
+
+	// Insert new row into database
+	$sql = "INSERT INTO `".TABLE_PREFIX."mod_news_img_posts` (`section_id`,`page_id`,`group_id`,`position`,`link`,`content_short`,`content_long`,`content_block2`,`active`) VALUES ('$section_id','$page_id','0','$position','','','','','0')";
+	$database->query($sql);
+
+	$post_id = $database->get_one("SELECT LAST_INSERT_ID()");
+
+	$mod_nwi_file_dir = "$mod_nwi_file_base/$post_id/";
+	$mod_nwi_thumb_dir = $mod_nwi_file_dir . "thumb/";
+
+	$fetch_content = $post;
+
+	$title = $fetch_content['title'];
+	$link = $fetch_content['link'];
+	$group_id = 0;
+	$posted_by = $fetch_result['posted_by'];
+	$short = $fetch_content['content_short'];
+	$long = $fetch_content['content_long'];
+	$block2 = '';
+	$image = $fetch_content['picture'];
+	$active = ($fetch_content['active']>3)?1:0;
+	$publishedwhen =  $fetch_content['published_when'];
+	$publisheduntil =  $fetch_content['published_until'];
+
+	// Get page link URL
+	$query_page = $database->query("SELECT `level`,`link` FROM `".TABLE_PREFIX."pages` WHERE `page_id` = '$page_id'");
+	$page = $query_page->fetchRow();
+	$page_level = $page['level'];
+	$page_link = $page['link'];
+
+	// get old link
+	$old_link = $link;
+
+	// new link
+	$post_link = '/posts/'.page_filename(preg_replace('/^\/?posts\/?/s', '', preg_replace('/-[0-9]*$/s', '', $link, 1)));
+	// make sure to have the post_id as suffix; this will make the link unique (hopefully...)
+	if(substr_compare($post_link,$post_id,-(strlen($post_id)),strlen($post_id))!=0) {
+	    $post_link .= PAGE_SPACER.$post_id;
+	}
+
+	// Make sure the post link is set and exists
+	// Make news post access files dir
+	make_dir(WB_PATH.PAGES_DIRECTORY.'/posts/');
+	$file_create_time = '';
+	if (!is_writable(WB_PATH.PAGES_DIRECTORY.'/posts/')) {
+	    $admin->print_error($MESSAGE['PAGES']['CANNOT_CREATE_ACCESS_FILE']);
+	} else {
+	    // Specify the filename
+	    $filename = WB_PATH.PAGES_DIRECTORY.'/'.$post_link.PAGE_EXTENSION;
+	    mod_nwi_create_file($filename, $file_create_time);
+	}
+
+	if(!is_dir($mod_nwi_file_dir)) {
+	    mod_nwi_img_makedir($mod_nwi_file_dir);
+	}
+	if(!is_dir($mod_nwi_thumb_dir)) {
+	    mod_nwi_img_makedir($mod_nwi_thumb_dir);
+	}
+	$mod_nwi_file_dir = "$mod_nwi_file_base/$post_id/";
+	$mod_nwi_thumb_dir = $mod_nwi_file_dir . "thumb/";
+	if(!is_dir($mod_nwi_file_dir)) {
+	    mod_nwi_img_makedir($mod_nwi_file_dir);
+	}
+	if(!is_dir($mod_nwi_thumb_dir)) {
+	    mod_nwi_img_makedir($mod_nwi_thumb_dir);
+	}
+
+	mod_nwi_img_copy(WB_PATH.$fetch_settings['picture_dir'].'/'.$fetch_content['picture'],
+		$mod_nwi_file_dir.'/'.$fetch_content['picture']);
+	mod_nwi_img_copy(WB_PATH.$fetch_settings['picture_dir'].'/'.$fetch_content['picture'],
+		$mod_nwi_thumb_dir.'/'.$fetch_content['picture']);
+		
+
+	// Update row
+	$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `page_id` = '$page_id', `section_id` = '$section_id', `group_id` = '$group_id', `title` = '$title', `link` = '$post_link', `content_short` = '$short', `content_long` = '$long', `content_block2` = '$block2', `image` = '$image', `active` = '$active', `published_when` = '$publishedwhen', `published_until` = '$publisheduntil', `posted_when` = '".time()."', `posted_by` = '".$posted_by."' WHERE `post_id` = '$post_id'");
+    }
+}
+
+if($database->is_error())
+    {
+	$admin->print_error($database->get_error(), WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id);
+    } else {
+        $admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+    }
+    
+// Print admin footer
+$admin->print_footer();
+
+
 } else {
+
     // =========================================== unsupported section type ======================================
 
     $admin->print_error("unsupported section type", WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id);

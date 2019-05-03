@@ -26,6 +26,7 @@ $header = $admin->add_slashes(str_replace($friendly, $raw, $_POST['header']));
 $post_loop = $admin->add_slashes(str_replace($friendly, $raw, $_POST['post_loop']));
 $view_order = intval($_POST['view_order']);
 $footer = $admin->add_slashes(str_replace($friendly, $raw, $_POST['footer']));
+$block2 = $admin->add_slashes(str_replace($friendly, $raw, $_POST['block2']));
 $post_header = $admin->add_slashes(str_replace($friendly, $raw, $_POST['post_header']));
 $post_content = $admin->add_slashes(str_replace($friendly, $raw, $_POST['post_content']));
 $image_loop = $admin->add_slashes(str_replace($friendly, $raw, $_POST['image_loop']));
@@ -80,7 +81,7 @@ $gal_img_resize_height = intval($gal_img_resize_height);
 // Update settings
 $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_settings` SET ".
     "`header` = '$header', `post_loop` = '$post_loop', `view_order` = '$view_order', `footer` = '$footer', ".
-    "`posts_per_page` = '$posts_per_page', `post_header` = '$post_header', ".
+    "`block2` = '$block2', `posts_per_page` = '$posts_per_page', `post_header` = '$post_header', ".
     "`post_content` = '$post_content', `image_loop` = '$image_loop', ".
     "`post_footer` = '$post_footer', `resize_preview` = '$resize_preview', ".
     "`crop_preview` = '$crop', `gallery` = '$gallery', `imgmaxsize`='$gal_img_max_size', ".

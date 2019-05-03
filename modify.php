@@ -219,12 +219,29 @@ $order->clean($section_id);
 	$num_groups = $query_groups->numRows();
 	if ($num_groups != 0) echo $TEXT['NONE_FOUND'];
 	else {
+	    // news with images
             $query_nwi = $database->query("SELECT `section_id` FROM `".TABLE_PREFIX."sections`"
             . " WHERE `module` = 'news_img' AND `section_id` != '$section_id' ORDER BY `section_id` ASC");
 	    $importable_sections = $query_nwi->numRows();
+	    // classical news
             $query_news = $database->query("SELECT `section_id` FROM `".TABLE_PREFIX."sections`"
             . " WHERE `module` = 'news' ORDER BY `section_id` ASC");
 	    $importable_sections += $query_news->numRows();
+	    // topics
+	    $topics_names = array();
+	    $query_tables = $database->query("SHOW TABLES");
+            while ($table_info = $query_tables->fetchRow()) {
+	        $table_name = $table_info[0];    
+		$topics_name=preg_replace('/'.TABLE_PREFIX.'mod_/','',$table_name);
+	    	$res = $database->query("SHOW COLUMNS FROM `$table_name` LIKE 'topic_id'");
+		if ($res->numRows() > 0) {
+		    $topics_names[] = $topics_name;
+        	    $query_topics = $database->query("SELECT `section_id` FROM `".TABLE_PREFIX."sections`"
+        	    . " WHERE `module` = '$topics_name' ORDER BY `section_id` ASC");
+		    $importable_sections += $query_topics->numRows();
+		}
+	    }
+	    
 	    if($importable_sections>0){
 ?>
     <h2><?php echo $MOD_NEWS_IMG['IMPORT'].' '.$TEXT['SECTION']; ?></h2>
@@ -251,6 +268,17 @@ $order->clean($section_id);
                     echo '<option value="'.$source['section_id'].'">'.$TEXT['SECTION'].' '.$source['section_id'].'</option>';
                 }
             }
+	    foreach($topics_names as $topics_name){
+        	$query_topics = $database->query("SELECT `section_id` FROM `".TABLE_PREFIX."sections`"
+        	. " WHERE `module` = '$topics_name' ORDER BY `section_id` ASC");
+        	if ($query_topics->numRows() > 0) {
+                    echo '<option disabled value="0">[--- '.$topics_name.' ---]</option>';
+                    // Loop through possible sections
+                    while ($source = $query_topics->fetchRow()) {
+                	echo '<option value="'.$source['section_id'].'">'.$TEXT['SECTION'].' '.$source['section_id'].'</option>';
+                    }
+        	}
+	    }
 ?>
             </select>
         </td>

@@ -16,7 +16,7 @@
 $module_directory   = 'news_img';
 $module_name        = 'News with Images';
 $module_function    = 'page';
-$module_version     = '3.7.13';
+$module_version     = '3.7.14';
 $module_platform    = '2.8.x';
 $module_author      = 'Ryan Djurovich, Rob Smith, Silvia Reins, Martin Hecht, Florian Meerwinck, Bianka Martinovic';
 $module_license     = 'GNU General Public License';
@@ -24,6 +24,16 @@ $module_description = 'This page type is designed for making a news page with Im
 
 
 /**
+ * v3.7.14 - 2019-05-02 
+ *         - Martin Hecht
+ *           + implement importing of topics sections
+ *           + add second block in settings which is used if not configured in the post
+ *           + when copying posts do not delete the old access file of the source post
+ *           + re-add up/down arrows and make them invisible with js
+ *           + if js is disabled, drag&drop does not work, but the arrows are shown then
+ *           + support importing classical news sections
+ *           + bugfixes for the import of nwi sections
+ *
  * v3.7.13 - 2019-05-01 
  *         - Martin Hecht
  *           + implement importing of complete sections (in a first step NWI sections)

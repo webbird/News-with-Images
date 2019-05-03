@@ -114,12 +114,14 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
         $setting_post_loop = ($fetch_settings['post_loop']);
         $setting_view_order = ($fetch_settings['view_order']);
         $setting_footer = ($fetch_settings['footer']);
+        $setting_block2 = ($fetch_settings['block2']);
         $setting_posts_per_page = $fetch_settings['posts_per_page'];
     } else {
         $setting_header = '';
         $setting_post_loop = '';
         $setting_view_order = 0;
         $setting_footer = '';
+        $setting_block2 = '';
         $setting_posts_per_page = '';
     }
     
@@ -501,6 +503,7 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
 
         // Block2
         $post_block2 = ($post['content_block2']);
+	if($post_block2=="" AND $setting_block2 != NULL) $post_block2 = $setting_block2;
         define("NEWS_BLOCK2", $post_block2);
         define("TOPIC_BLOCK2", $post_block2); // re-use the constant from topics for backwards compatibility
         if (!defined("MODULES_BLOCK2")) {

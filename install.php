@@ -57,6 +57,7 @@ if(defined('WB_URL'))
                      . '`post_loop` TEXT NOT NULL ,'
                      . '`view_order` INT NOT NULL DEFAULT \'0\','
                      . '`footer` TEXT NOT NULL ,'
+                     . '`block2` TEXT NOT NULL ,'
                      . '`posts_per_page` INT NOT NULL DEFAULT \'0\','
                      . '`post_header` TEXT NOT NULL,'
                      . '`post_content` TEXT NOT NULL,'

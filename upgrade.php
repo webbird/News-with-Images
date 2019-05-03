@@ -132,6 +132,12 @@ require(WB_PATH."/index.php");
         'ALTER TABLE `%smod_news_img_posts` ADD COLUMN `content_block2` TEXT NOT NULL AFTER `content_long`',
         TABLE_PREFIX
     ));
+    // 2019-05-02 by Martin Hecht:
+    //            add second block in settings
+    $database->query(sprintf(
+        'ALTER TABLE `%smod_news_img_settings` ADD COLUMN `block2` TEXT NOT NULL AFTER `footer`',
+        TABLE_PREFIX
+    ));
     // 2019-04-13 by Martin Hecht:
     //            add view order
     $database->query(sprintf(
