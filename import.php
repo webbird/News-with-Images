@@ -54,6 +54,11 @@ while ($table_info = $query_tables->fetchRow()) {
 }
 
 
+
+$query_settings = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '$section_id'");
+$original_settings = $query_settings->fetchRow();
+
+
 if($module_type == "news_img"){
 
 // =========================================== News with images ======================================
@@ -214,12 +219,22 @@ $fetch_settings = $query_settings->fetchRow();
 $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_settings` SET ".
     "`header` = '".$database->escapeString($fetch_settings['header'])."', ".
     "`post_loop` = '".$database->escapeString($fetch_settings['post_loop'])."', ".
+    "`view_order` = ".$original_settings['view_order'].", ".
     "`footer` = '".$database->escapeString($fetch_settings['footer'])."', ".
+    "`block2` = '".$database->escapeString($original_settings['block2'])."', ".
     "`posts_per_page` = ".$fetch_settings['posts_per_page'].", ".
     "`post_header` = '".$database->escapeString($fetch_settings['post_header'])."', ".
-    "`post_footer` = '".$database->escapeString($fetch_settings['post_footer'])."' ".
+    "`post_content` = '".$database->escapeString($original_settings['post_content'])."', ".
+    "`image_loop` = '".$database->escapeString($original_settings['image_loop'])."', ".
+    "`post_footer` = '".$database->escapeString($fetch_settings['post_footer'])."', ".
+    "`resize_preview` = '".$database->escapeString($original_settings['resize_preview'])."', ".
+    "`crop_preview` = '".$database->escapeString($original_settings['crop_preview'])."', ".
+    "`gallery` = '".$database->escapeString($original_settings['gallery'])."', ".
+    "`imgmaxsize` = '".$database->escapeString($original_settings['imgmaxsize'])."', ".
+    "`imgmaxwidth` = '".$database->escapeString($original_settings['imgmaxwidth'])."', ".
+    "`imgmaxheight` = '".$database->escapeString($original_settings['imgmaxheight'])."', ".
+    "`imgthumbsize` = '".$database->escapeString($original_settings['imgthumbsize'])."' ".
     "WHERE `section_id` = '$section_id'");
-
 
 if(!($database->is_error())){
 
@@ -359,17 +374,62 @@ $fetch_settings = $query_settings->fetchRow();
 $view_order = 0;
 if(($fetch_settings['sort_topics']==1)||($fetch_settings['sort_topics']==3)) $view_order=$fetch_settings['sort_topics'];
 
+// Placeholders
+ $vars = array(
+	 '[SECTION_ID]'			=> "",
+	 '[SECTION_TITLE]'		=> "",
+	 '[SECTION_DESCRIPTION]'	        => "",
+	 '[TOPIC_ID]'			=> "",  
+	 '[SHORT_DESCRIPTION]'	        => "", 
+	 '[TOPIC_SHORT]'			=> "[SHORT]", 
+	 '[META_DESCRIPTION]'		=> "", 
+	 '[META_KEYWORDS]'		=> "",
+	 '{SEE_ALSO}'			=> "",  
+	 '{SEE_PREVNEXT}'		=> "",
+	 '[BACK]'				=> "",
+	 '[PICTURE_DIR]'			=> "",			
+	 '[PICTURE]'				=> "", 
+	 '{PICTURE}'				=>  "",
+	 '{THUMB}'				=>  "",
+	 '[ADDITIONAL_PICTURES]'	=>  "",
+	 '{FULL_TOPICS_LIST}'	=> "",
+	 '[XTRA1]'				=> '',
+	 '[XTRA2]'				=> '',
+	 '[XTRA3]'				=> '', 
+	 '[CLASSES]'				=>  '',
+	 '[COMMENTSCOUNT]'		=>   '',
+	 '[COMMENTSCLASS]'		=>  '',
+	 '[TOPIC_SCORE]'			=>   '',
+	 '[EDITLINK]'			=>  '',
+	 '[ACTIVE]'			=>  '',
+	 '[USER_MODIFIEDINFO]'	=> '',
+	 '[ALLCOMMENTSLIST]'		=>  '', 
+	 '[COMMENTFRAME]'		=>  '',			
+	 '[USER_DISPLAY_NAME]'	=> '[DISPLAY_NAME]', 
+	 );
+	
+$fetch_settings=str_replace(array_keys($vars),array_values($vars),$fetch_settings);
+
 // Update settings
 $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_settings` SET ".
     "`header` = '".$database->escapeString($fetch_settings['header'])."', ".
     "`post_loop` = '".$database->escapeString($fetch_settings['topics_loop'])."', ".
+    "`view_order` = ".$view_order.", ".    
     "`footer` = '".$database->escapeString($fetch_settings['footer'])."', ".
     "`block2` = '".$database->escapeString($fetch_settings['topic_block2'])."', ".
-    "`view_order` = ".$view_order.", ".    
     "`posts_per_page` = ".$fetch_settings['topics_per_page'].", ".
     "`post_header` = '".$database->escapeString($fetch_settings['topic_header'])."', ".
-    "`post_footer` = '".$database->escapeString($fetch_settings['topic_footer'])." ".
+    "`post_content` = '".$database->escapeString($original_settings['post_content'])."', ".
+    "`post_footer` = '".$database->escapeString($fetch_settings['topic_footer']).", ".
+    "`resize_preview` = '".$database->escapeString($original_settings['resize_preview'])."', ".
+    "`crop_preview` = '".$database->escapeString($original_settings['crop_preview'])."', ".
+    "`gallery` = '".$database->escapeString($original_settings['gallery'])."', ".
+    "`imgmaxsize` = '".$database->escapeString($original_settings['imgmaxsize'])."', ".
+    "`imgmaxwidth` = '".$database->escapeString($original_settings['imgmaxwidth'])."', ".
+    "`imgmaxheight` = '".$database->escapeString($original_settings['imgmaxheight'])."', ".
+    "`imgthumbsize` = '".$database->escapeString($original_settings['imgthumbsize'])."' ".
     "WHERE `section_id` = '$section_id'");
+
 
 // Include the ordering class
 require_once(WB_PATH.'/framework/class.order.php');
@@ -458,6 +518,32 @@ if($query_posts->numRows() > 0) {
 
 	// Update row
 	$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `page_id` = '$page_id', `section_id` = '$section_id', `group_id` = '$group_id', `title` = '$title', `link` = '$post_link', `content_short` = '$short', `content_long` = '$long', `content_block2` = '$block2', `image` = '$image', `active` = '$active', `published_when` = '$publishedwhen', `published_until` = '$publisheduntil', `posted_when` = '".time()."', `posted_by` = '".$posted_by."' WHERE `post_id` = '$post_id'");
+	$additional_picture_path = WB_PATH.$fetch_settings['picture_dir'].'/topic'.$fetch_content['topic_id'];
+	if (is_dir($additional_picture_path)) {
+	    $order = new order(TABLE_PREFIX.'mod_news_img_img', 'position', 'post_id', 'section_id');
+	    $position = $order->get_new($section_id);
+
+	    $additional_picture_url = WB_URL.$settings_fetch['picture_dir'].'/topic'.TOPIC_ID.'/';
+
+	    $dir = $additional_picture_path . '/';
+	    $extensions = array('jpg', 'jpeg', 'png', 'gif', 'bmp');
+
+	    $pictures=scandir($additional_picture_path);
+	    $directory = new DirectoryIterator($dir);
+	    foreach ($pictures as $currfile) {
+	        $currfilepath=$dir.'/'.$currfile;
+        	if (is_file($currfilepath)) {
+        	    $extension = strtolower(pathinfo($currfilepath, PATHINFO_EXTENSION));
+        	    if (in_array($extension, $extensions)) {
+		        // Get new order
+                        $order = new order(TABLE_PREFIX.'mod_news_img_img', 'position', 'post_id', 'section_id');
+                        $position = $order->get_new($section_id);
+                        $database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_img` (`picname`, `picdesc`, `post_id`, `position`) VALUES ($currfile, '', '$post_id','$position'");
+        	    }
+        	}
+	    }
+	    
+	}
     }
 }
 
