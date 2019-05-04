@@ -57,6 +57,9 @@ while ($table_info = $query_tables->fetchRow()) {
 
 $query_settings = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '$section_id'");
 $original_settings = $query_settings->fetchRow();
+foreach($original_settings as $k => $v){
+  if($v==NULL)$original_settings[$k]='';
+}
 
 
 if($module_type == "news_img"){
@@ -71,10 +74,10 @@ $fetch_settings = $query_settings->fetchRow();
 $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_settings` SET ".
     "`header` = '".$database->escapeString($fetch_settings['header'])."', ".
     "`post_loop` = '".$database->escapeString($fetch_settings['post_loop'])."', ".
-    "`view_order` = ".$fetch_settings['view_order'].", ".
+    "`view_order` = '".$fetch_settings['view_order']."', ".
     "`footer` = '".$database->escapeString($fetch_settings['footer'])."', ".
     "`block2` = '".$database->escapeString($fetch_settings['block2'])."', ".
-    "`posts_per_page` = ".$fetch_settings['posts_per_page'].", ".
+    "`posts_per_page` = '".$fetch_settings['posts_per_page']."', ".
     "`post_header` = '".$database->escapeString($fetch_settings['post_header'])."', ".
     "`post_content` = '".$database->escapeString($fetch_settings['post_content'])."', ".
     "`image_loop` = '".$database->escapeString($fetch_settings['image_loop'])."', ".
@@ -88,6 +91,14 @@ $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_settings` SET ".
     "`imgthumbsize` = '".$database->escapeString($fetch_settings['imgthumbsize'])."' ".
     "WHERE `section_id` = '$section_id'");
 
+
+// Check if there is a db error, otherwise say successful
+if($database->is_error()) {
+	$admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+// Print admin footer
+$admin->print_footer();
+exit();
+}
 
 if(!($database->is_error())){
 
@@ -219,10 +230,10 @@ $fetch_settings = $query_settings->fetchRow();
 $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_settings` SET ".
     "`header` = '".$database->escapeString($fetch_settings['header'])."', ".
     "`post_loop` = '".$database->escapeString($fetch_settings['post_loop'])."', ".
-    "`view_order` = ".$original_settings['view_order'].", ".
+    "`view_order` = '".$original_settings['view_order']."', ".
     "`footer` = '".$database->escapeString($fetch_settings['footer'])."', ".
     "`block2` = '".$database->escapeString($original_settings['block2'])."', ".
-    "`posts_per_page` = ".$fetch_settings['posts_per_page'].", ".
+    "`posts_per_page` = '".$fetch_settings['posts_per_page']."', ".
     "`post_header` = '".$database->escapeString($fetch_settings['post_header'])."', ".
     "`post_content` = '".$database->escapeString($original_settings['post_content'])."', ".
     "`image_loop` = '".$database->escapeString($original_settings['image_loop'])."', ".
@@ -235,6 +246,14 @@ $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_settings` SET ".
     "`imgmaxheight` = '".$database->escapeString($original_settings['imgmaxheight'])."', ".
     "`imgthumbsize` = '".$database->escapeString($original_settings['imgthumbsize'])."' ".
     "WHERE `section_id` = '$section_id'");
+
+// Check if there is a db error, otherwise say successful
+if($database->is_error()) {
+	$admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+// Print admin footer
+$admin->print_footer();
+exit();
+}
 
 if(!($database->is_error())){
 
@@ -376,51 +395,92 @@ if(($fetch_settings['sort_topics']==1)||($fetch_settings['sort_topics']==3)) $vi
 
 // Placeholders
  $vars = array(
-	 '[SECTION_ID]'			=> "",
-	 '[SECTION_TITLE]'		=> "",
-	 '[SECTION_DESCRIPTION]'	        => "",
-	 '[TOPIC_ID]'			=> "",  
-	 '[SHORT_DESCRIPTION]'	        => "", 
-	 '[TOPIC_SHORT]'			=> "[SHORT]", 
+	 '[ACTIVE]'			=>  '',
+	 '[ADDITIONAL_PICTURES]'	=>  "",
+	 '[ALLCOMMENTSLIST]'		=>  '',	
+	 '[CLASSES]'				=>  '',
+	 '[COMMENTFRAME]'		=>  '',	
+	 '[COMMENT_ID]'		=>  '',	
+	 '[COMMENTSCLASS]'		=>  '',
+	 '[COMMENTSCOUNT]'		=>   '',
+	 '[CONTENT_EXTRA]'		=>  '',	
+	 '[CONTENT_LONG]'		=>  '{CONTENT]',	
+	 '[CONTENT_LONG_FIRST]'		=>  '',	
+	 '[EDITLINK]'			=>  '',
+	 '[EVENT_START_DATE]'	=>  '',	 
+	 '[EVENT_START_DAY]'		=>  '',	 
+	 '[EVENT_START_DAYNAME]'	=>  '',	 
+	 '[EVENT_START_MONTH]'	=>  '',	 
+	 '[EVENT_START_MONTHNAME]'=>  '',	 
+	 '[EVENT_START_TIME]'	=>  '',	 
+	 '[EVENT_START_YEAR]'	=>  '',	 
+	 '[EVENT_STOP_DATE]'		=>  '',	 
+	 '[EVENT_STOP_DAY]'		=>  '',	 
+	 '[EVENT_STOP_DAYNAME]'	=>  '',	 
+	 '[EVENT_STOP_MONTH]'	=>  '',	 
+	 '[EVENT_STOP_MONTHNAME]'=>  '',	 
+	 '[EVENT_STOP_TIME]'		=>  '',	
+	 '[EVENT_STOP_YEAR]'		=>  '',	 
+	 '{FULL_TOPICS_LIST}'	=> "",
+	 '{JUMP_LINKS_LIST}'	=> "",
+	 '[HREF]'		=>  '',	
 	 '[META_DESCRIPTION]'		=> "", 
 	 '[META_KEYWORDS]'		=> "",
+	 '{NAME}'				=> "", 
+	 '[PICTURE]'				=> "[IMAGE]", 
+	 '{PICTURE}'				=>  "[IMAGE]",
+	 '{PREV_NEXT_PAGES}'				=>  
+'<table class="page-header" style="display: [DISPLAY_PREVIOUS_NEXT_LINKS]">
+<tr>
+    <td class="page-left">[PREVIOUS_PAGE_LINK]</td>
+    <td class="page-center">[OF]</td>
+    <td class="page-right">[NEXT_PAGE_LINK]</td>
+</tr>
+</table>',
+	 '[PICTURE_DIR]'			=> "",			
+	 '[PUBL_DATE]'			=> "[PUBLISHED_DATE]",			
+	 '[PUBL_TIME]'			=> "[PUBLISHED_TIME]",			
+	 '[SECTION_DESCRIPTION]'	        => "",
+	 '[SECTION_ID]'			=> "",
+	 '[SECTION_TITLE]'		=> "",
+	 '[READ_MORE]'		=> '<span style="visibility:[SHOW_READ_MORE];"><a href="[LINK]">[TEXT_READ_MORE]</a></span>',
 	 '{SEE_ALSO}'			=> "",  
 	 '{SEE_PREVNEXT}'		=> "",
-	 '[BACK]'				=> "",
-	 '[PICTURE_DIR]'			=> "",			
-	 '[PICTURE]'				=> "", 
-	 '{PICTURE}'				=>  "",
-	 '{THUMB}'				=>  "",
-	 '[ADDITIONAL_PICTURES]'	=>  "",
-	 '{FULL_TOPICS_LIST}'	=> "",
+	 '[SHORT_DESCRIPTION]'	        => "", 
+	 '{THUMB}'				=>  '<div class="mod_nwi_teaserpic">
+        <a href="[LINK]">[IMAGE]</a>
+    </div>
+',
+	 '{TITLE}'			=> "[TITLE]",  
+	 '[TOPIC_ID]'			=> "",  
+	 '[TOPIC_EXTRA]'			=>   '',
+	 '[TOPIC_SCORE]'			=>   '',
+	 '[TOPIC_SHORT]'			=> "[SHORT]", 
+	 '[TOTALNUM]'		=>  '',	
+	 '[USER_EMAIL]'	=> '', 
+	 '[USER_NAME]'	=> '[USERNAME]', 
+	 '[USER_DISPLAY_NAME]'	=> '[DISPLAY_NAME]', 
+	 '[USER_MODIFIEDINFO]'	=> '',
 	 '[XTRA1]'				=> '',
 	 '[XTRA2]'				=> '',
 	 '[XTRA3]'				=> '', 
-	 '[CLASSES]'				=>  '',
-	 '[COMMENTSCOUNT]'		=>   '',
-	 '[COMMENTSCLASS]'		=>  '',
-	 '[TOPIC_SCORE]'			=>   '',
-	 '[EDITLINK]'			=>  '',
-	 '[ACTIVE]'			=>  '',
-	 '[USER_MODIFIEDINFO]'	=> '',
-	 '[ALLCOMMENTSLIST]'		=>  '', 
-	 '[COMMENTFRAME]'		=>  '',			
-	 '[USER_DISPLAY_NAME]'	=> '[DISPLAY_NAME]', 
+	 
 	 );
 	
 $fetch_settings=str_replace(array_keys($vars),array_values($vars),$fetch_settings);
 
 // Update settings
+
 $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_settings` SET ".
     "`header` = '".$database->escapeString($fetch_settings['header'])."', ".
     "`post_loop` = '".$database->escapeString($fetch_settings['topics_loop'])."', ".
-    "`view_order` = ".$view_order.", ".    
+    "`view_order` = '".$view_order."', ".    
     "`footer` = '".$database->escapeString($fetch_settings['footer'])."', ".
     "`block2` = '".$database->escapeString($fetch_settings['topic_block2'])."', ".
-    "`posts_per_page` = ".$fetch_settings['topics_per_page'].", ".
+    "`posts_per_page` = '".$fetch_settings['topics_per_page']."', ".
     "`post_header` = '".$database->escapeString($fetch_settings['topic_header'])."', ".
     "`post_content` = '".$database->escapeString($original_settings['post_content'])."', ".
-    "`post_footer` = '".$database->escapeString($fetch_settings['topic_footer']).", ".
+    "`post_footer` = '".$database->escapeString($fetch_settings['topic_footer'])."', ".
     "`resize_preview` = '".$database->escapeString($original_settings['resize_preview'])."', ".
     "`crop_preview` = '".$database->escapeString($original_settings['crop_preview'])."', ".
     "`gallery` = '".$database->escapeString($original_settings['gallery'])."', ".
@@ -431,12 +491,20 @@ $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_settings` SET ".
     "WHERE `section_id` = '$section_id'");
 
 
+// Check if there is a db error, otherwise say successful
+if($database->is_error()) {
+	$admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+// Print admin footer
+$admin->print_footer();
+exit();
+}
+
 // Include the ordering class
 require_once(WB_PATH.'/framework/class.order.php');
 // Create new order object and reorder
 $order = new order(TABLE_PREFIX.'mod_news_img_posts', 'position', 'post_id', 'section_id');
 $order->clean($source_id);
-$query_posts = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_".$topics_name."` WHERE `section_id` = '$source_id' ORDER BY `topic_id`");
+$query_posts = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_".$topics_name."` WHERE `section_id` = $source_id ORDER BY `topic_id`");
 if($query_posts->numRows() > 0) {
     $num_posts = $query_posts->numRows();
     while($post = $query_posts->fetchRow()) {
@@ -455,17 +523,17 @@ if($query_posts->numRows() > 0) {
 
 	$fetch_content = $post;
 
-	$title = $fetch_content['title'];
-	$link = $fetch_content['link'];
+	$title = $database->escapeString($fetch_content['title']);
+	$link = $database->escapeString($fetch_content['link']);
 	$group_id = 0;
-	$posted_by = $fetch_result['posted_by'];
-	$short = $fetch_content['content_short'];
-	$long = $fetch_content['content_long'];
+	$posted_by = $database->escapeString($fetch_result['posted_by']);
+	$short = $database->escapeString($fetch_content['content_short']);
+	$long = $database->escapeString($fetch_content['content_long']);
 	$block2 = '';
-	$image = $fetch_content['picture'];
+	$image = $database->escapeString($fetch_content['picture']);
 	$active = ($fetch_content['active']>3)?1:0;
-	$publishedwhen =  $fetch_content['published_when'];
-	$publisheduntil =  $fetch_content['published_until'];
+	$publishedwhen =  $database->escapeString($fetch_content['published_when']);
+	$publisheduntil =  $database->escapeString($fetch_content['published_until']);
 
 	// Get page link URL
 	$query_page = $database->query("SELECT `level`,`link` FROM `".TABLE_PREFIX."pages` WHERE `page_id` = '$page_id'");
@@ -512,7 +580,7 @@ if($query_posts->numRows() > 0) {
 
 	mod_nwi_img_copy(WB_PATH.$fetch_settings['picture_dir'].'/'.$fetch_content['picture'],
 		$mod_nwi_file_dir.'/'.$fetch_content['picture']);
-	mod_nwi_img_copy(WB_PATH.$fetch_settings['picture_dir'].'/'.$fetch_content['picture'],
+	mod_nwi_img_copy(WB_PATH.$fetch_settings['picture_dir'].'/thumbs/'.$fetch_content['picture'],
 		$mod_nwi_thumb_dir.'/'.$fetch_content['picture']);
 		
 
@@ -535,6 +603,10 @@ if($query_posts->numRows() > 0) {
         	if (is_file($currfilepath)) {
         	    $extension = strtolower(pathinfo($currfilepath, PATHINFO_EXTENSION));
         	    if (in_array($extension, $extensions)) {
+			mod_nwi_img_copy(WB_PATH.$fetch_settings['picture_dir'].'/'.$currfile,
+				$mod_nwi_file_dir.'/'.$currfile);
+			mod_nwi_img_copy(WB_PATH.$fetch_settings['picture_dir'].'/thumbs/'.$currfile,
+				$mod_nwi_thumb_dir.'/'.$currfile);
 		        // Get new order
                         $order = new order(TABLE_PREFIX.'mod_news_img_img', 'position', 'post_id', 'section_id');
                         $position = $order->get_new($section_id);
