@@ -373,11 +373,13 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
             $setting_post_content = ($fetch_settings['post_content']);
             $setting_image_loop = ($fetch_settings['image_loop']);
             $setting_gallery = ($fetch_settings['gallery']);
+            $setting_block2 = ($fetch_settings['block2']);
         } else {
             $setting_post_header = '';
             $setting_post_footer = '';
             $setting_image_loop = '<img src="[IMAGE]" alt="[DESCRIPTION]" />';
             $setting_gallery = '';
+            $setting_block2 = '';
         }
 
         if (strlen($setting_gallery)) {
@@ -427,7 +429,7 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
                 }
 
                 if ($post['image'] != "") {
-                    $post_img = "<img src='".WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post['image']."' alt='".$post['title']."' />";
+                    $post_img = "<img src='".WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post['post_id'].'/'.$post['image']."' alt='".$post['title']."' />";
                 } else {
                     $post_img = "";
                 }
@@ -503,7 +505,8 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
 
         // Block2
         $post_block2 = ($post['content_block2']);
-	if($post_block2=="" AND $setting_block2 != NULL) $post_block2 = $setting_block2;
+	if(empty($post_block2) AND $setting_block2 != NULL) $post_block2 = $setting_block2;
+	$post_block2 = str_replace($vars, $values, $post_block2);
         define("NEWS_BLOCK2", $post_block2);
         define("TOPIC_BLOCK2", $post_block2); // re-use the constant from topics for backwards compatibility
         if (!defined("MODULES_BLOCK2")) {

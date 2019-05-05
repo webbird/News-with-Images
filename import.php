@@ -94,10 +94,10 @@ $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_settings` SET ".
 
 // Check if there is a db error, otherwise say successful
 if($database->is_error()) {
-	$admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
-// Print admin footer
-$admin->print_footer();
-exit();
+    $admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+    // Print admin footer
+    $admin->print_footer();
+    exit();
 }
 
 if(!($database->is_error())){
@@ -208,12 +208,11 @@ if(!($database->is_error())){
     } 
 }
 
-if($database->is_error())
-    {
-	$admin->print_error($database->get_error(), WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id);
-    } else {
-        $admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
-    }
+if($database->is_error()){
+    $admin->print_error($database->get_error(), WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id);
+} else {
+    $admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+}
     
 // Print admin footer
 $admin->print_footer();
@@ -249,10 +248,10 @@ $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_settings` SET ".
 
 // Check if there is a db error, otherwise say successful
 if($database->is_error()) {
-	$admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
-// Print admin footer
-$admin->print_footer();
-exit();
+    $admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+    // Print admin footer
+    $admin->print_footer();
+    exit();
 }
 
 if(!($database->is_error())){
@@ -373,12 +372,11 @@ if(!($database->is_error())){
     } 
 }
 
-if($database->is_error())
-    {
-	$admin->print_error($database->get_error(), WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id);
-    } else {
-        $admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
-    }
+if($database->is_error()){
+    $admin->print_error($database->get_error(), WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id);
+} else {
+    $admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+}
     
 // Print admin footer
 $admin->print_footer();
@@ -395,77 +393,84 @@ if(($fetch_settings['sort_topics']==1)||($fetch_settings['sort_topics']==3)) $vi
 
 // Placeholders
  $vars = array(
-	 '[ACTIVE]'			=>  '',
-	 '[ADDITIONAL_PICTURES]'	=>  "",
-	 '[ALLCOMMENTSLIST]'		=>  '',	
-	 '[CLASSES]'				=>  '',
-	 '[COMMENTFRAME]'		=>  '',	
-	 '[COMMENT_ID]'		=>  '',	
-	 '[COMMENTSCLASS]'		=>  '',
-	 '[COMMENTSCOUNT]'		=>   '',
-	 '[CONTENT_EXTRA]'		=>  '',	
-	 '[CONTENT_LONG]'		=>  '{CONTENT]',	
-	 '[CONTENT_LONG_FIRST]'		=>  '',	
-	 '[EDITLINK]'			=>  '',
-	 '[EVENT_START_DATE]'	=>  '',	 
-	 '[EVENT_START_DAY]'		=>  '',	 
-	 '[EVENT_START_DAYNAME]'	=>  '',	 
-	 '[EVENT_START_MONTH]'	=>  '',	 
-	 '[EVENT_START_MONTHNAME]'=>  '',	 
-	 '[EVENT_START_TIME]'	=>  '',	 
-	 '[EVENT_START_YEAR]'	=>  '',	 
-	 '[EVENT_STOP_DATE]'		=>  '',	 
-	 '[EVENT_STOP_DAY]'		=>  '',	 
-	 '[EVENT_STOP_DAYNAME]'	=>  '',	 
-	 '[EVENT_STOP_MONTH]'	=>  '',	 
-	 '[EVENT_STOP_MONTHNAME]'=>  '',	 
-	 '[EVENT_STOP_TIME]'		=>  '',	
-	 '[EVENT_STOP_YEAR]'		=>  '',	 
-	 '{FULL_TOPICS_LIST}'	=> "",
-	 '{JUMP_LINKS_LIST}'	=> "",
-	 '[HREF]'		=>  '',	
-	 '[META_DESCRIPTION]'		=> "", 
-	 '[META_KEYWORDS]'		=> "",
-	 '{NAME}'				=> "", 
-	 '[PICTURE]'				=> "[IMAGE]", 
-	 '{PICTURE}'				=>  "[IMAGE]",
-	 '{PREV_NEXT_PAGES}'				=>  
+     '[ACTIVE]'                        =>  '',
+     '[ADDITIONAL_PICTURES]'           =>  "",
+     '[ALLCOMMENTSLIST]'               =>  '',        
+     '[CLASSES]'                       =>  '',
+     '[COMMENTFRAME]'                  =>  '',        
+     '[COMMENT_ID]'                    =>  '',        
+     '[COMMENTSCLASS]'                 =>  '',
+     '[COMMENTSCOUNT]'                 =>   '',
+     '[CONTENT_EXTRA]'                 =>  '',        
+     '[CONTENT_LONG]'                  =>  '[CONTENT]',        
+     '[CONTENT_LONG_FIRST]'            =>  '[CONTENT]',        
+     '[COUNTER]'                       =>  '',        
+     '[COUNTER2]'                      =>  '',        
+     '[COUNTER3]'                      =>  '',        
+     '[EDITLINK]'                      =>  '',
+     '[EVENT_START_DATE]'              =>  '',         
+     '[EVENT_START_DAY]'               =>  '',         
+     '[EVENT_START_DAYNAME]'           =>  '',         
+     '[EVENT_START_MONTH]'             =>  '',         
+     '[EVENT_START_MONTHNAME]'         =>  '',         
+     '[EVENT_START_TIME]'              =>  '',         
+     '[EVENT_START_YEAR]'              =>  '',         
+     '[EVENT_STOP_DATE]'               =>  '',         
+     '[EVENT_STOP_DAY]'                =>  '',         
+     '[EVENT_STOP_DAYNAME]'            =>  '',         
+     '[EVENT_STOP_MONTH]'              =>  '',         
+     '[EVENT_STOP_MONTHNAME]'          =>  '',         
+     '[EVENT_STOP_TIME]'               =>  '',        
+     '[EVENT_STOP_YEAR]'               =>  '',         
+     '{FULL_TOPICS_LIST}'              => "",
+     '{JUMP_LINKS_LIST}'               => "",
+     '[HREF]'                          =>  '',        
+     '[META_DESCRIPTION]'              => "", 
+     '[META_KEYWORDS]'                 => "",
+     '{NAME}'                          => "", 
+     '[PICTURE]'                       => "[IMAGE]", 
+     '{PICTURE}'                       => "[IMAGE]",
+     '{PREV_NEXT_PAGES}'               =>  
 '<table class="page-header" style="display: [DISPLAY_PREVIOUS_NEXT_LINKS]">
 <tr>
-    <td class="page-left">[PREVIOUS_PAGE_LINK]</td>
-    <td class="page-center">[OF]</td>
-    <td class="page-right">[NEXT_PAGE_LINK]</td>
+<td class="page-left">[PREVIOUS_PAGE_LINK]</td>
+<td class="page-center">[OF]</td>
+<td class="page-right">[NEXT_PAGE_LINK]</td>
 </tr>
 </table>',
-	 '[PICTURE_DIR]'			=> "",			
-	 '[PUBL_DATE]'			=> "[PUBLISHED_DATE]",			
-	 '[PUBL_TIME]'			=> "[PUBLISHED_TIME]",			
-	 '[SECTION_DESCRIPTION]'	        => "",
-	 '[SECTION_ID]'			=> "",
-	 '[SECTION_TITLE]'		=> "",
-	 '[READ_MORE]'		=> '<span style="visibility:[SHOW_READ_MORE];"><a href="[LINK]">[TEXT_READ_MORE]</a></span>',
-	 '{SEE_ALSO}'			=> "",  
-	 '{SEE_PREVNEXT}'		=> "",
-	 '[SHORT_DESCRIPTION]'	        => "", 
-	 '{THUMB}'				=>  '<div class="mod_nwi_teaserpic">
-        <a href="[LINK]">[IMAGE]</a>
-    </div>
+     '[PICTURE_DIR]'                   => "",                        
+     '[PUBL_DATE]'                     => "[PUBLISHED_DATE]",                        
+     '[PUBL_TIME]'                     => "[PUBLISHED_TIME]",                        
+     '[SECTION_DESCRIPTION]'           => "",
+     '[SECTION_ID]'                    => $section_id,
+     '[SECTION_TITLE]'                 => "",
+     '[READ_MORE]'                     => 
+'<span style="visibility:[SHOW_READ_MORE];"><a href="[LINK]">[TEXT_READ_MORE]</a></span>',
+     '{SEE_ALSO}'                      => "",  
+     '{SEE_PREVNEXT}'                  => "",
+     '[SHORT_DESCRIPTION]'             => "", 
+     '{THUMB}'                         =>  
+'<div class="mod_nwi_teaserpic">
+    <a href="[LINK]">[IMAGE]</a>
+</div>
 ',
-	 '{TITLE}'			=> "[TITLE]",  
-	 '[TOPIC_ID]'			=> "",  
-	 '[TOPIC_EXTRA]'			=>   '',
-	 '[TOPIC_SCORE]'			=>   '',
-	 '[TOPIC_SHORT]'			=> "[SHORT]", 
-	 '[TOTALNUM]'		=>  '',	
-	 '[USER_EMAIL]'	=> '', 
-	 '[USER_NAME]'	=> '[USERNAME]', 
-	 '[USER_DISPLAY_NAME]'	=> '[DISPLAY_NAME]', 
-	 '[USER_MODIFIEDINFO]'	=> '',
-	 '[XTRA1]'				=> '',
-	 '[XTRA2]'				=> '',
-	 '[XTRA3]'				=> '', 
-	 
-	 );
+     '[THUMB]'                         =>  
+'<div class="mod_nwi_teaserpic">[IMAGE]</div>
+',
+     '{TITLE}'                         => '<a href="[LINK]">[TITLE]</a>',  
+     '[TOPIC_ID]'                      => "",  
+     '[TOPIC_EXTRA]'                   => '',
+     '[TOPIC_SCORE]'                   => '',
+     '[TOPIC_SHORT]'                   => "[SHORT]", 
+     '[TOTALNUM]'                      =>  '',        
+     '[USER_EMAIL]'                    => '[EMAIL]', 
+     '[USER_NAME]'                     => '[USERNAME]', 
+     '[USER_DISPLAY_NAME]'             => '[DISPLAY_NAME]', 
+     '[USER_MODIFIEDINFO]'             => '',
+     '[XTRA1]'                         => '',
+     '[XTRA2]'                         => '',
+     '[XTRA3]'                         => '', 
+);
 	
 $fetch_settings=str_replace(array_keys($vars),array_values($vars),$fetch_settings);
 
@@ -493,10 +498,10 @@ $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_settings` SET ".
 
 // Check if there is a db error, otherwise say successful
 if($database->is_error()) {
-	$admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
-// Print admin footer
-$admin->print_footer();
-exit();
+    $admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+    // Print admin footer
+    $admin->print_footer();
+    exit();
 }
 
 // Include the ordering class
@@ -508,7 +513,7 @@ $query_posts = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_".$topics_na
 if($query_posts->numRows() > 0) {
     $num_posts = $query_posts->numRows();
     while($post = $query_posts->fetchRow()) {
-// Get new order
+        // Get new order
 	$order = new order(TABLE_PREFIX.'mod_news_img_posts', 'position', 'post_id', 'section_id');
 	$position = $order->get_new($section_id);
 
@@ -619,12 +624,11 @@ if($query_posts->numRows() > 0) {
     }
 }
 
-if($database->is_error())
-    {
-	$admin->print_error($database->get_error(), WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id);
-    } else {
-        $admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
-    }
+if($database->is_error()){
+    $admin->print_error($database->get_error(), WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id);
+} else {
+    $admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+}
     
 // Print admin footer
 $admin->print_footer();
