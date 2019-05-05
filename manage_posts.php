@@ -25,7 +25,7 @@ if ((!isset($_POST['continue']) or !isset($_POST['action'])) or !isset($_POST['s
 require WB_PATH.'/modules/admin.php';
 
 $action='';
-if($_POST['action']=='copy'||$_POST['action']=='move') {
+if($_POST['action']=='copy'||$_POST['action']=='move'||$_POST['action']=='delete') {
     $action=$_POST['action'];
 } else {
     header("Location: ".ADMIN_URL."/pages/index.php");
@@ -43,10 +43,33 @@ $page_id = intval($_POST['page_id']);
 <?php
     $posts=array();
     if(isset($_POST['manage_posts'])&&is_array($_POST['manage_posts'])) $posts=$_POST['manage_posts'];
-    foreach($posts as $idx=>$pid) echo 	'<input type="hidden" name="manage_posts[]" value="'.$pid.'" />';
+    foreach($posts as $pid) 
+        if(is_numeric($pid))
+	    echo 	'<input type="hidden" name="manage_posts[]" value="'.$pid.'" />';
 ?>
 	<input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
 	<input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
+<?php 
+    if($action=="delete"){
+	echo $TEXT['DELETE'].' '.$TEXT['POST'].' ';
+	foreach($posts as $pid) 
+	    if(is_numeric($pid))
+	    	echo "$pid, ";
+	echo $TEXT['ARE_YOU_SURE'];
+?>
+    <table>
+    <tr>
+    	<td align="left">
+    		<input name="ok" type="submit" value="OK" style="width: 100px; margin-top: 5px;" />
+    	</td>
+    	<td align="right">
+    		<input type="button" value="<?php echo $TEXT['CANCEL']; ?>" onclick="javascript: window.location = '<?php echo ADMIN_URL; ?>/pages/modify.php?page_id=<?php echo $page_id; ?>';" style="width: 100px; margin-top: 5px;" />
+    	</td>
+    </tr>
+    </table>
+<?php	
+    } else {
+?>	
     <table>
     <tr>
         <td class="setting_name"><?php echo $MOD_NEWS_IMG[strtoupper($action)].' '.$MOD_NEWS_IMG['TO']  ?>:</td>
@@ -122,7 +145,9 @@ $page_id = intval($_POST['page_id']);
     	</td>
     </tr>
     </table>
-
+<?php
+    }
+?>
     </form>
 </div>
 <?php 

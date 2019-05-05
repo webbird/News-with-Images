@@ -195,6 +195,11 @@ $order->clean($section_id);
     		    <a href="#" onclick="javascript: document.getElementById('action_move').checked = true;">
     		    <?php echo $MOD_NEWS_IMG['MOVE']; ?>
     		    </a>
+    		    &nbsp;
+    		    <input type="radio" name="action" id="action_delete" value="delete" />
+    		    <a href="#" onclick="javascript: document.getElementById('action_delete').checked = true;">
+    		    <?php echo $TEXT['DELETE']; ?>
+    		    </a>
     	    </td>
 	</tr>
 	<tr>
