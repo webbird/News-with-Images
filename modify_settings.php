@@ -176,7 +176,7 @@ if(function_exists('edit_module_css'))
         <tr>
 			<td class="setting_name"><?php echo $MOD_NEWS_IMG['GALLERY'] ?>:</td>
 			<td class="setting_value">
-				<select name="gallery" style="width: 98%;">
+			<select name="gallery" style="width: 98%;" onfocus="this.setAttribute('PrvSelectedValue',this.value);" onchange="if(confirm('<?php echo $MOD_NEWS_IMG['GALLERY_WARNING']?>')==false){ this.value=this.getAttribute('PrvSelectedValue');return false; }" >     
                     <option value="fotorama"<?php if($fetch_content['gallery']=='fotorama'): ?> selected="selected"<?php endif; ?>>Fotorama</option>
                     <option value="masonry"<?php if($fetch_content['gallery']=='masonry'): ?> selected="selected"<?php endif; ?>>Masonry</option>
                 </select>

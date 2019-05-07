@@ -61,7 +61,7 @@ echo '<?xml version="1.0" encoding="'.$charset.'"?>';
 		<managingEditor><?php echo SERVER_EMAIL; ?></managingEditor>
 		<webMaster><?php echo SERVER_EMAIL; ?></webMaster>
 		<category><?php echo WEBSITE_TITLE; ?></category>
-		<generator>WebsiteBaker Content Management System</generator>
+		<generator>WBCE Content Management System</generator>
 <?php
 // Get news items from database
 $t = TIME();

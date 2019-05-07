@@ -53,6 +53,7 @@ $MOD_NEWS_IMG['ALL'] = "Tutto";
 $MOD_NEWS_IMG['CROP'] = 'Ritaglia';
 $MOD_NEWS_IMG['GALLERY'] = 'Galleria immagini';
 $MOD_NEWS_IMG['GALLERY_INFO'] = "Dopo aver modificato l'impostazione della galleria, premi save; il markup per il loop dell'immagine verr&agrave;  regolato automaticamente. ";
+$MOD_NEWS_IMG['GALLERY_WARNING'] = "E sicuro? Nota che le impostazioni personalizzate per il markup del loop dell'immagine andranno perse.";
 $MOD_NEWS_IMG['IMAGE_MAX_SIZE'] = "Max. dimensione dell'immagine in byte ";
 $MOD_NEWS_IMG['RESIZE_PREVIEW_IMAGE_TO'] = "Ridimensiona l'immagine di anteprima a";
 $MOD_NEWS_IMG['RESIZE_GALLERY_IMAGES_TO'] = "Ridimensiona le immagini della galleria su";

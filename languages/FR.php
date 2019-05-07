@@ -53,6 +53,7 @@ $MOD_NEWS_IMG['ALL'] = "Tous";
 $MOD_NEWS_IMG['CROP'] = 'Recadrage';
 $MOD_NEWS_IMG['GALLERY'] = "Galerie d'images";
 $MOD_NEWS_IMG['GALLERY_INFO'] = 'Apr&egrave;s avoir modifi&eacute; les param&egrave;tres de la galerie, cliquez sur enregistrer; le balisage de la boucle image sera ajust&eacute; automatiquement. ';
+$MOD_NEWS_IMG['GALLERY_WARNING'] = "&Ecirc;tes-vous s&ucirc;r? Notez que les param&egrave;tres personnalis&eacute;s pour le balisage de la boucle d'image seront perdus.";
 $MOD_NEWS_IMG['IMAGE_MAX_SIZE'] = "Max. taille de l'image en octets ";
 $MOD_NEWS_IMG['RESIZE_PREVIEW_IMAGE_TO'] = "Redimensionner l'image d'aper&ccedil;u en";
 $MOD_NEWS_IMG['RESIZE_GALLERY_IMAGES_TO'] = 'Redimensionner les images de la galerie en';

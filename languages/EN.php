@@ -53,6 +53,7 @@ $MOD_NEWS_IMG['ALL'] = "All";
 $MOD_NEWS_IMG['CROP'] = 'Crop';
 $MOD_NEWS_IMG['GALLERY'] = 'Image gallery';
 $MOD_NEWS_IMG['GALLERY_INFO'] = 'After changing the gallery setting, hit save; the markup for the image loop will be adjusted automatically.';
+$MOD_NEWS_IMG['GALLERY_WARNING'] = 'Are you sure? Note that customized settings for the image loop markup will get lost.';
 $MOD_NEWS_IMG['IMAGE_MAX_SIZE'] = 'Max. image size in bytes';
 $MOD_NEWS_IMG['RESIZE_PREVIEW_IMAGE_TO'] = 'Resize preview image to';
 $MOD_NEWS_IMG['RESIZE_GALLERY_IMAGES_TO'] = 'Resize gallery images to';

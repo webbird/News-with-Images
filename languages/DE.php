@@ -53,6 +53,7 @@ $MOD_NEWS_IMG['ALL'] = "Alle";
 $MOD_NEWS_IMG['CROP'] = 'Beschneiden';
 $MOD_NEWS_IMG['GALLERY'] = 'Bildergalerie';
 $MOD_NEWS_IMG['GALLERY_INFO'] = 'Nach dem &Auml;ndern der Galerie-Einstellung speichern; danach wird automatisch das Markup angepasst.';
+$MOD_NEWS_IMG['GALLERY_WARNING'] = 'Sind Sie sicher? Beachten Sie, dass die Anpassungen f&uuml;r das Markup der Image Schleife verloren gehen.';
 $MOD_NEWS_IMG['IMAGE_MAX_SIZE'] = 'Max. Bildgr&ouml;&szlig;e in Bytes';
 $MOD_NEWS_IMG['RESIZE_GALLERY_IMAGES_TO'] = 'Galeriebilder Gr&ouml;&szlig;e &auml;ndern auf';
 $MOD_NEWS_IMG['RESIZE_PREVIEW_IMAGE_TO'] = 'Vorschaubild Gr&ouml;&szlig;e &auml;ndern auf';

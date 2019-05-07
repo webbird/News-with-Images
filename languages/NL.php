@@ -55,6 +55,7 @@ $MOD_NEWS_IMG['ALL'] = "Alle";
 $ MOD_NEWS_IMG ['CROP'] = 'Bijsnijden';
 $MOD_NEWS_IMG['GALLERY'] = 'Afbeeldingengalerij';
 $MOD_NEWS_IMG['GALLERY_INFO'] = 'Na het veranderen van de galerijinstelling, druk op opslaan; de markeringen voor de afbeeldingslus worden automatisch aangepast. ';
+$MOD_NEWS_IMG['GALLERY_WARNING'] = "Weet je het zeker? Merk op dat de aangepaste instellingen voor de afbeeldinglusopmaak verloren gaan.";
 $MOD_NEWS_IMG['IMAGE_MAX_SIZE'] = 'Max. afbeeldingsgrootte in bytes ';
 $MOD_NEWS_IMG['RESIZE_PREVIEW_IMAGE_TO'] = 'Verklein voorbeeldafbeelding naar';
 $MOD_NEWS_IMG['RESIZE_GALLERY_IMAGES_TO'] = 'Het formaat van galerijafbeeldingen aanpassen';
