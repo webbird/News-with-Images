@@ -73,7 +73,10 @@ if (!defined('WYSIWYG_EDITOR') or WYSIWYG_EDITOR=="none" or !file_exists(WB_PATH
         echo '<textarea name="'.$name.'" id="'.$id.'" rows="10" cols="1" style="width: '.$width.'; height: '.$height.';">'.$content.'</textarea>';
     }
 } else {
-    $id_list=array("short","long","block2");
+    $id_list=array("short","long");
+    if(NWI_USE_SECOND_BLOCK){
+        $id_list[]="block2";
+    }
     require(WB_PATH.'/modules/'.WYSIWYG_EDITOR.'/include.php');
 }
 
@@ -266,6 +269,9 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
 ?>
     	</td>
     </tr>
+<?php
+    if(NWI_USE_SECOND_BLOCK){
+?>
     <tr>
     	<td valign="top"><?php echo $TEXT['BLOCK']; ?> 2:</td>
     </tr>
@@ -276,6 +282,9 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
 ?>
     	</td>
     </tr>
+<?php
+}
+?>
     </table>
 
 <?php

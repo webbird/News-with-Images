@@ -183,4 +183,21 @@ header('Location: ../');
         fclose($handle);
         change_mode(WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb/index.php', 'file');
     }
+    
+    // 2019-05-08 Martin Hecht
+    //            config file
+    $nwi_config_file=__DIR__.'/config.php';
+    if(!file_exists($nwi_config_file)) {
+        $content = ''.
+"<?php
+
+if(!defined('NWI_USE_SECOND_BLOCK')){
+    define('NWI_USE_SECOND_BLOCK',true);
+}
+";
+        $handle = fopen($nwi_config_file, 'w');
+        fwrite($handle, $content);
+        fclose($handle);
+        change_mode($nwi_config_file, 'file');
+    }    
 };

@@ -19,6 +19,7 @@ require_once __DIR__.'/functions.inc.php';
 $update_when_modified = true; // Tells script to update when this page was last updated
 require WB_PATH.'/modules/admin.php';
 
+$block2='';
 // This code removes any <?php tags and adds slashes
 $friendly = array('&lt;', '&gt;', '?php');
 $raw = array('<', '>', '');
@@ -26,7 +27,9 @@ $header = $admin->add_slashes(str_replace($friendly, $raw, $_POST['header']));
 $post_loop = $admin->add_slashes(str_replace($friendly, $raw, $_POST['post_loop']));
 $view_order = intval($_POST['view_order']);
 $footer = $admin->add_slashes(str_replace($friendly, $raw, $_POST['footer']));
-$block2 = $admin->add_slashes(str_replace($friendly, $raw, $_POST['block2']));
+if(NWI_USE_SECOND_BLOCK){
+    $block2 = $admin->add_slashes(str_replace($friendly, $raw, $_POST['block2']));
+}
 $post_header = $admin->add_slashes(str_replace($friendly, $raw, $_POST['post_header']));
 $post_content = $admin->add_slashes(str_replace($friendly, $raw, $_POST['post_content']));
 $image_loop = $admin->add_slashes(str_replace($friendly, $raw, $_POST['image_loop']));

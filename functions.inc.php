@@ -2,6 +2,14 @@
 
 require_once __DIR__.'/../../config.php';
 
+if(file_exists(__DIR__.'/config.php')){
+    include __DIR__.'/config.php';
+}
+
+if(!defined('NWI_USE_SECOND_BLOCK')){
+   define('NWI_USE_SECOND_BLOCK',true);
+}
+
 // load module language file
 $lang = (dirname(__FILE__)) . '/languages/' . LANGUAGE . '.php';
 require_once(!file_exists($lang) ? (dirname(__FILE__)) . '/languages/EN.php' : $lang);

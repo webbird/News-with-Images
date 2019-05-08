@@ -57,6 +57,7 @@ $imagemaxheight = $fetch_content['imgmaxheight'];
 $crop           = ($fetch_content['crop_preview'] == 'Y') ? 1 : 0;
 
 $group="";
+$block2='';
 
 // Validate all fields
 if ($admin->get_post('title') == '' and $admin->get_post('url') == '') {
@@ -66,7 +67,9 @@ if ($admin->get_post('title') == '' and $admin->get_post('url') == '') {
     $link = $admin->get_post_escaped('link');
     $short = $admin->get_post_escaped('short');
     $long = $admin->get_post_escaped('long');
-    $block2 = $admin->get_post_escaped('block2');
+    if(NWI_USE_SECOND_BLOCK){
+        $block2 = $admin->get_post_escaped('block2');
+    }
     $image = $admin->get_post_escaped('image');
     $active = $admin->get_post_escaped('active');
     $group = $admin->get_post_escaped('group');

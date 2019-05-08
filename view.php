@@ -504,13 +504,15 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
         echo str_replace($vars, $values, $setting_post_footer);
 
         // Block2
-        $post_block2 = ($post['content_block2']);
-	if(empty($post_block2) AND $setting_block2 != NULL) $post_block2 = $setting_block2;
-	$post_block2 = str_replace($vars, $values, $post_block2);
-        define("NEWS_BLOCK2", $post_block2);
-        define("TOPIC_BLOCK2", $post_block2); // re-use the constant from topics for backwards compatibility
-        if (!defined("MODULES_BLOCK2")) {
-            define("MODULES_BLOCK2", $post_block2);
-        }
+	if(NWI_USE_SECOND_BLOCK){
+            $post_block2 = ($post['content_block2']);
+	    if(empty($post_block2) AND $setting_block2 != NULL) $post_block2 = $setting_block2;
+	    $post_block2 = str_replace($vars, $values, $post_block2);
+            define("NEWS_BLOCK2", $post_block2);
+            define("TOPIC_BLOCK2", $post_block2); // re-use the constant from topics for backwards compatibility
+            if (!defined("MODULES_BLOCK2")) {
+        	define("MODULES_BLOCK2", $post_block2);
+            }
+	}
     }
 }
