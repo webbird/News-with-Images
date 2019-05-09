@@ -93,6 +93,10 @@ $link = implode(PAGE_SPACER, $parts);
 $jscal_use_time = true; // whether to use a clock, too
 require_once(WB_PATH."/include/jscalendar/wb-setup.php");
 ?>
+    <!-- Custom styles -->
+    <link href="uploader/css/jquery.dm-uploader.css" rel="stylesheet">
+    <link href="uploader/styles.css" rel="stylesheet">
+
 <div class="mod_news_img">
     <script src="<?php echo WB_URL; ?>/modules/news_img/js/jquery.furl.js"></script>
     
@@ -333,8 +337,8 @@ if ($query_img->numRows() > 0) {
     }
     echo '</tbody></table></div>';
 }
+/*
 ?>
-
     <!-- Formular -->
     <div id="fotos"><h3><?php echo $MOD_NEWS_IMG['IMAGEUPLOAD']?></h3>
           <input type="file" name="foto[]" accept="image/*" />  <br />
@@ -344,6 +348,28 @@ if ($query_img->numRows() > 0) {
           <input type="file" name="foto[]" accept="image/*" />   <br />
           <input type="file" name="foto[]" accept="image/*" />   <br />
     </div>
+    <!-- This has been replaced by the following uploader -->
+<?php
+*/
+?>
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-6 col-sm-12">
+          
+          <!-- Our markup, the important part here! -->
+          <div id="drag-and-drop-zone" class="dm-uploader p-5">
+            <h3 class="mb-5 mt-5 text-muted"><?php echo $MOD_NEWS_IMG['DRAG_N_DROP_HERE']; ?></h3>
+
+            <div class="btn btn-primary btn-block mb-5">
+                <input type="file" title=<?php echo "'".$MOD_NEWS_IMG['CLICK_TO_ADD']."'"; ?> />
+            </div>
+          </div><!-- /uploader -->
+
+        </div>
+      </div><!-- /file list -->
+
+
+    </main> <!-- /container -->
 
     <table>
     <tr>
@@ -357,6 +383,34 @@ if ($query_img->numRows() > 0) {
     </tr>
     </table>
     </form>
+
+
+<script type="text/javascript"> 
+    var NWI_UPLOAD_URL = "<?php echo WB_URL."/modules/news_img/uploader/upload.php?post_id=$post_id"; ?>";
+</script>
+
+    <script src="<?php echo WB_URL."/modules/news_img/uploader/js/jquery.dm-uploader.js"; ?>"></script>
+    <script src="<?php echo WB_URL."/modules/news_img/uploader/ui.js"; ?>"></script>
+    <script src="<?php echo WB_URL."/modules/news_img/uploader/config.js"; ?>"></script>
+
+    <!-- File item template -->
+    <script type="text/html" id="files-template">
+      <li class="media">
+        <div class="media-body mb-1">
+          <p class="mb-2">
+            <strong>%%filename%%</strong> - Status: <span class="text-muted">Waiting</span>
+          </p>
+          <div class="progress mb-2">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" 
+              role="progressbar"
+              style="width: 0%" 
+              aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            </div>
+          </div>
+          <hr class="mt-1 mb-1" />
+        </div>
+      </li>
+    </script>
 
 <script type="text/javascript">
 

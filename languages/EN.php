@@ -62,6 +62,12 @@ $MOD_NEWS_IMG['TEXT_DEFAULTS'] = 'Default sizes';
 $MOD_NEWS_IMG['TEXT_DEFAULTS_CLICK'] = 'Click to choose from the defaults';
 $MOD_NEWS_IMG['THUMB_SIZE'] = 'Thumbnail size';
 
+
+//Uploader
+$MOD_NEWS_IMG['DRAG_N_DROP_HERE'] = 'Drag &amp; drop files here';
+$MOD_NEWS_IMG['CLICK_TO_ADD'] = 'Click to add Files';
+$MOD_NEWS_IMG['NO_FILES_UPLOADED'] = 'No files uploaded.';
+
 //Variables for the frontend
 $MOD_NEWS_IMG['PAGE_NOT_FOUND'] = 'Page not found';
 $MOD_NEWS_IMG['TEXT_AT'] = 'at';

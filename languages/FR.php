@@ -62,6 +62,11 @@ $MOD_NEWS_IMG['TEXT_DEFAULTS'] = 'Tailles par d&eacute;faut';
 $MOD_NEWS_IMG['TEXT_DEFAULTS_CLICK'] = 'Cliquez pour choisir parmi les param&egrave;tres par d&eacute;faut';
 $MOD_NEWS_IMG['THUMB_SIZE'] = 'Taille de la vignette';
 
+// Uploader
+$MOD_NEWS_IMG['DRAG_N_DROP_HERE'] = 'Glisser &amp; D&eacute;posez les fichiers ici';
+$MOD_NEWS_IMG['CLICK_TO_ADD'] = 'Cliquez pour ajouter des fichiers';
+$MOD_NEWS_IMG['NO_FILES_UPLOADED'] = 'Aucun fichier t&eacute;l&eacute;charg&eacute;.';
+
 // Variables pour le frontend
 $MOD_NEWS_IMG['PAGE_NOT_FOUND'] = 'Page non trouvée';
 $MOD_NEWS_IMG['TEXT_AT'] = '&agrave;';

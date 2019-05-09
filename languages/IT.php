@@ -62,6 +62,11 @@ $MOD_NEWS_IMG['TEXT_DEFAULTS'] = 'Dimensioni predefinite';
 $MOD_NEWS_IMG['TEXT_DEFAULTS_CLICK'] = 'Fai clic per scegliere tra i valori predefiniti';
 $MOD_NEWS_IMG ['THUMB_SIZE'] = 'Dimensione anteprima';
 
+// Uploader
+$MOD_NEWS_IMG['DRAG_N_DROP_HERE'] = 'Trascina &amp; rilasciare i file qui';
+$MOD_NEWS_IMG['CLICK_TO_ADD'] = 'Clicca per aggiungere file';
+$MOD_NEWS_IMG['NO_FILES_UPLOADED'] = 'Nessun file caricato.';
+
 // Variabili per il frontend 
 $MOD_NEWS_IMG ['PAGE_NOT_FOUND'] = 'Pagina non trovata';
 $MOD_NEWS_IMG ['TEXT_AT'] = 'il';

@@ -63,6 +63,11 @@ $MOD_NEWS_IMG['TEXT_CROP'] = 'Als de beeldverhouding van het origineel niet over
 $MOD_NEWS_IMG['TEXT_DEFAULTS'] = 'Standaardformaten';
 $MOD_NEWS_IMG['TEXT_DEFAULTS_CLICK'] = 'Klik om uit de standaardinstellingen te kiezen';
 $MOD_NEWS_IMG['THUMB_SIZE'] = 'Thumbnail size';
+
+// Uploader
+$MOD_NEWS_IMG['DRAG_N_DROP_HERE'] = 'Drag &amp; zet hier bestanden neer ';
+$MOD_NEWS_IMG['CLICK_TO_ADD'] = 'Klik om bestanden toe te voegen';
+$MOD_NEWS_IMG['NO_FILES_UPLOADED'] = 'Geen bestanden ge&uuml;pload.';
  
  // Variabelen voor de frontend 
 $MOD_NEWS_IMG['PAGE_NOT_FOUND'] = 'Pagina niet gevonden';

@@ -62,6 +62,11 @@ $MOD_NEWS_IMG['TEXT_DEFAULTS'] = 'Vorschl&auml;ge';
 $MOD_NEWS_IMG['TEXT_DEFAULTS_CLICK'] = 'Anklicken um Gr&ouml;&szlig;e zu w&auml;hlen';
 $MOD_NEWS_IMG['THUMB_SIZE'] = 'Gr&ouml;&szlig;e der Thumbnails';
 
+// Uploader
+$MOD_NEWS_IMG['DRAG_N_DROP_HERE'] = 'Dateien hier mit Drag &amp; Drop ablegen';
+$MOD_NEWS_IMG['CLICK_TO_ADD'] = 'Klicken, um Dateien hinzuzuf&uuml;gen';
+$MOD_NEWS_IMG['NO_FILES_UPLOADED'] = 'Keine Dateien hochgeladen.';
+
 //Variables for the frontend
 $MOD_NEWS_IMG['TEXT_READ_MORE'] = 'Details anzeigen';
 $MOD_NEWS_IMG['TEXT_POSTED_BY'] = 'Ver&ouml;ffentlicht von';
