@@ -337,8 +337,8 @@ if ($query_img->numRows() > 0) {
     }
     echo '</tbody></table></div>';
 }
-/*
 ?>
+<noscript>
     <!-- Formular -->
     <div id="fotos"><h3><?php echo $MOD_NEWS_IMG['IMAGEUPLOAD']?></h3>
           <input type="file" name="foto[]" accept="image/*" />  <br />
@@ -348,10 +348,8 @@ if ($query_img->numRows() > 0) {
           <input type="file" name="foto[]" accept="image/*" />   <br />
           <input type="file" name="foto[]" accept="image/*" />   <br />
     </div>
-    <!-- This has been replaced by the following uploader -->
-<?php
-*/
-?>
+</noscript>
+
     <main role="main" class="container">
       <div class="row">
         <div class="col-md-6 col-sm-12">
