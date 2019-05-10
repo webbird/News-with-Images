@@ -234,6 +234,37 @@ if(!defined('NWI_USE_SECOND_BLOCK')){
         change_mode($nwi_config_file, 'file');
     }
 
+
+    // 2019-05-11 Martin Hecht
+    //            move pictures to new location during update
+    $old_file_dir = WB_PATH.PAGES_DIRECTORY.'/beitragsbilder/';
+    $old_thumb_dir = WB_PATH.PAGES_DIRECTORY.'/beitragsbilder/thumb/';
+
+require_once __DIR__.'/../functions.inc.php';
+
+    // make sure the folder exists
+    if(!is_dir($mod_nwi_file_dir)) {
+        mod_nwi_img_makedir($mod_nwi_file_dir);
+    }
+
+    $query_img = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_img`");
+    if ($query_img->numRows() > 0) {
+	while ($row = $query_img->fetchRow()) {
+            $post_id=$row['post_id'];
+	    $picname=$row['picname'];
+	    $dest_img=$mod_nwi_file_dir.'/'.$picname;
+	    $source_img=$old_file_dir.'/'.$picname;
+            if(!file_exists($dest_img) && file_exists($source_img)){
+	    	rename($source_img, $dest_img);
+	    }
+	    $dest_img=$mod_nwi_thumb_dir.'/'.$picname;
+	    $source_img=$old_thumb_dir.'/'.$picname;
+            if(!file_exists($dest_img) && file_exists($source_img)){
+	    	rename($source_img, $dest_img);
+	    }
+	}
+    }
+
     // Print admin footer
     $admin->print_footer();
 }
