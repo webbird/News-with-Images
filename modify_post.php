@@ -337,6 +337,11 @@ if ($query_img->numRows() > 0) {
     }
     echo '</tbody></table></div>';
 }
+
+// load imagemaxsize for the current section
+$query_settings = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '$section_id'");
+$fetch_settings = $query_settings->fetchRow();
+$imgmaxsize = $fetch_settings['imgmaxsize'];
 ?>
 <noscript>
     <!-- Formular -->
@@ -364,8 +369,25 @@ if ($query_img->numRows() > 0) {
           </div><!-- /uploader -->
 
         </div>
+        <div class="col-md-6 col-sm-12">
+          <div class="card h-100">
+            <ul class="list-unstyled p-2 d-flex flex-column col" id="files">
+              <li class="text-muted text-center empty"><?php echo $MOD_NEWS_IMG['NO_FILES_UPLOADED']; ?></li>
+            </ul>
+          </div>
+        </div>
+
+        </div>
       </div><!-- /file list -->
 
+      <div class="row">
+        <div class="col-12">
+           <div class="card h-100">
+            <ul class="list-group list-group-flush" id="status">
+            </ul>
+          </div>
+        </div>
+      </div> <!-- /status messages -->
 
     </main> <!-- /container -->
 
@@ -385,6 +407,8 @@ if ($query_img->numRows() > 0) {
 
 <script type="text/javascript"> 
     var NWI_UPLOAD_URL = "<?php echo WB_URL."/modules/news_img/uploader/upload.php?post_id=$post_id"; ?>";
+    var NWI_COMPLETE_MESSAGE = "<?php echo $MOD_NEWS_IMG['COMPLETE_MESSAGE']; ?>";
+    var NWI_IMAGE_MAX_SIZE = <?php echo $imgmaxsize;?>;
 </script>
 
     <script src="<?php echo WB_URL."/modules/news_img/uploader/js/jquery.dm-uploader.js"; ?>"></script>
@@ -408,6 +432,11 @@ if ($query_img->numRows() > 0) {
           <hr class="mt-1 mb-1" />
         </div>
       </li>
+    </script>
+
+    <!-- Status item template -->
+    <script type="text/html" id="status-template">
+      <li class="list-group-item"><strong>%%message%%</strong></li>
     </script>
 
 <script type="text/javascript">

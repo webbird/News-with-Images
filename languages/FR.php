@@ -66,6 +66,7 @@ $MOD_NEWS_IMG['THUMB_SIZE'] = 'Taille de la vignette';
 $MOD_NEWS_IMG['DRAG_N_DROP_HERE'] = 'Glisser &amp; D&eacute;posez les fichiers ici';
 $MOD_NEWS_IMG['CLICK_TO_ADD'] = 'Cliquez pour ajouter des fichiers';
 $MOD_NEWS_IMG['NO_FILES_UPLOADED'] = 'Aucun fichier t&eacute;l&eacute;charg&eacute;.';
+$MOD_NEWS_IMG['COMPLETE_MESSAGE'] = 'Enregistrez vos modifications pour afficher le t&eacute;l&eacute;chargement dans la galerie';
 
 // Variables pour le frontend
 $MOD_NEWS_IMG['PAGE_NOT_FOUND'] = 'Page non trouvée';

@@ -66,6 +66,7 @@ $MOD_NEWS_IMG ['THUMB_SIZE'] = 'Dimensione anteprima';
 $MOD_NEWS_IMG['DRAG_N_DROP_HERE'] = 'Trascina &amp; rilasciare i file qui';
 $MOD_NEWS_IMG['CLICK_TO_ADD'] = 'Clicca per aggiungere file';
 $MOD_NEWS_IMG['NO_FILES_UPLOADED'] = 'Nessun file caricato.';
+$MOD_NEWS_IMG['COMPLETE_MESSAGE'] = 'Salva le modifiche per mostrare il caricamento nella galleria';
 
 // Variabili per il frontend 
 $MOD_NEWS_IMG ['PAGE_NOT_FOUND'] = 'Pagina non trovata';

@@ -66,6 +66,7 @@ $MOD_NEWS_IMG['THUMB_SIZE'] = 'Gr&ouml;&szlig;e der Thumbnails';
 $MOD_NEWS_IMG['DRAG_N_DROP_HERE'] = 'Dateien hier mit Drag &amp; Drop ablegen';
 $MOD_NEWS_IMG['CLICK_TO_ADD'] = 'Klicken, um Dateien hinzuzuf&uuml;gen';
 $MOD_NEWS_IMG['NO_FILES_UPLOADED'] = 'Keine Dateien hochgeladen.';
+$MOD_NEWS_IMG['COMPLETE_MESSAGE'] = 'Speichern Sie Ihre &Auml;nderungen, um den Upload in der Galerie anzuzeigen';
 
 //Variables for the frontend
 $MOD_NEWS_IMG['TEXT_READ_MORE'] = 'Details anzeigen';

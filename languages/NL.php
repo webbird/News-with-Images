@@ -68,8 +68,9 @@ $MOD_NEWS_IMG['THUMB_SIZE'] = 'Thumbnail size';
 $MOD_NEWS_IMG['DRAG_N_DROP_HERE'] = 'Drag &amp; zet hier bestanden neer ';
 $MOD_NEWS_IMG['CLICK_TO_ADD'] = 'Klik om bestanden toe te voegen';
 $MOD_NEWS_IMG['NO_FILES_UPLOADED'] = 'Geen bestanden ge&uuml;pload.';
- 
- // Variabelen voor de frontend 
+$MOD_NEWS_IMG['COMPLETE_MESSAGE'] = 'Sla je wijzigingen op om de upload in de galerij te tonen'; 
+
+// Variabelen voor de frontend 
 $MOD_NEWS_IMG['PAGE_NOT_FOUND'] = 'Pagina niet gevonden';
 $MOD_NEWS_IMG['TEXT_AT'] = 'om';
 $MOD_NEWS_IMG['TEXT_BACK'] = 'Terug';

@@ -67,7 +67,8 @@ $MOD_NEWS_IMG['THUMB_SIZE'] = 'Thumbnail size';
 $MOD_NEWS_IMG['DRAG_N_DROP_HERE'] = 'Drag &amp; drop files here';
 $MOD_NEWS_IMG['CLICK_TO_ADD'] = 'Click to add Files';
 $MOD_NEWS_IMG['NO_FILES_UPLOADED'] = 'No files uploaded.';
-
+$MOD_NEWS_IMG['COMPLETE_MESSAGE'] = 'Save your changes to show the upload in the gallery';
+ 
 //Variables for the frontend
 $MOD_NEWS_IMG['PAGE_NOT_FOUND'] = 'Page not found';
 $MOD_NEWS_IMG['TEXT_AT'] = 'at';
