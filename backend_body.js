@@ -28,3 +28,11 @@ $(function() {
 var sheet = document.createElement('style');
 sheet.innerHTML = ".mod_news_img_arrow {visibility:hidden;}"; 
 document.body.appendChild(sheet);
+
+function checkActionAndPosts() {
+	
+	if ($('input[name=action]:checked').length == 0 || $('#mod_news_post_list input[type=checkbox]:checked').length == 0 ) {	
+    return false;
+   }
+   
+}

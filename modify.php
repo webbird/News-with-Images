@@ -82,7 +82,7 @@ $order->clean($section_id);
 	<input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
 	<input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
 	<input type="hidden" name="savegoback" id="savegoback" value="" />
-    	<table class="striped dragdrop_form">
+    	<table class="striped dragdrop_form" id="mod_news_post_list">
             <thead>
                 <tr>
                     <th></th>
@@ -93,7 +93,7 @@ $order->clean($section_id);
                     <th><?php echo $TEXT['ACTIVE'] ?></th>
                     <th><?php echo $TEXT['PUBL_START_DATE']; ?></th>
                     <th><?php echo $TEXT['PUBL_END_DATE']; ?></th>
-                    <th><?php echo $MOD_NEWS_IMG['ALL'] ?><input type="checkbox" name="manage_posts[]" id="<?php echo $section_id; ?>_all" value="all" onchange='javascript: var boxes = document.forms["modify_<?php echo $section_id; ?>"].elements[ "manage_posts[]" ]; for (var i=0, len=boxes.length; i<len; i++) { boxes[i].checked = this.checked;}' /></th>
+                    <th style="text-align:right; padding-right:30px"><?php echo $MOD_NEWS_IMG['ALL'] ?> <input type="checkbox" name="manage_posts[]" id="<?php echo $section_id; ?>_all" value="all" onchange='javascript: var boxes = document.forms["modify_<?php echo $section_id; ?>"].elements[ "manage_posts[]" ]; for (var i=0, len=boxes.length; i<len; i++) { boxes[i].checked = this.checked;}' /></th>
                     <th></th>
                 </tr>
             </thead>
@@ -182,10 +182,7 @@ $order->clean($section_id);
         </table>
 
 
-	<table>
-	<tr>
-    	    <td class="setting_name"><?php echo $MOD_NEWS_IMG['ACTION'];  ?>:</td>
-    	    <td class="setting_value">
+	<div class="mod_news_post_tools"><?php echo $MOD_NEWS_IMG['ACTION'];  ?>:
     		    <input type="radio" name="action" id="action_copy" value="copy" />
     		    <a href="#" onclick="javascript: document.getElementById('action_copy').checked = true;">
     		    <?php echo $MOD_NEWS_IMG['COPY']; ?>
@@ -198,18 +195,10 @@ $order->clean($section_id);
     		    &nbsp;
     		    <input type="radio" name="action" id="action_delete" value="delete" />
     		    <a href="#" onclick="javascript: document.getElementById('action_delete').checked = true;">
-    		    <?php echo $TEXT['DELETE']; ?>
+    		    <?php echo $MOD_NEWS_IMG['DELETE']; ?>
     		    </a>
-    	    </td>
-	</tr>
-	<tr>
-    	    <td align="left">
-    	    </td>
-    	    <td align="right">
-    		    <input name="continue" type="submit" value="<?php echo $MOD_NEWS_IMG['CONTINUE']; ?>" style="width: 100px; margin-top: 5px;" />
-    	    </td>
-	</tr>
-	</table>
+				<input name="continue" type="submit" onclick="return checkActionAndPosts()" value="<?php echo $MOD_NEWS_IMG['CONTINUE']; ?>" />
+    	 </div>
 	</form>
 
 <script type="text/javascript">
