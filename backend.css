@@ -40,6 +40,17 @@
 	float:right;
 }
 
+.mod_news_post_tools {
+	text-align:right;
+	padding:1em 0;
+}
+
+.mod_news_post_tools input[type="submit"] {
+	margin-left:1em;
+	padding:0.2em 0.5em;
+	min-height:auto;
+}
+
 
 /* 
   The definitions below provide the style for the edit CSS button 
