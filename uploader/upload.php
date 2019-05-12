@@ -76,9 +76,11 @@ try {
 	require WB_PATH.'/framework/class.order.php';
     }
 
-
     $mod_nwi_file_dir .= "$post_id/";
     $mod_nwi_thumb_dir = $mod_nwi_file_dir . "thumb/";
+
+    $filepath="";
+
 
     // post images (gallery images)
     if (isset($_FILES["file"])) {
@@ -108,7 +110,7 @@ try {
                 }
                 $imagename = $f_name.'_'.$num.'.'.$suffix;
             }
-
+	    $filepath=$mod_nwi_file_dir.$imagename;
             // check
             if (empty($picture['size']) || $picture['size'] > $imagemaxsize) {
                 $imageErrorMessage .= $MOD_NEWS_IMG['IMAGE_LARGER_THAN'].mod_nwi_byte_convert($imagemaxsize).'<br />';
@@ -116,7 +118,7 @@ try {
                 $imageErrorMessage .= $MOD_NEWS_IMG['IMAGE_FILENAME_ERROR'].'1<br />';
             } else {
                 // move to media folder
-                if(true===move_uploaded_file($picture['tmp_name'], $mod_nwi_file_dir.$imagename)) {
+                if(true===move_uploaded_file($picture['tmp_name'], $filepath)) {
                     // resize image (if larger than max width and height)
                     if (list($w, $h) = getimagesize($mod_nwi_file_dir.$imagename)) {
                         if ($w>$imagemaxwidth || $h>$imagemaxheight) {

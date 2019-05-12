@@ -9,7 +9,7 @@ function ui_add_status(message)
   var template = $('#status-template').text();
   template = template.replace('%%message%%', message);
   
-  $('#status').find('li.empty').fadeOut(); // remove the 'no messages yet'
+  $('#status').find('li').fadeOut(); // remov any previous status
   $('#status').prepend(template);
 }
 
