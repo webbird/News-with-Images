@@ -7,6 +7,7 @@ Es basiert auf dem "alten" Newsmodul (3.5.12), wurde aber um verschiedene Funkti
 - Sortieren von Beiträgen mit Drag & Drop
 - Verschieben/Kopieren von Beiträgen zwischen Gruppen und Abschnitten
 - Import von Topics und "klassischen" News
+
 Die rudimentäre und unsichere Kommentarfunktion aus dem alten Newsmodul ist entfallen, bei Bedarf kann diese Funktion mit entsprechenden Modulen (Global Comments/Easy Comments bzw. Reviews) integriert werden.
 
 ## Download
@@ -40,13 +41,16 @@ Für jeden Beitrag kann ein Beitragsbild hinterlegt werden, das auf der Übersic
 Welches Galeriescript verwendet wird, wird für alle Beiträge in den Einstellungen des jeweiligen Abschnitts festgelegt.
 
 Die Galeriebilder werden hochgeladen, sobald der Beitrag gespeichert wird, und können dann mit Bildunterschriften versehen, per Drag&Drop umsortiert oder auch wieder gelöscht werden.
+
 Beim Upload von Dateien mit gleichen Namen wie bereits vorhandenen Bildern werden die vorhandenen Dateien nicht überschrieben, sondern bei den nachfolgenden Dateien wird eine fortlaufende Nummerierung ergänzt (bild.jpg, bild_1.jpg usw.)
 
 Die Verwaltung der Bilder erfolgt nur über den Beitrag, nicht über die WBCE-Medienverwaltung, da NWI sonst nicht "weiß", wo welche Bilder hingehören/fehlen usw.
 
 ### Gruppen
 Beiträge können Gruppen zugeordnet werden. Dies hat einerseits Einfluss auf die Reihenfolge (die Beiträge werden erst nach Gruppe und dann nach einem weiteren anzugebenden Kriterium sortiert), und ermöglicht andererseits, themenspezifische Übersichtsseiten zu generieren. Diese können dann über die URL der NWI-Seite mit dem Parameter g?=GROUP_ID, also z.B. news.php?g=2 angesteuert werden.
+
 Ein Beitrag kann immer nur einer Gruppe zugeordnet sein.
+
 Einzelne oder mehrere Beiträge können zwischen Gruppen kopiert und verschoben werden.
 
 ### Importfunktion
