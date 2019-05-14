@@ -123,17 +123,9 @@ if(function_exists('edit_module_css'))
 				<textarea name="footer" rows="10" cols="1" style="width: 98%; height: 80px;"><?php echo str_replace($raw, $friendly, ($fetch_content['footer'])); ?></textarea>
 			</td>
 		</tr>
+
 <?php
-    if(NWI_USE_SECOND_BLOCK){
-?>		
-		<tr>
-			<td class="setting_name"><?php echo $TEXT['BLOCK']; ?> 2:</td>
-			<td class="setting_value">
-				<textarea name="block2" rows="10" cols="1" style="width: 98%; height: 80px;"><?php echo str_replace($raw, $friendly, ($fetch_content['block2'])); ?></textarea>
-			</td>
-		</tr>
-<?php
-    } 
+     
     if(extension_loaded('gd') AND function_exists('imageCreateFromJpeg')) { ?>
         <tr>
 			<td class="setting_name"><?php echo $MOD_NEWS_IMG['RESIZE_PREVIEW_IMAGE_TO']; ?>:</td>
@@ -174,6 +166,17 @@ if(function_exists('edit_module_css'))
 				<textarea name="post_footer" rows="10" cols="1" style="width: 98%; height: 60px;"><?php echo str_replace($raw, $friendly, ($fetch_content['post_footer'])); ?></textarea>
 			</td>
 		</tr>
+		
+<?php
+    if(NWI_USE_SECOND_BLOCK){
+?>		
+		<tr>
+			<td class="setting_name"><?php echo $TEXT['BLOCK']; ?> 2:</td>
+			<td class="setting_value">
+				<textarea name="block2" rows="10" cols="1" style="width: 98%; height: 80px;"><?php echo str_replace($raw, $friendly, ($fetch_content['block2'])); ?></textarea>
+			</td>
+		</tr>
+	<?php } ?>		
 		
 		
 		<tr><td colspan="2"><h3><?php echo $MOD_NEWS_IMG['GALLERY_SETTINGS']?></h3></td></tr>

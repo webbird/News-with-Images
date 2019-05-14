@@ -14,7 +14,7 @@
  */
 
 //Modul Description
-$module_description = 'Modul zum Erstellen von Newsbeitr&auml;gen mit optionalem Beitragsbild und Beitrags-Bildergalerie.';
+$module_description = 'Modul zum Erstellen von Newsbeitr&auml;gen mit optionalem Beitragsbild und Beitrags-Bildergalerie. Siehe README.md für weitere Informationen';
 
 //Variables for the backend
 $MOD_NEWS_IMG['ADD_GROUP'] = 'Gruppe anlegen';
