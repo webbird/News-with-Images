@@ -21,7 +21,7 @@ NWI erfordert keine besonderen Systemvoraussetzungen und funktioniert auch mit �
 
 ## Installation
 1. Sofern erforderlich, aktuelle Version aus dem  [AOR](https://addons.wbce.org) herunterladen
-2. Wie jedes andere WBCE-Modul auch über Erweiterungen > Module installieren
+2. Wie jedes andere WBCE-Modul auch über Erweiterungen &gt; Module installieren
 	
 ## Benutzung 
 
@@ -31,12 +31,17 @@ NWI erfordert keine besonderen Systemvoraussetzungen und funktioniert auch mit �
 3. Überschrift und ggf. weitere Felder ausfüllen, ggf. Bilder auswählen. Die Funktion der Eingabefelder ist wohl selbsterklärend.
 4. Auf "Speichern" oder "Speichern und zurück" klicken
 5. Schritte 1. - 4. ein paar Mal wiederholen und sich das ganze im Frontend anschauen
-Grundsätzlich kann NWI mit anderen Modulen auf einer Seite bzw. in einem Block kombiniert werden, es kann dann aber wie bei jedem Modul, das eigene Detailseiten generiert, zu Ergebnissen kommen, die nicht dem Erwarteten/ERwünschten entsprechen.
+
+Grundsätzlich kann NWI mit anderen Modulen auf einer Seite bzw. in einem Block kombiniert werden, es kann dann aber wie bei jedem Modul, das eigene Detailseiten generiert, zu Ergebnissen kommen, die nicht dem Erwarteten/Erwünschten entsprechen.
 
 ### Bilder im Beitrag
-Für jeden Beitrag kann ein Beitragsbild hinterlegt werden, das auf der Übersichtsseite und ggfs. der Beitragsseite angezeigt wird. Darüber hinaus ist es möglich, beliebig viele Bilder zu einem Beitrag zu hinterlegen, die als Bildergalerie angezeigt werden. Die Galeriedarstellung erfolgt entweder als Fotorama-Galerie (Thumbnails, Bild über die gesamte Breite) oder als Masonry-Galerie (Bildermosaik). Welches Galeriescript verwendet wird, wird für alle Beiträge in den Einstellungen des jeweiligen Abschnitts festgelegt.
+Für jeden Beitrag kann ein Beitragsbild hinterlegt werden, das auf der Übersichtsseite und ggfs. der Beitragsseite angezeigt wird. Darüber hinaus ist es möglich, beliebig viele Bilder zu einem Beitrag zu hinterlegen, die als Bildergalerie angezeigt werden. Die Galeriedarstellung erfolgt entweder als Fotorama-Galerie (Thumbnails, Bild über die gesamte Breite) oder als Masonry-Galerie (Bildermosaik). 
+
+Welches Galeriescript verwendet wird, wird für alle Beiträge in den Einstellungen des jeweiligen Abschnitts festgelegt.
+
 Die Galeriebilder werden hochgeladen, sobald der Beitrag gespeichert wird, und können dann mit Bildunterschriften versehen, per Drag&Drop umsortiert oder auch wieder gelöscht werden.
 Beim Upload von Dateien mit gleichen Namen wie bereits vorhandenen Bildern werden die vorhandenen Dateien nicht überschrieben, sondern bei den nachfolgenden Dateien wird eine fortlaufende Nummerierung ergänzt (bild.jpg, bild_1.jpg usw.)
+
 Die Verwaltung der Bilder erfolgt nur über den Beitrag, nicht über die WBCE-Medienverwaltung, da NWI sonst nicht "weiß", wo welche Bilder hingehören/fehlen usw.
 
 ### Gruppen
@@ -75,11 +80,11 @@ Erlaubte Platzhalter:
 - [PAGE_TITLE] Überschrift der Seite,
 - [GROUP_ID] ID der Gruppe, der der Beitrag zugeordnet ist, bei Beiträgen ohne Gruppe "0"
 - [GROUP_TITLE] Titel der Gruppe, der der Beitrag zugeordnet ist, bei Beiträgen ohne Gruppe "",
-- [GROUP_IMAGE] Bild (<img src.../>) der Gruppe, der der Beitrag zugeordnet ist, bei Beiträgen ohne Gruppe "",
+- [GROUP_IMAGE] Bild (&lt;img src.../&gt;) der Gruppe, der der Beitrag zugeordnet ist, bei Beiträgen ohne Gruppe "",
 - [DISPLAY_GROUP] *inherit* oder *none*,
 - [DISPLAY_IMAGE] *inherit* oder *none*,
 - [TITLE] Titel (Überschrift) des Beitrags,
-- [IMAGE] Beitragsbild (<img src=... />),
+- [IMAGE] Beitragsbild (&lt;img src=... /&gt;),
 - [SHORT] Kurztext,
 - [LINK] Link zur Beitrags-Detailansicht,
 - [MODI_DATE] Datum der letzten Änderung des Beitrags,
@@ -104,11 +109,11 @@ Erlaubte Platzhalter:
 - [PAGE_TITLE] Überschrift der Seite,
 - [GROUP_ID] ID der Gruppe, der der Beitrag zugeordnet ist, bei Beiträgen ohne Gruppe "0"
 - [GROUP_TITLE] Titel der Gruppe, der der Beitrag zugeordnet ist, bei Beiträgen ohne Gruppe "",
-- [GROUP_IMAGE] Bild (<img src.../>) der Gruppe, der der Beitrag zugeordnet ist, bei Beiträgen ohne Gruppe "",
+- [GROUP_IMAGE] Bild (&lt;img src.../&gt;) der Gruppe, der der Beitrag zugeordnet ist, bei Beiträgen ohne Gruppe "",
 - [DISPLAY_GROUP] *inherit* oder *none*,
 - [DISPLAY_IMAGE] *inherit* oder *none*,
 - [TITLE] Titel (Überschrift) des Beitrags,
-- [IMAGE] Beitragsbild (<img src=... />),
+- [IMAGE] Beitragsbild (&lt;img src=... /&gt;),
 - [SHORT] Kurztext,
 - [MODI_DATE] Datum der letzten Änderung des Beitrags,
 - [MODI_TIME] Zeitpunkt (Uhrzeit) der letzten Änderung des Beitrags,
@@ -134,6 +139,6 @@ Erlaubte Platzhalter:
 
 ### 2. Block
 Optional kann ein 2. Block angezeigt werden, sofern das Template dies unterstützt. 
-Block 2 verwenden (Standard): Kein Eintrag bzw. Eintrag *define('NWI_USE_SECOND_BLOCK',true);* in der config.php im Root
-Block 2 nicht verwenden: Eintrag *define('NWI_USE_SECOND_BLOCK',false);* in der config.php im Root
+- Block 2 verwenden (Standard): Kein Eintrag bzw. Eintrag *define('NWI_USE_SECOND_BLOCK',true);* in der config.php im Root
+- Block 2 nicht verwenden: Eintrag *define('NWI_USE_SECOND_BLOCK',false);* in der config.php im Root
 
