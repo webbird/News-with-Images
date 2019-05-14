@@ -23,7 +23,7 @@ if (!isset($_POST['post_id']) or !is_numeric($_POST['post_id'])) {
     header("Location: ".ADMIN_URL."/pages/index.php");
     exit(0);
 } else {
-    $id = $_POST['post_id'];
+    $id = intval($_POST['post_id']);
     $post_id = $id;
 }
 
@@ -63,16 +63,16 @@ $block2='';
 if ($admin->get_post('title') == '' and $admin->get_post('url') == '') {
     $admin->print_error($MESSAGE['GENERIC']['FILL_IN_ALL'], WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$id);
 } else {
-    $title = $admin->get_post_escaped('title');
-    $link = $admin->get_post_escaped('link');
-    $short = $admin->get_post_escaped('short');
-    $long = $admin->get_post_escaped('long');
+    $title = $database->escapeString($admin->get_post('title'));
+    $link = $database->escapeString($admin->get_post('link'));
+    $short = $database->escapeString($admin->get_post('short'));
+    $long = $database->escapeString($admin->get_post('long'));
     if(NWI_USE_SECOND_BLOCK){
-        $block2 = $admin->get_post_escaped('block2');
+        $block2 = $database->escapeString($admin->get_post('block2'));
     }
-    $image = $admin->get_post_escaped('image');
-    $active = $admin->get_post_escaped('active');
-    $group = $admin->get_post_escaped('group');
+    $image = $database->escapeString($admin->get_post('image'));
+    $active = $database->escapeString($admin->get_post('active'));
+    $group = $database->escapeString($admin->get_post('group'));
 }
 
 $group_id = 0;
@@ -131,14 +131,14 @@ if (!is_writable(WB_PATH.PAGES_DIRECTORY.'/posts/')) {
 }
 
 // get publisedwhen and publisheduntil
-$publishedwhen = jscalendar_to_timestamp($admin->get_post_escaped('publishdate'));
+$publishedwhen = jscalendar_to_timestamp($database->escapeString($admin->get_post('publishdate')));
 if ($publishedwhen == '' || $publishedwhen < 1) {
     $publishedwhen=0;
 } else {
     $publishedwhen -= TIMEZONE;
 }
 
-$publisheduntil = jscalendar_to_timestamp($admin->get_post_escaped('enddate'), $publishedwhen);
+$publisheduntil = jscalendar_to_timestamp($database->escapeString($admin->get_post('enddate')), $publishedwhen);
 if ($publisheduntil == '' || $publisheduntil < 1) {
     $publisheduntil=0;
 } else {
@@ -277,7 +277,7 @@ if (isset($_FILES["postfoto"]) && $_FILES["postfoto"]["name"] != "") {
     }
     //input file nur bei leerem db-feld
 } elseif (!isset($_FILES["postfoto"])) {
-    $image = $_POST['previewimage'];
+    $image = basename($database->escapeString($_POST['previewimage']));
 }
   
 // strip HTML from title
@@ -293,7 +293,24 @@ if ($old_section_id!=$section_id) {
 
      
 // Update row
-$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `page_id` = '$page_id', `section_id` = '$section_id', $position `group_id` = '$group_id', `title` = '$title', `link` = '$post_link', `content_short` = '$short', `content_long` = '$long', `content_block2` = '$block2', `image` = '$image', `active` = '$active', `published_when` = '$publishedwhen', `published_until` = '$publisheduntil', `posted_when` = '".time()."', `posted_by` = '".$admin->get_user_id()."' WHERE `post_id` = '$post_id'");
+$database->query(
+    "UPDATE `".TABLE_PREFIX."mod_news_img_posts`"
+    . " SET `page_id` = '$page_id',"
+    . " `section_id` = '$section_id',"
+    . " $position"
+    . " `group_id` = '$group_id',"
+    . " `title` = '$title',"
+    . " `link` = '$post_link',"
+    . " `content_short` = '$short',"
+    . " `content_long` = '$long',"
+    . " `content_block2` = '$block2',"
+    . " `image` = '$image',"
+    . " `active` = '$active',"
+    . " `published_when` = '$publishedwhen',"
+    . " `published_until` = '$publisheduntil',"
+    . " `posted_when` = '".time()."',"
+    . " `posted_by` = '".$admin->get_user_id()."'"
+    . " WHERE `post_id` = '$post_id'");
 
 // when no error has occurred go ahead and update the image descriptions
 if (!($database->is_error())) {
@@ -302,8 +319,6 @@ if (!($database->is_error())) {
     if ($query_img->numRows() > 0) {
         while ($row = $query_img->fetchRow()) {
             $row_id = $row['id'];
-            // var_dump($row_id);
-            //var_dump($_POST['bildbeschreibung'][$row_id]);
             $picdesc = isset($_POST['picdesc'][$row_id])
                           ? strip_tags($_POST['picdesc'][$row_id])
                           : '';

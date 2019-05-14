@@ -15,13 +15,13 @@
 
 // Check that GET values have been supplied
 if(isset($_GET['page_id']) AND is_numeric($_GET['page_id'])) {
-	$page_id = $_GET['page_id'];
+	$page_id = intval($_GET['page_id']);
 } else {
 	header('Location: /');
 	exit(0);
 }
 if(isset($_GET['group_id']) AND is_numeric($_GET['group_id'])) {
-	$group_id = $_GET['group_id'];
+	$group_id = intval($_GET['group_id']);
 	define('GROUP_ID', $group_id);
 }
 

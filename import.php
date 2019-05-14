@@ -133,8 +133,8 @@ if(!($database->is_error())){
 		$query_content = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `post_id` = '".$post['post_id']."'");
 		$fetch_content = $query_content->fetchRow();
 
-		$title = $fetch_content['title'];
-		$link = $fetch_content['link'];
+		$title = $database->escapeString($fetch_content['title']);
+		$link = $database->escapeString($fetch_content['link']);
 		$group_id = $fetch_content['group_id'];
 		if($group_id!=0){
 		    // find out new group
@@ -155,10 +155,10 @@ if(!($database->is_error())){
 		    }
 		}
 		$posted_by = $fetch_result['posted_by'];
-		$short = $fetch_content['content_short'];
-		$long = $fetch_content['content_long'];
-		$block2 = $fetch_content['content_block2'];
-		$image = $fetch_content['image'];
+		$short = $database->escapeString($fetch_content['content_short']);
+		$long = $database->escapeString($fetch_content['content_long']);
+		$block2 = $database->escapeString($fetch_content['content_block2']);
+		$image = $database->escapeString($fetch_content['image']);
 		$active = $fetch_content['active'];
 		$publishedwhen =  $fetch_content['published_when'];
 		$publisheduntil =  $fetch_content['published_until'];
@@ -198,7 +198,23 @@ if(!($database->is_error())){
 		mod_nwi_img_copy(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$post['post_id'],$mod_nwi_file_dir);
 
 		// Update row
-		$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `page_id` = '$page_id', `section_id` = '$section_id', `group_id` = '$group_id', `title` = '$title', `link` = '$post_link', `content_short` = '$short', `content_long` = '$long', `content_block2` = '$block2', `image` = '$image', `active` = '$active', `published_when` = '$publishedwhen', `published_until` = '$publisheduntil', `posted_when` = '".time()."', `posted_by` = '".$posted_by."' WHERE `post_id` = '$post_id'");
+		$database->query(
+		    "UPDATE `".TABLE_PREFIX."mod_news_img_posts` "
+		    . "SET `page_id` = '$page_id', "
+		    . "`section_id` = '$section_id', "
+		    . "`group_id` = '$group_id', "
+		    . "`title` = '$title', "
+		    . "`link` = '$post_link', "
+		    . "`content_short` = '$short', "
+		    . "`content_long` = '$long', "
+		    . "`content_block2` = '$block2', "
+		    . "`image` = '$image', "
+		    . "`active` = '$active', "
+		    . "`published_when` = '$publishedwhen', "
+		    . "`published_until` = '$publisheduntil', "
+		    . "`posted_when` = '".time()."', "
+		    . "`posted_by` = '".$posted_by."' "
+		    . "WHERE `post_id` = '$post_id'");
 		if(!($database->is_error())){
 		    //update table images
 		   $database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_img` (`picname`, `picdesc`, `post_id`, `position`) SELECT `picname`, `picdesc`, '".$post_id."', `position` FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = '".$post['post_id']."'");
@@ -287,8 +303,8 @@ if(!($database->is_error())){
 		$query_content = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_posts` WHERE `post_id` = '".$post['post_id']."'");
 		$fetch_content = $query_content->fetchRow();
 
-		$title = $fetch_content['title'];
-		$link = $fetch_content['link'];
+		$title = $database->escapeString($fetch_content['title']);
+		$link = $database->escapeString($fetch_content['link']);
 		$group_id = $fetch_content['group_id'];
 		if($group_id!=0){
 		    // find out new group
@@ -309,8 +325,8 @@ if(!($database->is_error())){
 		    }
 		}
 		$posted_by = $fetch_result['posted_by'];
-		$short = $fetch_content['content_short'];
-		$long = $fetch_content['content_long'];
+		$short = $database->escapeString($fetch_content['content_short']);
+		$long = $database->escapeString($fetch_content['content_long']);
 		$block2 = '';
 		$image = '';
 		$active = $fetch_content['active'];
@@ -366,7 +382,24 @@ if(!($database->is_error())){
 			$mod_nwi_thumb_dir.'/image'.$group_id.'.jpg');
 		
 		// Update row
-		$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `page_id` = '$page_id', `section_id` = '$section_id', `group_id` = '$group_id', `title` = '$title', `link` = '$post_link', `content_short` = '$short', `content_long` = '$long', `content_block2` = '$block2', `image` = '$image', `active` = '$active', `published_when` = '$publishedwhen', `published_until` = '$publisheduntil', `posted_when` = '".time()."', `posted_by` = '".$posted_by."' WHERE `post_id` = '$post_id'");
+		$database->query(
+		    "UPDATE `".TABLE_PREFIX."mod_news_img_posts` "
+		    . "SET `page_id` = '$page_id', "
+		    . "`section_id` = '$section_id', "
+		    . "`group_id` = '$group_id', "
+		    . "`title` = '$title', "
+		    . "`link` = '$post_link', "
+		    . "`content_short` = '$short', "
+		    . "`content_long` = '$long', "
+		    . "`content_block2` = '$block2', "
+		    . "`image` = '$image', "
+		    . "`active` = '$active', "
+		    . "`published_when` = '$publishedwhen', "
+		    . "`published_until` = '$publisheduntil', "
+		    . "`posted_when` = '".time()."', "
+		    . "`posted_by` = '".$posted_by."' "
+		    . "WHERE `post_id` = '$post_id'");
+
 	    }
 	}
     } 
@@ -531,14 +564,14 @@ if($query_posts->numRows() > 0) {
 	$title = $database->escapeString($fetch_content['title']);
 	$link = $database->escapeString($fetch_content['link']);
 	$group_id = 0;
-	$posted_by = $database->escapeString($fetch_result['posted_by']);
+	$posted_by = $fetch_result['posted_by'];
 	$short = $database->escapeString($fetch_content['content_short']);
 	$long = $database->escapeString($fetch_content['content_long']);
 	$block2 = '';
 	$image = $database->escapeString($fetch_content['picture']);
 	$active = ($fetch_content['active']>3)?1:0;
-	$publishedwhen =  $database->escapeString($fetch_content['published_when']);
-	$publisheduntil =  $database->escapeString($fetch_content['published_until']);
+	$publishedwhen =  $fetch_content['published_when'];
+	$publisheduntil = $fetch_content['published_until'];
 
 	// Get page link URL
 	$query_page = $database->query("SELECT `level`,`link` FROM `".TABLE_PREFIX."pages` WHERE `page_id` = '$page_id'");
@@ -590,7 +623,24 @@ if($query_posts->numRows() > 0) {
 		
 
 	// Update row
-	$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `page_id` = '$page_id', `section_id` = '$section_id', `group_id` = '$group_id', `title` = '$title', `link` = '$post_link', `content_short` = '$short', `content_long` = '$long', `content_block2` = '$block2', `image` = '$image', `active` = '$active', `published_when` = '$publishedwhen', `published_until` = '$publisheduntil', `posted_when` = '".time()."', `posted_by` = '".$posted_by."' WHERE `post_id` = '$post_id'");
+	$database->query(
+	     "UPDATE `".TABLE_PREFIX."mod_news_img_posts` "
+	         . "SET `page_id` = '$page_id', "
+		 . "`section_id` = '$section_id', "
+		 . "`group_id` = '$group_id', "
+		 . "`title` = '".$database->escapeString($title)."', "
+		 . "`link` = '".$database->escapeString($post_link)."', "
+		 . "`content_short` = '".$database->escapeString($short)."', "
+		 . "`content_long` = '".$database->escapeString($long)."', "
+		 . "`content_block2` = '".$database->escapeString($block2)."', "
+		 . "`image` = '".$database->escapeString($image)."', "
+		 . "`active` = '$active', "
+		 . "`published_when` = '$publishedwhen', "
+		 . "`published_until` = '$publisheduntil', "
+		 . "`posted_when` = '".time()."', "
+		 . "`posted_by` = '".$posted_by."' "
+		 . "WHERE `post_id` = '$post_id'"
+	);
 	$additional_picture_path = WB_PATH.$fetch_settings['picture_dir'].'/topic'.$fetch_content['topic_id'];
 	if (is_dir($additional_picture_path)) {
 	    $order = new order(TABLE_PREFIX.'mod_news_img_img', 'position', 'post_id', 'section_id');

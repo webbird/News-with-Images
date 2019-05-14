@@ -23,7 +23,7 @@ if(!isset($_POST['group_id']) OR !is_numeric($_POST['group_id']))
 }
 else
 {
-	$group_id = $_POST['group_id'];
+	$group_id = intval($_POST['group_id']);
 }
 
 // Include WB admin wrapper script
@@ -42,8 +42,8 @@ if($admin->get_post('title') == '')
 }
 else
 {
-	$title = $admin->get_post_escaped('title');
-	$active = $admin->get_post_escaped('active');
+	$title = $database->escapeString($admin->get_post('title'));
+	$active = $database->escapeString($admin->get_post('active'));
 }
 
 // Update row

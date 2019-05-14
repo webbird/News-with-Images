@@ -21,12 +21,12 @@ if(!isset($_GET['post_id']) OR !is_numeric($_GET['post_id'])) {
 		header("Location: index.php");
 		exit(0);
 	} else {
-		$id = $_GET['group_id'];
+		$id = intval($_GET['group_id']);
 		$id_field = 'group_id';
 		$table = TABLE_PREFIX.'mod_news_img_groups';
 	}
 } else {
-	$id = $_GET['post_id'];
+	$id = intval($_GET['post_id']);
 	$id_field = 'post_id';
 	$table = TABLE_PREFIX.'mod_news_img_posts';
 }
