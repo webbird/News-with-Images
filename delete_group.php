@@ -20,7 +20,7 @@ if(!isset($_GET['group_id']) OR !is_numeric($_GET['group_id'])) {
 	header("Location: ".ADMIN_URL."/pages/index.php");
 	exit(0);
 } else {
-	$group_id = $_GET['group_id'];
+	$group_id = intval($_GET['group_id']);
 }
 
 // Include WB admin wrapper script

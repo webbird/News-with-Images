@@ -20,7 +20,7 @@ if (!isset($_GET['post_id']) or !is_numeric($_GET['post_id'])) {
     header("Location: ".ADMIN_URL."/pages/index.php");
     exit(0);
 } else {
-    $post_id = $_GET['post_id'];
+    $post_id = intval($_GET['post_id']);
 }
 
 // Include WB admin wrapper script
@@ -30,8 +30,8 @@ $mod_nwi_file_dir .= "$post_id/";
 $mod_nwi_thumb_dir = $mod_nwi_file_dir . "thumb/";
 
 // delete image
-if (isset($_GET['img_id'])) {
-    $img_id = $_GET['img_id'];
+if (isset($_GET['img_id']) && is_numeric($_GET['img_id'])) {
+    $img_id = intval($_GET['img_id']);
     $query_img=$database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `id` = '$img_id'");
     $row = $query_img->fetchRow();
  
@@ -46,7 +46,7 @@ if (isset($_GET['img_id'])) {
 
 // delete previewimage
 if (isset($_GET['post_img'])) {
-    $post_img = $_GET['post_img'];
+    $post_img = basename($_GET['post_img']);
     $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `image` = '' WHERE `post_id` = '$post_id'");
     @unlink($mod_nwi_file_dir.$post_img);
     @unlink($mod_nwi_thumb_dir.$post_img);
@@ -57,9 +57,9 @@ if (isset($_GET['id']) && (isset($_GET['up']) || isset($_GET['down']))) {
     require WB_PATH.'/framework/class.order.php';
     $order = new order(TABLE_PREFIX.'mod_news_img_img', 'position', 'id', 'post_id');
     if (isset($_GET['up'])) {
-        $order->move_up($_GET['id']);
+        $order->move_up(intval($_GET['id']));
     } else {
-        $order->move_down($_GET['id']);
+        $order->move_down(intval($_GET['id']));
     }
 }
 
@@ -93,10 +93,8 @@ $link = implode(PAGE_SPACER, $parts);
 $jscal_use_time = true; // whether to use a clock, too
 require_once(WB_PATH."/include/jscalendar/wb-setup.php");
 ?>
-    <!-- Custom styles -->
-    <link href="uploader/css/jquery.dm-uploader.css" rel="stylesheet">
-    <link href="uploader/styles.css" rel="stylesheet">
-
+<link href="uploader/css/jquery.dm-uploader.css" rel="stylesheet">
+<link href="uploader/styles.css" rel="stylesheet">
 <div class="mod_news_img">
     <script src="<?php echo WB_URL; ?>/modules/news_img/js/jquery.furl.js"></script>
     
