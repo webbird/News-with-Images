@@ -25,8 +25,17 @@ $mod_nwi_file_base=$mod_nwi_file_dir;
 
 // Include WB admin wrapper script
 $update_when_modified = true; // Tells script to update when this page was last updated
+$admin_header = FALSE;
+// Include WB admin wrapper script
 require WB_PATH.'/modules/admin.php';
-
+if (!$admin->checkFTAN()){
+    $admin->print_header();
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
+	 .' (FTAN) '.__FILE__.':'.__LINE__,
+         ADMIN_URL.'/pages/index.php');
+    $admin->print_footer();
+    exit();
+} else $admin->print_header();
 
 $section_id = intval($_POST['section_id']);
 $page_id = intval($_POST['page_id']);
@@ -225,7 +234,7 @@ if(!($database->is_error())){
 }
 
 if($database->is_error()){
-    $admin->print_error($database->get_error(), WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id);
+    $admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
 } else {
     $admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
 }
@@ -406,7 +415,7 @@ if(!($database->is_error())){
 }
 
 if($database->is_error()){
-    $admin->print_error($database->get_error(), WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id);
+    $admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
 } else {
     $admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
 }
@@ -675,7 +684,7 @@ if($query_posts->numRows() > 0) {
 }
 
 if($database->is_error()){
-    $admin->print_error($database->get_error(), WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id);
+    $admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
 } else {
     $admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
 }
@@ -688,7 +697,7 @@ $admin->print_footer();
 
     // =========================================== unsupported section type ======================================
 
-    $admin->print_error("unsupported section type", WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id);
+    $admin->print_error("unsupported section type", ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
     
     // Print admin footer
     $admin->print_footer();

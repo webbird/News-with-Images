@@ -17,6 +17,14 @@ require_once __DIR__.'/functions.inc.php';
 
 // Include WB admin wrapper script
 require(WB_PATH.'/modules/admin.php');
+$section_id = $admin->checkIDKEY('section_id', 0, 'GET');
+if (!$section_id){
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
+	 .' (IDKEY) '.__FILE__.':'.__LINE__,
+         ADMIN_URL.'/pages/index.php');
+    $admin->print_footer();
+    exit();
+}
 
 // Include the ordering class
 require(WB_PATH.'/framework/class.order.php');
@@ -33,9 +41,9 @@ $group_id = $database->get_one("SELECT LAST_INSERT_ID()");
 
 // Say that a new record has been added, then redirect to modify page
 if($database->is_error()) {
-	$admin->print_error($database->get_error(), WB_URL.'/modules/news_img/modify_group.php?page_id='.$page_id.'&section_id='.$section_id.'&group_id='.$group_id);
+	$admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
 } else {
-	$admin->print_success($TEXT['SUCCESS'], WB_URL.'/modules/news_img/modify_group.php?page_id='.$page_id.'&section_id='.$section_id.'&group_id='.$group_id);
+	$admin->print_success($TEXT['SUCCESS'], WB_URL.'/modules/news_img/modify_group.php?page_id='.$page_id.'&section_id='.$section_id.'&group_id='.$admin->getIDKEY($group_id));
 }
 
 // Print admin footer

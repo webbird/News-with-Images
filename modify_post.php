@@ -15,23 +15,33 @@
 
 require_once __DIR__.'/functions.inc.php';
 
-// Get id
-if (!isset($_GET['post_id']) or !is_numeric($_GET['post_id'])) {
-    header("Location: ".ADMIN_URL."/pages/index.php");
-    exit(0);
-} else {
-    $post_id = intval($_GET['post_id']);
-}
 
 // Include WB admin wrapper script
-require WB_PATH.'/modules/admin.php';
+require(WB_PATH.'/modules/admin.php');
+$post_id = $admin->checkIDKEY('post_id', 0, 'GET');
+if (!$post_id){
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
+	 .' (IDKEY) '.__FILE__.':'.__LINE__,
+         ADMIN_URL.'/pages/index.php');
+    $admin->print_footer();
+    exit();
+}
 
+$FTAN = $admin->getFTAN();
+$post_id_key = $admin->getIDKEY($post_id);
 $mod_nwi_file_dir .= "$post_id/";
 $mod_nwi_thumb_dir = $mod_nwi_file_dir . "thumb/";
 
 // delete image
 if (isset($_GET['img_id']) && is_numeric($_GET['img_id'])) {
-    $img_id = intval($_GET['img_id']);
+    $img_id = $admin->checkIDKEY('img_id', 0, 'GET');
+    if (!$img_id){
+	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
+	     .' (IDKEY) '.__FILE__.':'.__LINE__,
+             ADMIN_URL.'/pages/index.php');
+	$admin->print_footer();
+	exit();
+    }
     $query_img=$database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `id` = '$img_id'");
     $row = $query_img->fetchRow();
  
@@ -56,10 +66,18 @@ if (isset($_GET['post_img'])) {
 if (isset($_GET['id']) && (isset($_GET['up']) || isset($_GET['down']))) {
     require WB_PATH.'/framework/class.order.php';
     $order = new order(TABLE_PREFIX.'mod_news_img_img', 'position', 'id', 'post_id');
+    $id = $admin->checkIDKEY('id', 0, 'GET');
+    if (!$id){
+	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
+	     .' (IDKEY) '.__FILE__.':'.__LINE__,
+             ADMIN_URL.'/pages/index.php');
+	$admin->print_footer();
+	exit();
+    }
     if (isset($_GET['up'])) {
-        $order->move_up(intval($_GET['id']));
+        $order->move_up(intval($id));
     } else {
-        $order->move_down(intval($_GET['id']));
+        $order->move_down(intval($id));
     }
 }
 
@@ -101,7 +119,7 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
     <h2><?php echo $TEXT['ADD'].'/'.$TEXT['MODIFY'].' '.$TEXT['POST']; ?></h2>
     <div class="jsadmin jcalendar hide"></div>
     <form name="modify" action="<?php echo WB_URL; ?>/modules/news_img/save_post.php" method="post" enctype="multipart/form-data">
-
+    <?php echo $FTAN; ?>
     <input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
     <input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
     <input type="hidden" name="post_id" value="<?php echo $post_id; ?>" />
@@ -129,7 +147,7 @@ require_once(WB_PATH."/include/jscalendar/wb-setup.php");
     	<td>
 <?php
          if ($fetch_content['image'] != "") {
-             echo '<img class="img_list" style="float:left;margin-right:15px" src="'.WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post_id.'/'.$fetch_content['image'].'" /> '.$fetch_content['image'].'<br /><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&post_img='.$fetch_content['image'].'">l&ouml;schen</a>';
+             echo '<img class="img_list" style="float:left;margin-right:15px" src="'.WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post_id.'/'.$fetch_content['image'].'" /> '.$fetch_content['image'].'<br /><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='. $post_id_key.'&post_img='.$fetch_content['image'].'">'.$TEXT['DELETE'].'</a>';
              echo '<input type="hidden" name="previewimage" value="'.$fetch_content['image'].'" />';
          } else {
              echo '<input type="file" name="postfoto" accept="image/*" />  <br />';
@@ -312,22 +330,23 @@ if ($query_img->numRows() > 0) {
     $last=$query_img->numRows();
 
     while ($row = $query_img->fetchRow()) {
+        $row_id_key = $admin->getIDKEY($row['id']);
         $up='<span style="display:inline-block;width:20px;"></span>';
         $down=$up;
         if (!$first) {
-            $up = '<a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&id='.$row['id'].'&up=1">'
+            $up = '<a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='. $post_id_key.'&id='.$row_id_key.'&up=1">'
                 . '<img src="'.THEME_URL.'/images/up_16.png"  class="mod_news_img_arrow" /></a>';
         }
         if ($i!=$last) {
-            $down = '<a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&id='.$row['id'].'&down=1">'
+            $down = '<a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='. $post_id_key.'&id='.$row_id_key.'&down=1">'
                   . '<img src="'.THEME_URL.'/images/down_16.png"  class="mod_news_img_arrow" /></a>';
         }
-        echo '<tr id="img_id:'.$admin->getIDKEY( $row['id']).'">'.
+        echo '<tr id="img_id:'.$row_id_key.'">'.
 	     '<td class="dragdrop_item">&nbsp;</td>'.
              '<td>'.$up.$down.'</td>',
              '<td><a href="javascript:void(0);" onmouseover="XBT(this, {id:\'tt'.$i.'\'})"><img class="img_list" src="'.WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post_id.'/thumb/'.$row["picname"].'" /></a><div id="tt'.$i.'" class="xbtooltip"><img src="'.WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post_id.'/'.$row["picname"].'" /></div></td>',
              '<td>'.$row["picname"].'<br /><input type="text" name="picdesc['.$row["id"].']" value="'.$row["picdesc"].'"></td>',
-             '<td><a onclick="return confirm(\''.$MOD_NEWS_IMG['DELETEIMAGE'].'\')" href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id.'&img_id='.$row["id"].'#fs"><img src="'.THEME_URL.'/images/delete_16.png" /></a></td>'.
+             '<td><a onclick="return confirm(\''.$MOD_NEWS_IMG['DELETEIMAGE'].'\')" href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='. $post_id_key.'&img_id='.$row_id_key.'#fs"><img src="'.THEME_URL.'/images/delete_16.png" /></a></td>'.
              '<td class="dragdrop_item">&nbsp;</td>'.
 	     '</tr>';
         $i++;
@@ -404,7 +423,7 @@ $imgmaxsize = $fetch_settings['imgmaxsize'];
 
 
 <script type="text/javascript"> 
-    var NWI_UPLOAD_URL = "<?php echo WB_URL."/modules/news_img/uploader/upload.php?post_id=$post_id"; ?>";
+    var NWI_UPLOAD_URL = "<?php echo WB_URL."/modules/news_img/uploader/upload.php?post_id=$post_id_key"; ?>";
     var NWI_COMPLETE_MESSAGE = "<?php echo $MOD_NEWS_IMG['COMPLETE_MESSAGE']; ?>";
     var NWI_IMAGE_MAX_SIZE = <?php echo $imgmaxsize;?>;
 </script>

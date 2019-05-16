@@ -15,17 +15,18 @@
 
 require_once __DIR__.'/functions.inc.php';
 
-// Get id
-if(!isset($_GET['group_id']) OR !is_numeric($_GET['group_id'])) {
-	header("Location: ".ADMIN_URL."/pages/index.php");
-	exit(0);
-} else {
-	$group_id = intval($_GET['group_id']);
-}
-
 // Include WB admin wrapper script
 $update_when_modified = true; // Tells script to update when this page was last updated
 require(WB_PATH.'/modules/admin.php');
+$group_id = $admin->checkIDKEY('group_id', 0, 'GET');
+if (!$group_id){
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
+	 .' (IDKEY) '.__FILE__.':'.__LINE__,
+         ADMIN_URL.'/pages/index.php');
+    $admin->print_footer();
+    exit();
+}
+
 
 $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `group_id` = '0' where `group_id`='$group_id'");
 // Update row

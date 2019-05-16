@@ -25,13 +25,14 @@ $database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_groups`  WHERE `page
 if(function_exists('ini_set')) {
 	ini_set('arg_separator.output', '&amp;');
 }
+$section_id_key = $admin->getIDKEY($section_id);
 
 ?>
 <div class="mod_news_img">
-    <input type="button" class="mod_img_news_add" value="<?php echo $MOD_NEWS_IMG['ADD_POST']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/add_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>';"  />	
-    <input  class="mod_img_news_options" type="button" value="<?php echo $MOD_NEWS_IMG['OPTIONS']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/modify_settings.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>';"  />
-    <input  class="mod_img_news_add_group" type="button" value="<?php echo $MOD_NEWS_IMG['ADD_GROUP']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/add_group.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>';"  />
-	<input class="mod_news_img_help"  type="button" onclick="window.open('https://github.com/WBCE/News-with-Images/blob/master/README.md#news-with-images-ein-neues-newsmodul-für-wbce-cms')" name="help" value="?" />
+	<input class="mod_news_img_help"  type="button" onclick="window.open('<?php echo WB_URL; ?>/modules/news_img/readme.html','readme','width=800,height=600,top=50,left=50')" name="help" value="Readme" />
+    <input type="button" class="mod_img_news_add" value="<?php echo $MOD_NEWS_IMG['ADD_POST']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/add_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo  $section_id_key; ?>';"  />	
+    <input  class="mod_img_news_options" type="button" value="<?php echo $MOD_NEWS_IMG['OPTIONS']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/modify_settings.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo  $section_id_key; ?>';"  />
+    <input  class="mod_img_news_add_group" type="button" value="<?php echo $MOD_NEWS_IMG['ADD_GROUP']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/add_group.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo  $section_id_key; ?>';"  />
     <br />
 
     <h2><?php echo $TEXT['MODIFY'].'/'.$TEXT['DELETE'].' '.$TEXT['POST']; ?></h2>
@@ -61,6 +62,8 @@ if(function_exists('ini_set')) {
         3 => $TEXT['SUBMITTED'],
         4 => $TEXT['SUBMISSION_ID']
     );
+
+    $FTAN = $admin->getFTAN();
 ?>
 
     <div style="text-align:right;font-style:italic"><?php echo $MOD_NEWS_IMG['ORDERBY'], ": <span class=\"\" title=\"", $MOD_NEWS_IMG['ORDER_CUSTOM_INFO'] ,"\">", $lang_map[$setting_view_order] ?></span></div>
@@ -79,7 +82,8 @@ $order->clean($section_id);
     	$num_posts = $query_posts->numRows();
 ?>
 	<form name="modify_<?php echo $section_id; ?>" action="<?php echo WB_URL; ?>/modules/news_img/manage_posts.php" method="post" enctype="multipart/form-data">
-
+	
+	<?php echo $FTAN; ?>
 	<input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
 	<input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
 	<input type="hidden" name="savegoback" id="savegoback" value="" />
@@ -101,11 +105,12 @@ $order->clean($section_id);
             <tbody>
     	<?php
     	while($post = $query_posts->fetchRow()) {
+	        $post_id_key = $admin->getIDKEY($post['post_id']);
     		?>
-    		<tr id="post_id:<?php echo  $admin->getIDKEY($post['post_id']); ?>">
+    		<tr id="post_id:<?php echo $post_id_key; ?>">
 			<td <?php if($setting_view_order == 0) echo 'class="dragdrop_item"';?>>&nbsp;</td>
     			<td>
-    				<a href="<?php echo WB_URL; ?>/modules/news_img/modify_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>" title="<?php echo $TEXT['MODIFY']; ?>">
+    				<a href="<?php echo WB_URL; ?>/modules/news_img/modify_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post_id_key; ?>" title="<?php echo $TEXT['MODIFY']; ?>">
     					<img src="<?php echo THEME_URL; ?>/images/modify_16.png" border="0" alt="Modify - " />
     				</a>
     			</td>
@@ -113,7 +118,7 @@ $order->clean($section_id);
                     <span title="Post ID"><?php echo $post['post_id'] ?></span>
                 </td>
     			<td>
-    				<a href="<?php echo WB_URL; ?>/modules/news_img/modify_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>">
+    				<a href="<?php echo WB_URL; ?>/modules/news_img/modify_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post_id_key; ?>">
     					<?php echo $post['title']; ?>
     				</a>
     			</td>
@@ -154,14 +159,14 @@ $order->clean($section_id);
     // Icons
     if(($post['position'] != $num_posts)&&($setting_view_order == 0)) {
 ?>
-    				<a href="<?php echo WB_URL; ?>/modules/news_img/move_down.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>" title="<?php echo $TEXT['MOVE_UP']; ?>">
+    				<a href="<?php echo WB_URL; ?>/modules/news_img/move_down.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post_id_key; ?>" title="<?php echo $TEXT['MOVE_UP']; ?>">
     					<img src="<?php echo THEME_URL; ?>/images/up_16.png" border="0" alt="^" class="mod_news_img_arrow" />
     				</a>
 <?php } else {
     echo '<span class="mod_news_img_icon"></span>';
 }
     if(($post['position'] != 1)&&($setting_view_order == 0)) { ?>
-    				<a href="<?php echo WB_URL; ?>/modules/news_img/move_up.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>" title="<?php echo $TEXT['MOVE_DOWN']; ?>">
+    				<a href="<?php echo WB_URL; ?>/modules/news_img/move_up.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post_id_key; ?>" title="<?php echo $TEXT['MOVE_DOWN']; ?>">
     					<img src="<?php echo THEME_URL; ?>/images/down_16.png" border="0" alt="v" class="mod_news_img_arrow" />
     				</a>
 <?php } else {
@@ -170,7 +175,7 @@ $order->clean($section_id);
     echo "<input type=\"checkbox\" name=\"manage_posts[]\" value=".$post['post_id']." onchange='javascript: document.getElementById(\"${section_id}_all\").checked &= this.checked' />";
 ?>
 				
-    				<a href="javascript: confirm_link('<?php echo $TEXT['ARE_YOU_SURE']; ?>', '<?php echo WB_URL; ?>/modules/news_img/delete_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['post_id']; ?>');" title="<?php echo $TEXT['DELETE']; ?>">
+    				<a href="javascript: confirm_link('<?php echo $TEXT['ARE_YOU_SURE']; ?>', '<?php echo WB_URL; ?>/modules/news_img/delete_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post_id_key; ?>');" title="<?php echo $TEXT['DELETE']; ?>">
     					<img src="<?php echo THEME_URL; ?>/images/delete_16.png" border="0" alt="X" class="mod_news_img_icon" />
     				</a>
     			</td>
@@ -241,6 +246,7 @@ $order->clean($section_id);
 ?>
     <h2><?php echo $MOD_NEWS_IMG['IMPORT'].' '.$TEXT['SECTION']; ?></h2>
     <form name="import" action="<?php echo WB_URL; ?>/modules/news_img/import.php" method="post" enctype="multipart/form-data">
+    <?php echo $FTAN; ?>
     <input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
     <input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
     <table>
@@ -309,16 +315,17 @@ if($query_groups->numRows() > 0) {
     	<table class="striped dragdrop_form">
 	<?php
 	while($group = $query_groups->fetchRow()) {
+		$group_id_key = $admin->getIDKEY($group['group_id']);
 		?>
-    		<tr id="group_id:<?php echo  $admin->getIDKEY( $group['group_id']); ?>">
+    		<tr id="group_id:<?php echo $group_id_key; ?>">
 			<td class="dragdrop_item">&nbsp;</td>
 			<td style="width:20px">
-				<a href="<?php echo WB_URL; ?>/modules/news_img/modify_group.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group['group_id']; ?>" title="<?php echo $TEXT['MODIFY']; ?>">
+				<a href="<?php echo WB_URL; ?>/modules/news_img/modify_group.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group_id_key; ?>" title="<?php echo $TEXT['MODIFY']; ?>">
 					<img src="<?php echo THEME_URL; ?>/images/modify_16.png" border="0" alt="Modify - " />
 				</a>
 			</td>		
 			<td>
-				<a href="<?php echo WB_URL; ?>/modules/news_img/modify_group.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group['group_id']; ?>">
+				<a href="<?php echo WB_URL; ?>/modules/news_img/modify_group.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group_id_key; ?>">
 					<?php echo $group['title'].' (ID: '.$group['group_id'].')'; ?>
 				</a>
 			</td>
@@ -327,20 +334,20 @@ if($query_groups->numRows() > 0) {
 			</td>
 			<td style="width:20px">
 			<?php if($group['position'] != 1) { ?>
-				<a href="<?php echo WB_URL; ?>/modules/news_img/move_up.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group['group_id']; ?>" title="<?php echo $TEXT['MOVE_UP']; ?>">
+				<a href="<?php echo WB_URL; ?>/modules/news_img/move_up.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group_id_key; ?>" title="<?php echo $TEXT['MOVE_UP']; ?>">
 					<img src="<?php echo THEME_URL; ?>/images/up_16.png" border="0" alt="^"  class="mod_news_img_arrow" />
 				</a>
 			<?php } ?>
 			</td>
 			<td style="width:20px">
 			<?php if($group['position'] != $num_groups) { ?>
-				<a href="<?php echo WB_URL; ?>/modules/news_img/move_down.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group['group_id']; ?>" title="<?php echo $TEXT['MOVE_DOWN']; ?>">
+				<a href="<?php echo WB_URL; ?>/modules/news_img/move_down.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group_id_key; ?>" title="<?php echo $TEXT['MOVE_DOWN']; ?>">
 					<img src="<?php echo THEME_URL; ?>/images/down_16.png" border="0" alt="v"  class="mod_news_img_arrow" />
 				</a>
 			<?php } ?>
 			</td>
 			<td style="width:20px">
-				<a href="javascript: confirm_link('<?php echo $TEXT['ARE_YOU_SURE']; ?>', '<?php echo WB_URL; ?>/modules/news_img/delete_group.php?page_id=<?php echo $page_id; ?>&amp;group_id=<?php echo $group['group_id']; ?>');" title="<?php echo $TEXT['DELETE']; ?>">
+				<a href="javascript: confirm_link('<?php echo $TEXT['ARE_YOU_SURE']; ?>', '<?php echo WB_URL; ?>/modules/news_img/delete_group.php?page_id=<?php echo $page_id; ?>&amp;group_id=<?php echo $group_id_key; ?>');" title="<?php echo $TEXT['DELETE']; ?>">
 					<img src="<?php echo THEME_URL; ?>/images/delete_16.png" border="0" alt="X" />
 				</a>
 			</td>

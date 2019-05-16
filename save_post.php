@@ -29,7 +29,17 @@ if (!isset($_POST['post_id']) or !is_numeric($_POST['post_id'])) {
 
 // Include WB admin wrapper script
 $update_when_modified = true; // Tells script to update when this page was last updated
+$admin_header = FALSE;
+// Include WB admin wrapper script
 require WB_PATH.'/modules/admin.php';
+if (!$admin->checkFTAN()){
+    $admin->print_header();
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
+	 .' (FTAN) '.__FILE__.':'.__LINE__,
+         ADMIN_URL.'/pages/index.php');
+    $admin->print_footer();
+    exit();
+} else $admin->print_header();
 
 // fetch settings
 $query_content = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '$section_id'");
@@ -337,15 +347,15 @@ if ((!($database->is_error()))&&($old_section_id!=$section_id)) {
 //   exit;
 // Check if there is a db error, otherwise say successful
 if ($database->is_error()) {
-    $admin->print_error($database->get_error(), WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$id);
+    $admin->print_error($database->get_error(), WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$admin->getIDKEY($id));
 } else {
     if ($imageErrorMessage!='') {
-        $admin->print_error($MOD_NEWS_IMG['GENERIC_IMAGE_ERROR'].'<br />'.$imageErrorMessage, WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$id);
+        $admin->print_error($MOD_NEWS_IMG['GENERIC_IMAGE_ERROR'].'<br />'.$imageErrorMessage, WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$admin->getIDKEY($id));
     } else {
         if (isset($_POST['savegoback']) && $_POST['savegoback']=='1') {
             $admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
         } else {
-            $admin->print_success($TEXT['SUCCESS'], WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$id);
+            $admin->print_success($TEXT['SUCCESS'], WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$admin->getIDKEY($id));
         }
     }
 }

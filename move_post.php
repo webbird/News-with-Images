@@ -22,7 +22,18 @@ if (!isset($_POST['section_id']) or !isset($_POST['page_id']) or !is_numeric($_P
 
 // Include WB admin wrapper script
 $update_when_modified = true; // Tells script to update when this page was last updated
+$admin_header = FALSE;
+// Include WB admin wrapper script
 require WB_PATH.'/modules/admin.php';
+if (!$admin->checkFTAN()){
+    $admin->print_header();
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
+	 .' (FTAN) '.__FILE__.':'.__LINE__,
+         ADMIN_URL.'/pages/index.php');
+    $admin->print_footer();
+    exit();
+} else $admin->print_header();
+
 
 // Include the ordering class
 require WB_PATH.'/framework/class.order.php';
@@ -80,7 +91,7 @@ foreach($posts as $idx=>$pid) {
     } 
 }
 
-$admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+$admin->print_success($TEXT['SUCCESS'],  WB_URL.'/modules/news_img/modify.php?page_id='.$page_id.'&section_id='.$section_id);
 
 // Print admin footer
 $admin->print_footer();

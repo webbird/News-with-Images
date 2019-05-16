@@ -12,11 +12,18 @@
  * @platform        WBCE
  *
  */
-
 require_once __DIR__.'/functions.inc.php';
 
 // Include WB admin wrapper script
-require WB_PATH.'/modules/admin.php';
+require(WB_PATH.'/modules/admin.php');
+$section_id = $admin->checkIDKEY('section_id', 0, 'GET');
+if (!$section_id){
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
+	 .' (IDKEY) '.__FILE__.':'.__LINE__,
+         ADMIN_URL.'/pages/index.php');
+    $admin->print_footer();
+    exit();
+}
 
 // include core functions of WB 2.7 to edit the optional module CSS files (frontend.css, backend.css)
 @include_once WB_PATH .'/framework/module.functions.php';
@@ -52,6 +59,8 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 	echo "\n</style>\n";
 }
 
+$FTAN = $admin->getFTAN();
+
 ?>
 <div class="mod_news_img">
     <h2><?php echo $MOD_NEWS_IMG['SETTINGS']; ?></h2>
@@ -67,6 +76,7 @@ if(function_exists('edit_module_css'))
 
     <form name="modify" action="<?php echo WB_URL; ?>/modules/news_img/save_settings.php" method="post" style="margin: 0;">
 
+        <?php echo $FTAN; ?>
 	<input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
 	<input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
 

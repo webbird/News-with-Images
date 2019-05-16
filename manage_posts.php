@@ -21,8 +21,17 @@ if ((!isset($_POST['continue']) or !isset($_POST['action'])) or !isset($_POST['s
     exit(0);
 } 
 
+$admin_header = FALSE;
 // Include WB admin wrapper script
 require WB_PATH.'/modules/admin.php';
+if (!$admin->checkFTAN()){
+    $admin->print_header();
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
+	 .' (FTAN) '.__FILE__.':'.__LINE__,
+         ADMIN_URL.'/pages/index.php');
+    $admin->print_footer();
+    exit();
+} else $admin->print_header();
 
 $action='';
 if($_POST['action']=='copy'||$_POST['action']=='move'||$_POST['action']=='delete') {
@@ -33,7 +42,7 @@ if($_POST['action']=='copy'||$_POST['action']=='move'||$_POST['action']=='delete
 } 
 $section_id = intval($_POST['section_id']);
 $page_id = intval($_POST['page_id']);
-
+$FTAN = $admin->getFTAN();
 
 ?>
 <div class="mod_news_img">
@@ -41,11 +50,13 @@ $page_id = intval($_POST['page_id']);
     <h2><?php echo $MOD_NEWS_IMG['COPY'].'/'.$MOD_NEWS_IMG['MOVE'] ?></h2>
     <form name="manage" action="<?php echo WB_URL; ?>/modules/news_img/<?php echo $action; ?>_post.php" method="post" enctype="multipart/form-data">
 <?php
+    echo $FTAN;
     $posts=array();
     if(isset($_POST['manage_posts'])&&is_array($_POST['manage_posts'])) $posts=$_POST['manage_posts'];
     foreach($posts as $pid) 
         if(is_numeric($pid))
 	    echo 	'<input type="hidden" name="manage_posts[]" value="'.$pid.'" />';
+	   
 ?>
 	<input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
 	<input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />

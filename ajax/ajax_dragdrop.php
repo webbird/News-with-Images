@@ -32,7 +32,11 @@ if(!isset($_POST['action']) || !isset($_POST['post_id']) && !isset($_POST['group
 	    $aRows = $_POST['post_id'];
             $i = count($aRows);
             foreach ($aRows as $recID) {
-        	$id = $admin->checkIDKEY($recID,0,'key',true);	    
+        	$id = $admin->checkIDKEY($recID,0,'key',true);
+		if ($id<=0) {
+        	    $aJsonRespond['message'] = 'invalid value';
+        	    exit(json_encode($aJsonRespond));
+		}
         	// now we sanitize array
         	$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts`"
         	   . " SET `position` = '".$i."'"
@@ -46,6 +50,10 @@ if(!isset($_POST['action']) || !isset($_POST['post_id']) && !isset($_POST['group
             $i = 1;
             foreach ($aRows as $recID) {
         	$id = $admin->checkIDKEY($recID,0,'key',true);	    
+		if ($id<=0) {
+        	    $aJsonRespond['message'] = 'invalid value';
+        	    exit(json_encode($aJsonRespond));
+		}
         	// now we sanitize array
         	$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_groups`"
         	   . " SET `position` = '".$i."'"
@@ -59,6 +67,10 @@ if(!isset($_POST['action']) || !isset($_POST['post_id']) && !isset($_POST['group
             $i = 1;
             foreach ($aRows as $recID) {
         	$id = $admin->checkIDKEY($recID,0,'key',true);	    
+		if ($id<=0) {
+        	    $aJsonRespond['message'] = 'invalid value';
+        	    exit(json_encode($aJsonRespond));
+		}
         	// now we sanitize array
         	$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_img`"
         	   . " SET `position` = '".$i."'"

@@ -16,7 +16,7 @@
 $module_directory   = 'news_img';
 $module_name        = 'News with Images';
 $module_function    = 'page';
-$module_version     = '3.7.14';
+$module_version     = '3.7.15';
 $module_platform    = '2.8.x';
 $module_author      = 'Ryan Djurovich, Rob Smith, Silvia Reins, Martin Hecht, Florian Meerwinck, Bianka Martinovic';
 $module_license     = 'GNU General Public License';
@@ -24,6 +24,39 @@ $module_description = 'This page type is designed for making a news page with Im
 
 
 /**
+ * v3.7.15 - 2019-05-16 
+ *         - Martin Hecht
+ *           + add ftan support and use idkeys for get-requests
+ *           + sanitize and escape strings, explicitly convert integers
+ *           + fix image upload issues
+ *           + move pictures from "old" place to the new one
+ *           + several improvements for the gallery upload
+ *             - add index.php files in the subdirectories of the uploader
+ *             - avoid reloading the whole page
+ *             - re-add progress-bar and status messages about the upload
+ *             - cleanup of unused files (and unused functions and styles)
+ *             - impose the correct file size limit and file type on the client side
+ *             - display a hint to save changes upon completed upload
+ *           + a correction to the previous commit for the fallback case when js disabled
+ *           + Ajax/jQuery Uploader for gallery images
+ *           + add config.php that allows switching off the second block
+ *           + add a confirmation dialog for changing the gallery type
+ *           + update language support
+ *           + fixes and cleanup:
+ *             - block2 fixed: the default value from settings was not applied in details view of a news page
+ *             - import: a bit of fine-tuning on the topics placeholders
+ *             - a bit of better coding style in import.php
+ *           + support deleting several posts at once, just like copying and moving posts
+ *           + fixed import of settings for topics
+ *             - corrected the db statement
+ *             - added proper escaping
+ *             - optimized placeholder replacement
+ *             - copy topics pictures into nwi gallery
+ *           + some improvements for topics import
+ *         - Florian Meerwinck
+ *           + Minor UI improvements
+ *           + Added Readme, changed block2 placement in settings
+ *
  * v3.7.14 - 2019-05-02 
  *         - Martin Hecht
  *           + implement importing of topics sections

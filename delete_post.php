@@ -17,22 +17,41 @@
 require_once __DIR__.'/functions.inc.php';
 
 // Get id
-if((!isset($_GET['post_id']) OR !is_numeric($_GET['post_id']))AND(!isset($_POST['manage_posts']))) {
+if((!isset($_GET['post_id']))AND(!isset($_POST['manage_posts']))) {
 	header("Location: ".ADMIN_URL."/pages/index.php");
 	exit(0);
-} 
+}
+
+// Include WB admin wrapper script
+$update_when_modified = true; // Tells script to update when this page was last updated
+$admin_header = FALSE;
+// Include WB admin wrapper script
+require WB_PATH.'/modules/admin.php';
+if ( isset($_POST['manage_posts']) && is_array($_POST['manage_posts']) && !$admin->checkFTAN()){
+    $admin->print_header();
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
+	 .' (FTAN) '.__FILE__.':'.__LINE__,
+         ADMIN_URL.'/pages/index.php');
+    $admin->print_footer();
+    exit();
+} else $admin->print_header();
+
+$post_id = $admin->checkIDKEY('post_id', 0, 'GET');
+if (!$post_id && isset($_GET['post_id']){
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
+	 .' (IDKEY) '.__FILE__.':'.__LINE__,
+         ADMIN_URL.'/pages/index.php');
+    $admin->print_footer();
+    exit();
+}
 
 $posts=array();
 if (isset($_GET['post_id'])){    
-    $posts = array($_GET['post_id']);
+    $posts = array($post_id);
 } else {
     if(isset($_POST['manage_posts'])&&is_array($_POST['manage_posts'])) 
         $posts=$_POST['manage_posts'];
 } 
-
-// Include WB admin wrapper script
-$update_when_modified = true; // Tells script to update when this page was last updated
-require WB_PATH.'/modules/admin.php';
 
 // Include the ordering class
 require WB_PATH.'/framework/class.order.php';
@@ -71,7 +90,7 @@ foreach($posts as $post_id) {
 
 // Check if there is a db error, otherwise say successful
 if($database->is_error()) {
-	$admin->print_error($database->get_error(), WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&post_id='.$post_id);
+	$admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
 } else {
 	$admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
 }

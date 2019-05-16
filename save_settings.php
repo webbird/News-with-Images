@@ -17,7 +17,16 @@ require_once __DIR__.'/functions.inc.php';
 
 // Include WB admin wrapper script
 $update_when_modified = true; // Tells script to update when this page was last updated
+$admin_header = FALSE;
 require WB_PATH.'/modules/admin.php';
+if (!$admin->checkFTAN()){
+    $admin->print_header();
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
+	 .' (FTAN) '.__FILE__.':'.__LINE__,
+         ADMIN_URL.'/pages/index.php');
+    $admin->print_footer();
+    exit();
+} else $admin->print_header();
 
 $block2='';
 // This code removes any <?php tags and adds slashes

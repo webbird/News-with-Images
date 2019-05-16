@@ -11,11 +11,15 @@ if (!($admin->is_authenticated() && $admin->get_permission('news_img', 'module')
     throw new RuntimeException('insuficcient rights');
 }
 
-if(!isset($_GET['post_id']) || ! is_numeric($_GET['post_id']) || (intval($_GET['post_id'])<=0)){
+if(!isset($_GET['post_id'])){
     throw new RuntimeException('missing parameters');
 }
 
-$post_id = intval($_GET['post_id']);
+$post_id = $admin->checkIDKEY('post_id', false, 'GET');
+
+if(! is_numeric($post_id) || (intval($post_id)<=0)){
+    throw new RuntimeException('wrong parameter value');
+}
 
 require_once __DIR__.'/../functions.inc.php';
 

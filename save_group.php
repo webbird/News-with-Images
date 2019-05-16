@@ -26,19 +26,31 @@ else
 	$group_id = intval($_POST['group_id']);
 }
 
+
 // Include WB admin wrapper script
 $update_when_modified = true; // Tells script to update when this page was last updated
+$admin_header = FALSE;
 require WB_PATH.'/modules/admin.php';
+if (!$admin->checkFTAN()){
+    $admin->print_header();
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
+	 .' (FTAN) '.__FILE__.':'.__LINE__,
+         ADMIN_URL.'/pages/index.php');
+    $admin->print_footer();
+    exit();
+} else $admin->print_header();
 
 // Include WB functions file
 require_once WB_PATH.'/framework/functions.php';
 
 require_once __DIR__.'/functions.inc.php';
 
-// Vagroup_idate all fields
+// Validate all fields
 if($admin->get_post('title') == '')
 {
-	$admin->print_error($MESSAGE['GENERIC']['FILL_IN_ALL'], WB_URL.'/modules/news_img/modify_group.php?page_id='.$page_id.'&section_id='.$section_id.'&group_id='.$group_id);
+	$admin->print_error($MESSAGE['GENERIC']['FILL_IN_ALL'], WB_URL.'/modules/news_img/modify_group.php?page_id='.$page_id.'&section_id='.$section_id.'&group_id='.$admin->getIDKEY($group_id));
+    $admin->print_footer();
+    exit();
 }
 else
 {
@@ -102,7 +114,7 @@ if(isset($_POST['delete_image']) AND $_POST['delete_image'] != '')
 
 // Check if there is a db error, otherwise say successful
 if($database->is_error()) {
-	$admin->print_error($database->get_error(), WB_URL.'/modules/news_img/modify_group.php?page_id='.$page_id.'&section_id='.$section_id.'&group_id='.$group_id);
+	$admin->print_error($database->get_error(), WB_URL.'/modules/news_img/modify_group.php?page_id='.$page_id.'&section_id='.$section_id.'&group_id='.$admin->getIDKEY($group_id));
 } else {
 	$admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
 }
