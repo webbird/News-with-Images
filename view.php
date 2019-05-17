@@ -80,17 +80,15 @@ if ($query_users->numRows() > 0) {
 if (!defined('POST_ID') or !is_numeric(POST_ID)) {
     // -------------------------|   show main page    |-------------------------
 
-    // Check if we should only list posts from a certain group
-    if (isset($_GET['g']) and is_numeric($_GET['g'])) {
-        $query_extra = " AND `group_id` = '".$_GET['g']."'";
-    } else {
-        $query_extra = '';
-    }
+     // Check if we should only list posts from a certain group
+     if (isset($_GET['g']) and is_numeric($_GET['g'])) {
+        $query_extra = " AND group_id = '".$_GET['g']."'";
+     } else {
+         $query_extra = '';
+     }
+ 
 
-    // Check if we should only list posts from a certain group
-    if (isset($_GET['g']) and is_numeric($_GET['g'])) {
-        $query_extra = " AND `group_id` = '".$_GET['g']."'";
-    } elseif (isset($_GET['m']) and is_numeric($_GET['m']) and isset($_GET['y']) and is_numeric($_GET['y']) and isset($_GET['method']) and is_numeric($_GET['method'])) {
+    if (isset($_GET['m']) and is_numeric($_GET['m']) and isset($_GET['y']) and is_numeric($_GET['y']) and isset($_GET['method']) and is_numeric($_GET['method'])) {
         $startdate = mktime(0, 0, 0, $_GET['m'], 1, $_GET['y']);
         $enddate = mktime(0, 0, 0, $_GET['m']+1, 1, $_GET['y']);
         switch ($_GET['method']) {
@@ -101,10 +99,8 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
             $date_option = "published_when";
             break;
         }
-        $query_extra = " AND ".$date_option." >= '$startdate' AND ".$date_option." < '$enddate'";
-    } else {
-        $query_extra = '';
-    }
+        $query_extra .= " AND ".$date_option." >= '$startdate' AND ".$date_option." < '$enddate'";
+    } 
 
     // Get settings
     $query_settings = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '$section_id'");
@@ -158,11 +154,11 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
     // Query posts (for this page)
     $query_posts = $database->query("SELECT p.*,g.active,g.position FROM `".TABLE_PREFIX."mod_news_img_posts` AS p
         LEFT JOIN `".TABLE_PREFIX."mod_news_img_groups` AS g ON (g.group_id = p.group_id OR p.group_id = 0 AND g.group_id = NULL)
-        WHERE p.section_id = '$section_id' AND (g.active = 1 OR p.group_id = 0) AND p.active = 1 AND p.title != ''$query_extra
-        AND (p.published_when = 0 OR p.published_when <= $t) AND (p.published_until = 0 OR p.published_until >= $t)
+        WHERE p.section_id = '$section_id' AND (g.active = 1 OR p.group_id = 0) AND p.active = 1 AND p.title != ''"
+	.str_replace(array('group_id','posted_when','published_when'),array('p.group_id','p.posted_when','p.published_when'),$query_extra)
+        ."AND (p.published_when = 0 OR p.published_when <= $t) AND (p.published_until = 0 OR p.published_until >= $t)
         ORDER BY g.position,p.$order_by DESC".$limit_sql);
     $num_posts = $query_posts->numRows();
-
     // Create previous and next links
     if ($setting_posts_per_page != 0) {
         if ($position > 0) {
