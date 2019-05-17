@@ -15,7 +15,7 @@ if(!isset($_GET['post_id'])){
     throw new RuntimeException('missing parameters');
 }
 
-$post_id = $admin->checkIDKEY('post_id', false, 'GET');
+$post_id = $admin->checkIDKEY('post_id', false, 'GET', true);
 
 if(! is_numeric($post_id) || (intval($post_id)<=0)){
     throw new RuntimeException('wrong parameter value');
