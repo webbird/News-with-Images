@@ -87,11 +87,11 @@ foreach($posts as $idx=>$pid) {
     // Check if there is a db error, otherwise say successful
     if($database->is_error())
     {
-	$admin->print_error($database->get_error(), WB_URL.'/modules/news_img/modify.php?page_id='.$old_page_id.'&section_id='.$old_section_id);
+	$admin->print_error($database->get_error(),  ADMIN_URL.'/pages/modify.php?page_id='.$old_page_id);
     } 
 }
 
-$admin->print_success($TEXT['SUCCESS'],  WB_URL.'/modules/news_img/modify.php?page_id='.$page_id.'&section_id='.$section_id);
+$admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
 
 // Print admin footer
 $admin->print_footer();
