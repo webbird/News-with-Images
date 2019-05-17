@@ -34,6 +34,7 @@ if (!$admin->checkFTAN()){
     exit();
 } else $admin->print_header();
 
+global $page_id, $section_id, $post_id;
 
 // Include the ordering class
 require WB_PATH.'/framework/class.order.php';
@@ -88,7 +89,23 @@ foreach($posts as $idx=>$pid) {
     if($database->is_error())
     {
 	$admin->print_error($database->get_error(),  ADMIN_URL.'/pages/modify.php?page_id='.$old_page_id);
-    } 
+    }  
+    
+    // get post link
+    $query_post = $database->query("SELECT `link` FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `post_id`='$post_id'");
+    $post = $query_post->fetchRow();
+    $post_link = $post['link'];
+    // We need to create a new file
+    // First, delete old file if it exists
+    if (file_exists(WB_PATH.PAGES_DIRECTORY.$post_link.PAGE_EXTENSION)) {
+        $file_create_time = filemtime(WB_PATH.PAGES_DIRECTORY.$post_link.PAGE_EXTENSION);
+        unlink(WB_PATH.PAGES_DIRECTORY.$post_link.PAGE_EXTENSION);
+    }
+
+    // Specify the filename
+    $filename = WB_PATH.PAGES_DIRECTORY.'/'.$post_link.PAGE_EXTENSION;
+    mod_nwi_create_file($filename, '');
+    
 }
 
 $admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);

@@ -13,6 +13,8 @@
  *
  */
 
+global $page_id, $section_id, $post_id;
+
 require_once __DIR__.'/functions.inc.php';
 require_once WB_PATH."/include/jscalendar/jscalendar-functions.php";
 // Include WB functions file
@@ -127,14 +129,14 @@ make_dir(WB_PATH.PAGES_DIRECTORY.'/posts/');
 $file_create_time = '';
 if (!is_writable(WB_PATH.PAGES_DIRECTORY.'/posts/')) {
     $admin->print_error($MESSAGE['PAGES']['CANNOT_CREATE_ACCESS_FILE']);
-} elseif (($old_link != $post_link) or !file_exists(WB_PATH.PAGES_DIRECTORY.$post_link.PAGE_EXTENSION)) {
+} elseif (($old_link != $post_link) or !file_exists(WB_PATH.PAGES_DIRECTORY.$post_link.PAGE_EXTENSION) or $page_id != $old_page_id or $section_id != $old_section_id ) {
     // We need to create a new file
     // First, delete old file if it exists
     if (file_exists(WB_PATH.PAGES_DIRECTORY.$old_link.PAGE_EXTENSION)) {
         $file_create_time = filemtime(WB_PATH.PAGES_DIRECTORY.$old_link.PAGE_EXTENSION);
         unlink(WB_PATH.PAGES_DIRECTORY.$old_link.PAGE_EXTENSION);
     }
-
+    if( $page_id != $old_page_id or $section_id != $old_section_id ) $file_create_time = '';
     // Specify the filename
     $filename = WB_PATH.PAGES_DIRECTORY.'/'.$post_link.PAGE_EXTENSION;
     mod_nwi_create_file($filename, $file_create_time);
