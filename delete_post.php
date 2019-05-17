@@ -37,7 +37,7 @@ if ( isset($_POST['manage_posts']) && is_array($_POST['manage_posts']) && !$admi
 } else $admin->print_header();
 
 $post_id = $admin->checkIDKEY('post_id', 0, 'GET');
-if (!$post_id && isset($_GET['post_id']){
+if (!$post_id && isset($_GET['post_id'])){
     $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
 	 .' (IDKEY) '.__FILE__.':'.__LINE__,
          ADMIN_URL.'/pages/index.php');
