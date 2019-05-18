@@ -163,7 +163,7 @@ if(!($database->is_error())){
 			}
 		    }
 		}
-		$posted_by = $fetch_result['posted_by'];
+		$posted_by = $fetch_content['posted_by'];
 		$short = $database->escapeString($fetch_content['content_short']);
 		$long = $database->escapeString($fetch_content['content_long']);
 		$block2 = $database->escapeString($fetch_content['content_block2']);
