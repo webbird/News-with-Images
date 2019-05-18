@@ -33,19 +33,25 @@ if($query_details->numRows() > 0) {
         $query_img = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = ".$link['post_id']);
         if($query_img->numRows() > 0) {
             while($result = $query_img->fetchRow()) {
-                if(is_writable(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/'.$result['picname'])) {
+                if(is_writable(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/'.$result['picname'])) 
                     unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/'.$result['picname']);
-                    unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/thumb/'.$result['picname']);
-                }
+                if(is_writable(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/thumb/'.$result['picname'])) 
+                    unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/thumb/'.$result['picname']);                
                 $database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = ".$link['post_id']);
             }
         }
-        if($link['image']!='') unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/thumb/'.$link['image']);
-	unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/thumb/index.php');
-	rmdir(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/thumb/');
-        if($link['image']!='') unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/'.$link['image']);
-	unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/index.php');
-        rmdir(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id']);
+        if($link['image']!='' && is_writable(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/thumb/'.$link['image']))
+	    unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/thumb/'.$link['image']);
+	if(is_writable(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/thumb/index.php'))
+	    unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/thumb/index.php');
+	if(is_writable(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/thumb/'))
+	    rmdir(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/thumb/');
+        if($link['image']!='' && is_writable(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/'.$link['image']))
+	    unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/'.$link['image']);
+	if(is_writable(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/index.php'))
+	    unlink(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id'].'/index.php');
+	if(is_writable(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id']))
+            rmdir(WB_PATH.MEDIA_DIRECTORY.'/.news_img/'.$link['post_id']);
     }
 }
 //check to see if any other sections are part of the news page, if only 1 news is there delete it
