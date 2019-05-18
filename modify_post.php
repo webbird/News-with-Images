@@ -110,7 +110,7 @@ $link = implode(PAGE_SPACER, $parts);
 // include jscalendar-setup
 $jscal_use_time = true; // whether to use a clock, too
 require_once(WB_PATH."/include/jscalendar/wb-setup.php");
-$jscal_today = date($jscal_format, time()+TIMEZONE);
+$jscal_today = date('Y/m/d H:i', time()+TIMEZONE);
 ?>
 <link href="uploader/css/jquery.dm-uploader.css" rel="stylesheet">
 <link href="uploader/styles.css" rel="stylesheet">
