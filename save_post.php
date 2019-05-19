@@ -73,7 +73,7 @@ $block2='';
 
 // Validate all fields
 if ($admin->get_post('title') == '' and $admin->get_post('url') == '') {
-    $admin->print_error($MESSAGE['GENERIC']['FILL_IN_ALL'], WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$id);
+    $admin->print_error($MESSAGE['GENERIC']['FILL_IN_ALL'], WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$admin->getIDKEY($id));
 } else {
     $title = $database->escapeString($admin->get_post('title'));
     $link = $database->escapeString($admin->get_post('link'));
