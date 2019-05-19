@@ -333,7 +333,7 @@ if(!($database->is_error())){
 			}
 		    }
 		}
-		$posted_by = $fetch_result['posted_by'];
+		$posted_by = $fetch_content['posted_by'];
 		$short = $database->escapeString($fetch_content['content_short']);
 		$long = $database->escapeString($fetch_content['content_long']);
 		$block2 = '';
@@ -573,7 +573,7 @@ if($query_posts->numRows() > 0) {
 	$title = $database->escapeString($fetch_content['title']);
 	$link = $database->escapeString($fetch_content['link']);
 	$group_id = 0;
-	$posted_by = $fetch_result['posted_by'];
+	$posted_by = $fetch_content['posted_by'];
 	$short = $database->escapeString($fetch_content['content_short']);
 	$long = $database->escapeString($fetch_content['content_long']);
 	$block2 = '';
