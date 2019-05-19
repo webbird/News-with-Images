@@ -16,14 +16,14 @@ require_once __DIR__.'/functions.inc.php';
 
 // Include WB admin wrapper script
 require(WB_PATH.'/modules/admin.php');
-$section_id = $admin->checkIDKEY('section_id', 0, 'GET');
-if (!$section_id){
+$section_key = $admin->checkIDKEY('section_key', 0, 'GET');
+if (!$section_key || $section_key != $section_id){
     $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
 	 .' (IDKEY) '.__FILE__.':'.__LINE__,
          ADMIN_URL.'/pages/index.php');
     $admin->print_footer();
     exit();
-}
+} 
 
 // include core functions of WB 2.7 to edit the optional module CSS files (frontend.css, backend.css)
 @include_once WB_PATH .'/framework/module.functions.php';
