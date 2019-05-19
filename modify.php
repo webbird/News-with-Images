@@ -134,7 +134,8 @@ $order->clean($section_id);
     				?>
     			</td>
     			<td>
-    				<?php if($post['active'] == 1) { echo $TEXT['YES']; } else { echo $TEXT['NO']; } ?>
+				<a href="<?php echo WB_URL; ?>/modules/news_img/activate_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post_id_key; ?>&amp;value=<?php echo $post['active']!=0 ? '0':'1'; ?>');" title="<?php echo $TEXT['ACTIVE']."?"; ?>">
+    				<?php if($post['active'] == 1) { echo $TEXT['YES']; } else { echo $TEXT['NO']; } ?></a>
     			</td>
     			<td>
 <?php
