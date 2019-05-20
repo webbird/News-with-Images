@@ -49,6 +49,11 @@ $MOD_NEWS_IMG['DELETE'] = "löschen";
 $MOD_NEWS_IMG['TO'] = "nach";
 $MOD_NEWS_IMG['CONTINUE'] = "Weiter";
 $MOD_NEWS_IMG['ALL'] = "Alle";
+$MOD_NEWS_IMG['ACTIVATE_POST'] = "Beitrag aktivieren";
+$MOD_NEWS_IMG['DEACTIVATE_POST'] = "Beitrag deaktivieren";
+$MOD_NEWS_IMG['MANAGE_POSTS'] = "Beitr&auml;ge verwalten";
+$MOD_NEWS_IMG['ACTIVATE'] = "aktivieren";
+$MOD_NEWS_IMG['DEACTIVATE'] = "deaktivieren";
 
 //image settings
 $MOD_NEWS_IMG['CROP'] = 'Beschneiden';

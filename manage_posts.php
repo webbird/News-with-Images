@@ -34,7 +34,7 @@ if (!$admin->checkFTAN()){
 } else $admin->print_header();
 
 $action='';
-if($_POST['action']=='copy'||$_POST['action']=='move'||$_POST['action']=='delete') {
+if($_POST['action']=='copy'||$_POST['action']=='move'||$_POST['action']=='delete'||$_POST['action']=='activate'||$_POST['action']=='deactivate') {
     $action=$_POST['action'];
 } else {
     header("Location: ".ADMIN_URL."/pages/index.php");
@@ -43,12 +43,23 @@ if($_POST['action']=='copy'||$_POST['action']=='move'||$_POST['action']=='delete
 $section_id = intval($_POST['section_id']);
 $page_id = intval($_POST['page_id']);
 $FTAN = $admin->getFTAN();
+$value = "";
+$activate = "";
+if($action=="activate") {
+    $value = "?value=1";
+    $activate = 1;
+}
+if($action=="deactivate") {
+    $action = "activate";
+    $value = "?value=0";
+    $activate = 0;
+}   
 
 ?>
 <div class="mod_news_img">
    
-    <h2><?php echo $MOD_NEWS_IMG['COPY'].'/'.$MOD_NEWS_IMG['MOVE'] ?></h2>
-    <form name="manage" action="<?php echo WB_URL; ?>/modules/news_img/<?php echo $action; ?>_post.php" method="post" enctype="multipart/form-data">
+    <h2><?php echo $MOD_NEWS_IMG['MANAGE_POSTS']; ?></h2>
+    <form name="manage" action="<?php echo WB_URL; ?>/modules/news_img/<?php echo $action; ?>_post.php<?php echo $value; ?>" method="post" enctype="multipart/form-data">
 <?php
     echo $FTAN;
     $posts=array();
@@ -61,8 +72,13 @@ $FTAN = $admin->getFTAN();
 	<input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
 	<input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
 <?php 
-    if($action=="delete"){
+    if($action=="delete")
 	echo $TEXT['DELETE'].' '.$TEXT['POST'].' ';
+    elseif($activate === 1) 
+        echo $MOD_NEWS_IMG['ACTIVATE_POST'].' '; 
+    elseif ($activate === 0) 
+        echo $MOD_NEWS_IMG['DEACTIVATE_POST'].' ';
+    if($action=="delete" || $action=="activate"){
 	foreach($posts as $pid) 
 	    if(is_numeric($pid))
 	    	echo "$pid, ";

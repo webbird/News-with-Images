@@ -134,7 +134,7 @@ $order->clean($section_id);
     				?>
     			</td>
     			<td>
-				<a href="<?php echo WB_URL; ?>/modules/news_img/activate_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post_id_key; ?>&amp;value=<?php echo $post['active']!=0 ? '0':'1'; ?>');" title="<?php echo $TEXT['ACTIVE']."?"; ?>">
+				<a href="<?php echo WB_URL; ?>/modules/news_img/activate_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post_id_key; ?>&amp;value=<?php echo $post['active']!=0 ? '0':'1'; ?>');" title="<?php if($post['active'] == 1) { echo $MOD_NEWS_IMG['DEACTIVATE_POST']; } else { echo $MOD_NEWS_IMG['ACTIVATE_POST']; }  ?>">
     				<?php if($post['active'] == 1) { echo $TEXT['YES']; } else { echo $TEXT['NO']; } ?></a>
     			</td>
     			<td>
@@ -204,7 +204,17 @@ $order->clean($section_id);
     		    <a href="#" onclick="javascript: document.getElementById('action_delete').checked = true;">
     		    <?php echo $MOD_NEWS_IMG['DELETE']; ?>
     		    </a>
-				<input name="continue" type="submit" onclick="return checkActionAndPosts()" value="<?php echo $MOD_NEWS_IMG['CONTINUE']; ?>" />
+    		    &nbsp;
+    		    <input type="radio" name="action" id="action_activate" value="activate" />
+    		    <a href="#" onclick="javascript: document.getElementById('action_activate').checked = true;">
+    		    <?php echo $MOD_NEWS_IMG['ACTIVATE']; ?>
+    		    </a>
+    		    &nbsp;
+    		    <input type="radio" name="action" id="action_deactivate" value="deactivate" />
+    		    <a href="#" onclick="javascript: document.getElementById('action_deactivate').checked = true;">
+    		    <?php echo $MOD_NEWS_IMG['DEACTIVATE']; ?>
+    		    </a>
+		    <input name="continue" type="submit" onclick="return checkActionAndPosts()" value="<?php echo $MOD_NEWS_IMG['CONTINUE']; ?>" />
     	 </div>
 	</form>
 

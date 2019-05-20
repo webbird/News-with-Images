@@ -49,6 +49,11 @@ $MOD_NEWS_IMG['DELETE'] = "delete";
 $MOD_NEWS_IMG['TO'] = "to";
 $MOD_NEWS_IMG['CONTINUE'] = "Next";
 $MOD_NEWS_IMG['ALL'] = "All";
+$MOD_NEWS_IMG['ACTIVATE_POST'] = "activate post";
+$MOD_NEWS_IMG['DEACTIVATE_POST'] = "deactivate post";
+$MOD_NEWS_IMG['MANAGE_POSTS'] = "manage posts";
+$MOD_NEWS_IMG['ACTIVATE'] = "activate";
+$MOD_NEWS_IMG['DEACTIVATE'] = "deactivate";
 
 //image settings
 $MOD_NEWS_IMG['CROP'] = 'Crop';

@@ -42,13 +42,18 @@ $MOD_NEWS_IMG['SAVEGOBACK'] = 'Sauvegarder et revenir en arri&egrave;re';
 $MOD_NEWS_IMG['SETTINGS'] = 'Param&egrave;tres de News';
 $MOD_NEWS_IMG['LINK'] = 'Lien';
 $MOD_NEWS_IMG['EXPIRED_NOTE'] = "La publication n'est plus affich&eacute;e dans le front-end car la date d'expiration est d&eacute;pass&eacute;e.";
-$MOD_NEWS_IMG['ACTION'] = "Entrées sélectionnées";
+$MOD_NEWS_IMG['ACTION'] = "Entr&eacute;es s&eacute;lectionn&eacute;es";
 $MOD_NEWS_IMG['COPY'] = "copier";
 $MOD_NEWS_IMG['MOVE'] = "d&eacute;placer";
-$MOD_NEWS_IMG['DELETE'] = "d&eacute;placer";
+$MOD_NEWS_IMG['DELETE'] = "effacer";
 $MOD_NEWS_IMG['TO'] = "&agrave;";
 $MOD_NEWS_IMG['CONTINUE'] = "Suivant";
 $MOD_NEWS_IMG['ALL'] = "Tous";
+$MOD_NEWS_IMG['ACTIVATE_POST'] = "activer le post";
+$MOD_NEWS_IMG['DEACTIVATE_POST'] = "d&eacute;sactiver le post";
+$MOD_NEWS_IMG['MANAGE_POSTS'] = "G&eaucte;rer les post";
+$MOD_NEWS_IMG['ACTIVATE'] = "activer";
+$MOD_NEWS_IMG['DEACTIVATE'] = "d&eacute;sactiver";
 
 // parametres d'image
 $MOD_NEWS_IMG['CROP'] = 'Recadrage';

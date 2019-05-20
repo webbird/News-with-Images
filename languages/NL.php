@@ -51,7 +51,12 @@ $MOD_NEWS_IMG['DELETE'] = "verwijderen";
 $MOD_NEWS_IMG['TO'] = "tot";
 $MOD_NEWS_IMG['CONTINUE'] = "Volgende";
 $MOD_NEWS_IMG['ALL'] = "Alle";
- 
+$MOD_NEWS_IMG['ACTIVATE_POST'] = "activeer bericht";
+$MOD_NEWS_IMG['DEACTIVATE_POST'] = "deactiveren bericht";
+$MOD_NEWS_IMG['MANAGE_POSTS'] = "beheer berichten";
+$MOD_NEWS_IMG['ACTIVATE'] = "activeren";
+$MOD_NEWS_IMG['DEACTIVATE'] = "deactiveren";
+
 // afbeeldingsinstellingen 
 $ MOD_NEWS_IMG ['CROP'] = 'Bijsnijden';
 $MOD_NEWS_IMG['GALLERY'] = 'Afbeeldingengalerij';
