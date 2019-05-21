@@ -15,21 +15,37 @@
 require_once __DIR__.'/functions.inc.php';
 
 // Include WB admin wrapper script
-require(WB_PATH.'/modules/admin.php');
-$section_key = $admin->checkIDKEY('section_key', 0, 'GET');
-if (!$section_key || $section_key != $section_id){
-    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
-	 .' (IDKEY) '.__FILE__.':'.__LINE__,
-         ADMIN_URL.'/pages/index.php');
-    $admin->print_footer();
-    exit();
-} 
+$admin_header = FALSE;
+require WB_PATH.'/modules/admin.php';
+$source_id = 0;
+if(isset($_POST['source_id'])){
+    if (!$admin->checkFTAN()){
+	$admin->print_header();
+	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
+	     .' (FTAN) '.__FILE__.':'.__LINE__,
+             ADMIN_URL.'/pages/index.php');
+	$admin->print_footer();
+	exit();
+    } else $admin->print_header();
+    if(isset($_POST['source_id']) && is_numeric($_POST['source_id']) && ($_POST['source_id'] > 0)) $source_id = $_POST['source_id'];
+} else {
+    $admin->print_header();
+    $section_key = $admin->checkIDKEY('section_key', 0, 'GET');
+    if (!$section_key || $section_key != $section_id){
+	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
+	     .' (IDKEY) '.__FILE__.':'.__LINE__,
+             ADMIN_URL.'/pages/index.php');
+	$admin->print_footer();
+	exit();
+    }
+}
+
 
 // include core functions of WB 2.7 to edit the optional module CSS files (frontend.css, backend.css)
 @include_once WB_PATH .'/framework/module.functions.php';
 
 // Get header and footer
-$query_content = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '$section_id'");
+$query_content = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '".($source_id>0?$source_id:$section_id)."'");
 $fetch_content = $query_content->fetchRow();
 
 $previewwidth = $previewheight = $thumbwidth = $thumbheight = '';
@@ -261,7 +277,47 @@ if(function_exists('edit_module_css'))
 			</td>
 		</tr>
 	</table>
+    </form>    
+<?php
+    // import settings from other news with images sections
+    $query_nwi = $database->query("SELECT `section_id` FROM `".TABLE_PREFIX."sections`"
+    . " WHERE `module` = 'news_img' AND `section_id` != '$section_id' ORDER BY `section_id` ASC");
+    $importable_sections = $query_nwi->numRows();
+    if($importable_sections>0){
+?>
+    <h2><?php echo $MOD_NEWS_IMG['IMPORT_OPTIONS']; ?></h2>
+    <form name="import" action="<?php echo WB_URL; ?>/modules/news_img/modify_settings.php" method="post" enctype="multipart/form-data">
+        <?php echo $FTAN; ?>
+	<input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
+	<input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
+    <table>
+    <tr>
+        <td class="setting_name"><?php echo $MOD_NEWS_IMG['IMPORT'].' '.$TEXT['FROM']; ?>:</td>
+        <td class="setting_value">
+            <select name="source_id">
+<?php
+            // Loop through possible sections
+            while ($source = $query_nwi->fetchRow()) {
+                echo '<option value="'.$source['section_id'].'">'.$TEXT['SECTION'].' '.$source['section_id'].'</option>';
+            }
+?>
+            </select>
+        </td>
+    </tr>
+    <tr>
+    	<td align="left">
+    		<input name="save" type="submit" value="<?php echo $MOD_NEWS_IMG['LOAD_VALUES'] ?>" style="width: 100px; margin-top: 5px;" />
+    	</td>
+    	<td>
+    	</td>
+    </tr>
+    </table>
+
     </form>
+ <?php
+    }
+?>
+   
 </div>
 <?php
 
