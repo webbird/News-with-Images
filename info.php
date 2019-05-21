@@ -16,7 +16,7 @@
 $module_directory   = 'news_img';
 $module_name        = 'News with Images';
 $module_function    = 'page';
-$module_version     = '3.7.15';
+$module_version     = '3.7.16';
 $module_platform    = '2.8.x';
 $module_author      = 'Ryan Djurovich, Rob Smith, Silvia Reins, Martin Hecht, Florian Meerwinck, Bianka Martinovic';
 $module_license     = 'GNU General Public License';
@@ -24,6 +24,29 @@ $module_description = 'This page type is designed for making a news page with Im
 
 
 /**
+ * v3.7.16 - 2019-05-22 
+ *         - Martin Hecht
+ *           + allow importing settings from other nwi sections  (#35)
+ *           + activate / deactivate posts with mass actions (#34)
+ *           + set posts active/inactive directly in overview (#34)
+ *           + do not use section_id as idkey
+ *           + fix idkey issue when required fields are not filled in
+ *           + correct two more occurrences of fetch_result for #38
+ *           + fix for #39 - we should not use a variable called $link inside delete.php
+ *           + fix for notice beim import (#38)
+ *           + avoid invalidating the img_id key when deleting the image (#36)
+ *           + try to avoid NaN entries in js calendar, e.g. when jscal_format is messed up (#33)
+ *           + avoid warnings during deletion of section when files do not exist (#26)
+ *           + update post access file when moving posts (#30),  updating file date is needed
+ *           + moving posts redirected to an inaccessible backend url (#30)
+ *           + fix date for js calendar if textfield is empty (like by default for enddate) (#33)
+ *           + make delete_post work again (#31)
+ *           + make view.php with group parameter work again
+ *           + fix gallery upload with idkeys (parameter for ajax=true was missing) #29
+ *           + add ftan support and use idkeys for get-requests
+ *         - Florian Meerwinck
+ *           + Translation/integration of README
+ *
  * v3.7.15 - 2019-05-16 
  *         - Martin Hecht
  *           + add ftan support and use idkeys for get-requests
