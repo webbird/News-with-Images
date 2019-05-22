@@ -7,7 +7,8 @@
 
 .dm-uploader {
 	cursor: default;
-
+	min-height: 85px;
+ 
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
@@ -15,12 +16,12 @@
 	-ms-user-select: none;
 	user-select: none;
 }
-
+ 
 .dm-uploader .btn {
 	position: relative;
-	overflow: hidden;
+	overflow: visible;
 }
-
+ 
 .dm-uploader .btn input[type="file"] {
 	position: absolute;
 	top: 0;
@@ -28,7 +29,7 @@
 	margin: 0;
 	border: solid transparent;
 	width: 100%;
-	opacity: .0;
+	opacity: 1;
 	filter: alpha(opacity= 0);
 	cursor: pointer;
 }
