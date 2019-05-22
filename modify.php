@@ -92,16 +92,20 @@ $order->clean($section_id);
                 <tr>
                     <th></th>
                     <th></th>
-                    <th>PostID</th>
+                    <th>ID</th>
                     <th><?php echo $TEXT['TITLE'] ?></th>
                     <th><?php echo $TEXT['GROUP'] ?></th>
                     <th><?php echo $TEXT['ACTIVE'] ?></th>
                     <th><?php echo $TEXT['PUBL_START_DATE']; ?></th>
                     <th><?php echo $TEXT['PUBL_END_DATE']; ?></th>
-                    <th style="text-align:right; padding-right:30px"><?php echo $MOD_NEWS_IMG['ALL'] ?> <input type="checkbox" name="manage_posts[]" id="<?php echo $section_id; ?>_all" value="all" onchange='javascript: var boxes = document.forms["modify_<?php echo $section_id; ?>"].elements[ "manage_posts[]" ]; for (var i=0, len=boxes.length; i<len; i++) { boxes[i].checked = this.checked;}' /></th>
+					<th></th>
+					<th></th>
+					<th></th>
+                    <th><input type="checkbox" name="manage_posts[]" id="<?php echo $section_id; ?>_all" value="all" onchange='javascript: var boxes = document.forms["modify_<?php echo $section_id; ?>"].elements[ "manage_posts[]" ]; for (var i=0, len=boxes.length; i<len; i++) { boxes[i].checked = this.checked;}' /></th>
+					<th></th>
                     <th></th>
                 </tr>
-            </thead>
+            </thead> 
             <tbody>
     	<?php
     	while($post = $query_posts->fetchRow()) {
@@ -111,7 +115,7 @@ $order->clean($section_id);
 			<td <?php if($setting_view_order == 0) echo 'class="dragdrop_item"';?>>&nbsp;</td>
     			<td>
     				<a href="<?php echo WB_URL; ?>/modules/news_img/modify_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post_id_key; ?>" title="<?php echo $TEXT['MODIFY']; ?>">
-    					<img src="<?php echo THEME_URL; ?>/images/modify_16.png" border="0" alt="Modify - " />
+    					<span class="fa fa-fw fa-edit"></span>
     				</a>
     			</td>
                 <td>
@@ -135,7 +139,7 @@ $order->clean($section_id);
     			</td>
     			<td>
 				<a href="<?php echo WB_URL; ?>/modules/news_img/activate_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post_id_key; ?>&amp;value=<?php echo $post['active']!=0 ? '0':'1'; ?>');" title="<?php if($post['active'] == 1) { echo $MOD_NEWS_IMG['DEACTIVATE_POST']; } else { echo $MOD_NEWS_IMG['ACTIVATE_POST']; }  ?>">
-    				<?php if($post['active'] == 1) { echo $TEXT['YES']; } else { echo $TEXT['NO']; } ?></a>
+    				<?php if($post['active'] == 1) { echo '<span class="fa fa-fw fa-eye nwi-active"></span>'; } else { echo '<span class="fa fa-fw fa-eye-slash nwi-inactive"></span>'; } ?></a>
     			</td>
     			<td>
 <?php
@@ -144,40 +148,48 @@ $order->clean($section_id);
 	$t = time();
 	$icon = '';
 	if($start<=$t && $end==0) {
-        $icon='<span class="mod_news_img_icon"></span>';
+        $icon='<span class="fa fa-fw fa-calendar-o"></span>';
     }
 	elseif(($start<=$t || $start==0) && $end>=$t) {
-		$icon='<img src="'.THEME_URL.'/images/clock_16.png" class="mod_news_img_icon" alt="Clock image" />';
+		$icon='<span class="fa fa-fw fa-calendar-check-o nwi-active"></span>';
     }
 	else {
-		$icon='<img src="'.THEME_URL.'/images/clock_red_16.png" class="mod_news_img_icon" title="'.$MOD_NEWS_IMG['EXPIRED_NOTE'].'" alt="Clock image" />';
+		$icon='<span class="fa fa-fw fa-calendar-times-o nwi-inactive"></span>';
     }
 ?>
                     <?php echo ( $start>0 ? gmdate(DATE_FORMAT.' '.TIME_FORMAT, $start+TIMEZONE) : '') ?></td>
                 <td><?php echo ( $end>0   ? gmdate(DATE_FORMAT.' '.TIME_FORMAT, $end+TIMEZONE)   : '') ?></td>
-    		<td style="text-align:right"><?php echo $icon ?>
+				<td><?php echo $icon; ?></td>
+				<td>
+			
 <?php
     // Icons
     if(($post['position'] != $num_posts)&&($setting_view_order == 0)) {
 ?>
     				<a href="<?php echo WB_URL; ?>/modules/news_img/move_down.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post_id_key; ?>" title="<?php echo $TEXT['MOVE_UP']; ?>">
-    					<img src="<?php echo THEME_URL; ?>/images/up_16.png" border="0" alt="^" class="mod_news_img_arrow" />
+    					<span class="fa fa-fw fa-arrow-circle-up"></span>
     				</a>
+					
 <?php } else {
-    echo '<span class="mod_news_img_icon"></span>';
+    echo '<span class="fa fa-fw fa-arrow-circle-up nwi-disabled"></span>';
 }
-    if(($post['position'] != 1)&&($setting_view_order == 0)) { ?>
+?>					</td>
+					<td>
+<?php    if(($post['position'] != 1)&&($setting_view_order == 0)) { ?>
     				<a href="<?php echo WB_URL; ?>/modules/news_img/move_up.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post_id_key; ?>" title="<?php echo $TEXT['MOVE_DOWN']; ?>">
-    					<img src="<?php echo THEME_URL; ?>/images/down_16.png" border="0" alt="v" class="mod_news_img_arrow" />
-    				</a>
+    					<span class="fa fa-fw fa-arrow-circle-down"></span>
+    				</a>					
 <?php } else {
-    echo '<span class="mod_news_img_icon"></span>';
-}
-    echo "<input type=\"checkbox\" name=\"manage_posts[]\" value=".$post['post_id']." onchange='javascript: document.getElementById(\"${section_id}_all\").checked &= this.checked' />";
+     echo '<span class="fa fa-fw fa-arrow-circle-down nwi-disabled"></span>';
+} ?>
+					</td>
+					<td>
+    <?php echo "<input type=\"checkbox\" name=\"manage_posts[]\" value=".$post['post_id']." onchange='javascript: document.getElementById(\"${section_id}_all\").checked &= this.checked' />";
 ?>
-				
+				</td>
+				<td>
     				<a href="javascript: confirm_link('<?php echo $TEXT['ARE_YOU_SURE']; ?>', '<?php echo WB_URL; ?>/modules/news_img/delete_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post_id_key; ?>');" title="<?php echo $TEXT['DELETE']; ?>">
-    					<img src="<?php echo THEME_URL; ?>/images/delete_16.png" border="0" alt="X" class="mod_news_img_icon" />
+    					<span class="fa fa-fw fa-close nwi-delete"></span>
     				</a>
     			</td>
 			<td <?php if($setting_view_order == 0) echo 'class="dragdrop_item"';?>>&nbsp;</td>
@@ -318,7 +330,7 @@ if($query_groups->numRows() > 0) {
 			<td class="dragdrop_item">&nbsp;</td>
 			<td style="width:20px">
 				<a href="<?php echo WB_URL; ?>/modules/news_img/modify_group.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group_id_key; ?>" title="<?php echo $TEXT['MODIFY']; ?>">
-					<img src="<?php echo THEME_URL; ?>/images/modify_16.png" border="0" alt="Modify - " />
+					<span class="fa fa-fw fa-edit"></span>
 				</a>
 			</td>		
 			<td>
@@ -332,20 +344,20 @@ if($query_groups->numRows() > 0) {
 			<td style="width:20px">
 			<?php if($group['position'] != 1) { ?>
 				<a href="<?php echo WB_URL; ?>/modules/news_img/move_up.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group_id_key; ?>" title="<?php echo $TEXT['MOVE_UP']; ?>">
-					<img src="<?php echo THEME_URL; ?>/images/up_16.png" border="0" alt="^"  class="mod_news_img_arrow" />
+					<span class="fa fa-fw fa-arrow-circle-up"></span>
 				</a>
 			<?php } ?>
 			</td>
 			<td style="width:20px">
 			<?php if($group['position'] != $num_groups) { ?>
 				<a href="<?php echo WB_URL; ?>/modules/news_img/move_down.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group_id_key; ?>" title="<?php echo $TEXT['MOVE_DOWN']; ?>">
-					<img src="<?php echo THEME_URL; ?>/images/down_16.png" border="0" alt="v"  class="mod_news_img_arrow" />
+					<span class="fa fa-fw fa-arrow-circle-down"></span>
 				</a>
 			<?php } ?>
 			</td>
 			<td style="width:20px">
 				<a href="javascript: confirm_link('<?php echo $TEXT['ARE_YOU_SURE']; ?>', '<?php echo WB_URL; ?>/modules/news_img/delete_group.php?page_id=<?php echo $page_id; ?>&amp;group_id=<?php echo $group_id_key; ?>');" title="<?php echo $TEXT['DELETE']; ?>">
-					<img src="<?php echo THEME_URL; ?>/images/delete_16.png" border="0" alt="X" />
+					<span class="fa fa-fw fa-close nwi-delete"></span>
 				</a>
 			</td>
 			<td class="dragdrop_item">&nbsp;</td>
