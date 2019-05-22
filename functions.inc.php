@@ -17,6 +17,176 @@ require_once(!file_exists($lang) ? (dirname(__FILE__)) . '/languages/EN.php' : $
 $mod_nwi_file_dir = WB_PATH.MEDIA_DIRECTORY.'/.news_img/';
 $mod_nwi_thumb_dir = WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb/';
 
+/**
+ * fist of all include some fallbacks for framework functions for interoperability
+ **/
+
+
+if(!function_exists('page_filename')){
+function page_filename($sStr)
+{
+    require_once WB_PATH . '/framework/functions-utf8.php';
+    $sStr = entities_to_7bit($sStr);
+    // Now remove all bad characters
+    $aBadChars = array(
+        '\'', 
+        '"', 
+        '`', 
+        '!', 
+        '@', 
+        '#', 
+        '$', 
+        '%', 
+        '^', 
+        '&', 
+        '*', 
+        '=', 
+        '+', 
+        '|', 
+        '/', 
+        '\\', 
+        ';', 
+        ':', 
+        ',', 
+        '?', 
+        '[', 
+        ']', 
+        '<', 
+        '>', 
+        '{', // in page_filename only
+        '}', // in page_filename only
+        '(', // in page_filename only
+        ')', // in page_filename only
+        
+    //   '~', // in media only
+    //   '<', // in media only
+    //   '>'  // in media only
+    );
+    $sStr = str_replace($aBadChars, '', $sStr);
+    // replace multiple dots in filename to single dot and (multiple) dots at the end of the filename to nothing
+    $sStr = preg_replace(array('/\.+/', '/\.+$/'), array('.', ''), $sStr);
+    // Now replace spaces with page spcacer
+    $sStr = trim($sStr);
+    $sStr = preg_replace('/(\s)+/', PAGE_SPACER, $sStr);
+    // Now convert to lower-case
+    $sStr = strtolower($sStr);
+    // If there are any weird language characters, this will protect us against possible problems they could cause
+    $sStr = str_replace(array('%2F', '%'), array('/', ''), urlencode($sStr));
+    // Finally, return the cleaned string
+    return $sStr;
+}
+}
+
+
+if(!function_exists('make_dir')){
+/**
+ * @brief   Function to create directories
+ * 
+ * @param   string  $dir_name
+ * @param   string  $dir_mode
+ * @param   bool    $recursive
+ * @return  bool
+ */
+function make_dir($dir_name, $dir_mode = OCTAL_DIR_MODE, $recursive = true)
+{
+    $retVal = false;
+    if (!is_dir($dir_name)) {
+        $umask = umask(0);
+        $retVal = mkdir($dir_name, $dir_mode, $recursive);
+        umask($umask);
+    }
+    return $retVal;
+}
+}
+
+
+if(!function_exists('change_mode')){
+
+/**
+ * @brief   Function to chmod files and directories
+ * 
+ * @param   string  $name
+ * @return  bool
+ */
+function change_mode($name)
+{
+    if (OPERATING_SYSTEM != 'windows') {
+        // Only chmod if os is not windows
+        if (is_dir($name)) {
+            $mode = OCTAL_DIR_MODE;
+        } else {
+            $mode = OCTAL_FILE_MODE;
+        }
+        if (file_exists($name)) {
+            $umask = umask(0);
+            chmod($name, $mode);
+            umask($umask);
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return true;
+    }
+}
+}
+
+if(!function_exists('rm_full_dir')){
+
+/**
+ * @brief   recursively remove a non empty directory and all its contents
+ * 
+ * @param   string $sDirPath  Full path to the directory
+ * @param   bool   $empty     true if you want the folder just emptied, but not deleted
+ *                            false, or just simply leave it out, the given directory 
+ *                            will be deleted, as well
+ * @return  bool list of ro-dirs
+ * @from    http://www.php.net/manual/de/function.rmdir.php#98499
+ */
+function rm_full_dir($sDirPath, $empty = false)
+{
+
+    if (substr($sDirPath, -1) == "/") {
+        $sDirPath = substr($sDirPath, 0, -1);
+    }
+    // If suplied dirname is a file then unlink it
+    if (is_file($sDirPath)) {
+        $retval = unlink($sDirPath);
+        clearstatcache();
+        return $retval;
+    }
+    if (!file_exists($sDirPath) || !is_dir($sDirPath)) {
+        return false;
+    } elseif (!is_readable($sDirPath)) {
+        return false;
+    } else {
+        $directoryHandle = opendir($sDirPath);
+        while ($contents = readdir($directoryHandle)) {
+            if ($contents != '.' && $contents != '..') {
+                $path = $sDirPath . "/" . $contents;
+                if (is_dir($path)) {
+                    rm_full_dir($path);
+                } else {
+                    unlink($path);
+                    clearstatcache();
+                }
+            }
+        }
+        closedir($directoryHandle);
+        if ($empty == false) {
+            if (!rmdir($sDirPath)) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+}
+
+/**
+ * now our own functions for the module
+ **/
+
 function mod_nwi_img_copy($source, $dest){
     if(is_dir($source)) {
         $dir_handle=opendir($source);
