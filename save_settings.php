@@ -47,7 +47,7 @@ $posts_per_page = $database->escapeString($_POST['posts_per_page']);
 $gallery = $database->escapeString($_POST['gallery']);
 $gal_img_resize_width = $database->escapeString($_POST['gal_img_resize_width']);
 $gal_img_resize_height = $database->escapeString($_POST['gal_img_resize_height']);
-$gal_img_max_size = $database->escapeString($_POST['gal_img_max_size']);
+$gal_img_max_size = intval($_POST['gal_img_max_size'])*1024;
 
 $resize_preview = '';
 $crop = 'N';

@@ -229,7 +229,7 @@ if(function_exists('edit_module_css'))
         <tr>
 			<td class="setting_name"><?php echo $MOD_NEWS_IMG['IMAGE_MAX_SIZE']; ?>:</td>
 			<td class="setting_value">
-                <input type="text" name="gal_img_max_size" value="<?php echo $fetch_content['imgmaxsize'] ?>" />
+                <input type="text" name="gal_img_max_size" value="<?php echo intval($fetch_content['imgmaxsize'])/1024 ?>" />
 			</td>
 		</tr>
 		
