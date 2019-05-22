@@ -60,7 +60,7 @@ $MOD_NEWS_IMG['ACTIVATE'] = "activeren";
 $MOD_NEWS_IMG['DEACTIVATE'] = "deactiveren";
 
 // afbeeldingsinstellingen 
-$ MOD_NEWS_IMG ['CROP'] = 'Bijsnijden';
+$MOD_NEWS_IMG ['CROP'] = 'Bijsnijden';
 $MOD_NEWS_IMG['GALLERY'] = 'Afbeeldingengalerij';
 $MOD_NEWS_IMG['GALLERY_INFO'] = 'Na het veranderen van de galerijinstelling, druk op opslaan; de markeringen voor de afbeeldingslus worden automatisch aangepast. ';
 $MOD_NEWS_IMG['GALLERY_WARNING'] = "Weet je het zeker? Merk op dat de aangepaste instellingen voor de afbeeldinglusopmaak verloren gaan.";
@@ -70,7 +70,7 @@ $MOD_NEWS_IMG['RESIZE_GALLERY_IMAGES_TO'] = 'Het formaat van galerijafbeeldingen
 $MOD_NEWS_IMG['TEXT_CROP'] = 'Als de beeldverhouding van het origineel niet overeenkomt met de opgegeven beeldverhouding, wordt de overlap van de langere rand afgesneden.';
 $MOD_NEWS_IMG['TEXT_DEFAULTS'] = 'Standaardformaten';
 $MOD_NEWS_IMG['TEXT_DEFAULTS_CLICK'] = 'Klik om uit de standaardinstellingen te kiezen';
-$MOD_NEWS_IMG['THUMB_SIZE'] = 'Thumbnail size';
+$MOD_NEWS_IMG['THUMB_SIZE'] = 'Thumbnail grootte';
 
 // Uploader
 $MOD_NEWS_IMG['DRAG_N_DROP_HERE'] = 'Drag &amp; zet hier bestanden neer ';
