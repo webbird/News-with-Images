@@ -240,7 +240,7 @@ if(!defined('NWI_USE_SECOND_BLOCK')){
     $old_file_dir = WB_PATH.PAGES_DIRECTORY.'/beitragsbilder/';
     $old_thumb_dir = WB_PATH.PAGES_DIRECTORY.'/beitragsbilder/thumb/';
 
-require_once __DIR__.'/../functions.inc.php';
+require_once __DIR__.'/functions.inc.php';
 
     // make sure the folder exists
     if(!is_dir($mod_nwi_file_dir)) {
