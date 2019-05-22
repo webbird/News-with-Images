@@ -190,30 +190,16 @@ $order->clean($section_id);
 
 
 	<div class="mod_news_post_tools"><?php echo $MOD_NEWS_IMG['ACTION'];  ?>:
-    		    <input type="radio" name="action" id="action_copy" value="copy" />
-    		    <a href="#" onclick="javascript: document.getElementById('action_copy').checked = true;">
-    		    <?php echo $MOD_NEWS_IMG['COPY']; ?>
-    		    </a>
-    		    &nbsp;
-    		    <input type="radio" name="action" id="action_move" value="move" />
-    		    <a href="#" onclick="javascript: document.getElementById('action_move').checked = true;">
-    		    <?php echo $MOD_NEWS_IMG['MOVE']; ?>
-    		    </a>
-    		    &nbsp;
-    		    <input type="radio" name="action" id="action_delete" value="delete" />
-    		    <a href="#" onclick="javascript: document.getElementById('action_delete').checked = true;">
-    		    <?php echo $MOD_NEWS_IMG['DELETE']; ?>
-    		    </a>
-    		    &nbsp;
-    		    <input type="radio" name="action" id="action_activate" value="activate" />
-    		    <a href="#" onclick="javascript: document.getElementById('action_activate').checked = true;">
-    		    <?php echo $MOD_NEWS_IMG['ACTIVATE']; ?>
-    		    </a>
-    		    &nbsp;
-    		    <input type="radio" name="action" id="action_deactivate" value="deactivate" />
-    		    <a href="#" onclick="javascript: document.getElementById('action_deactivate').checked = true;">
-    		    <?php echo $MOD_NEWS_IMG['DEACTIVATE']; ?>
-    		    </a>
+	
+	<select name="action">
+	<option value="copy"><?php echo $MOD_NEWS_IMG['COPY']; ?></option>
+	<option value="move"><?php echo $MOD_NEWS_IMG['MOVE']; ?></option>
+	<option value="delete"><?php echo $MOD_NEWS_IMG['DELETE']; ?></option>
+	<option value="activate"><?php echo $MOD_NEWS_IMG['ACTIVATE']; ?></option>
+	<option value="deactivate"><?php echo $MOD_NEWS_IMG['DEACTIVATE']; ?></option>
+	</select>
+	
+    		   
 		    <input name="continue" type="submit" onclick="return checkActionAndPosts()" value="<?php echo $MOD_NEWS_IMG['CONTINUE']; ?>" />
     	 </div>
 	</form>
