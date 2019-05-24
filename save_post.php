@@ -17,8 +17,6 @@ global $page_id, $section_id, $post_id;
 
 require_once __DIR__.'/functions.inc.php';
 require_once WB_PATH."/include/jscalendar/jscalendar-functions.php";
-// Include WB functions file
-require_once WB_PATH.'/framework/functions.php';
 
 // Get id
 if (!isset($_POST['post_id']) or !is_numeric($_POST['post_id'])) {

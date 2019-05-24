@@ -40,9 +40,6 @@ if (!$admin->checkFTAN()){
     exit();
 } else $admin->print_header();
 
-// Include WB functions file
-require_once WB_PATH.'/framework/functions.php';
-
 require_once __DIR__.'/functions.inc.php';
 
 // Validate all fields
