@@ -56,6 +56,7 @@ else
 {
 	$title = $database->escapeString($admin->get_post('title'));
 	$active = $database->escapeString($admin->get_post('active'));
+	$title = strip_tags($title);
 }
 
 // Update row
