@@ -47,11 +47,6 @@ if(jQuery().sortable){
                         if( json_respond.success != true ) {
                             alert(json_respond.message);
                         }
-                        var INFO_BOX = jQuery("#" + RESULTS_CONTAINER);
-                        INFO_BOX.html('<img id="reload_img" src="'+ ICONS +'/' + json_respond.icon +'" alt="" />').fadeIn("slow");
-                        jQuery("#reload_img").fadeOut(2300);
-                        // due to expiring IDKEYs we have to refresh the page
-                        window.location.reload();
                     }
                 });
             }

@@ -16,7 +16,8 @@ if(!isset($_GET['post_id'])){
 }
 
 $post_id = $admin->checkIDKEY('post_id', false, 'GET', true);
-
+if(defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) 
+    $post_id = intval($_GET['post_id']);
 if(! is_numeric($post_id) || (intval($post_id)<=0)){
     throw new RuntimeException('wrong parameter value');
 }

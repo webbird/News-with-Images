@@ -110,6 +110,8 @@ $order->clean($section_id);
     	<?php
     	while($post = $query_posts->fetchRow()) {
 	        $post_id_key = $admin->getIDKEY($post['post_id']);
+		if(defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) 
+    			$post_id_key = $post['post_id'];
     		?>
     		<tr id="post_id:<?php echo $post_id_key; ?>">
 			<td <?php if($setting_view_order == 0) echo 'class="dragdrop_item"';?>>&nbsp;</td>

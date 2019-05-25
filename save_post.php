@@ -71,7 +71,10 @@ $block2='';
 
 // Validate all fields
 if ($admin->get_post('title') == '' and $admin->get_post('url') == '') {
-    $admin->print_error($MESSAGE['GENERIC']['FILL_IN_ALL'], WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$admin->getIDKEY($id));
+    $post_id_key = $admin->getIDKEY($id);
+    if(defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) 
+    	    $post_id_key = $id;
+    $admin->print_error($MESSAGE['GENERIC']['FILL_IN_ALL'], WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id_key);
 } else {
     $title = $database->escapeString($admin->get_post('title'));
     $link = $database->escapeString($admin->get_post('link'));
@@ -347,15 +350,24 @@ if ((!($database->is_error()))&&($old_section_id!=$section_id)) {
 //   exit;
 // Check if there is a db error, otherwise say successful
 if ($database->is_error()) {
-    $admin->print_error($database->get_error(), WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$admin->getIDKEY($id));
+    $post_id_key = $admin->getIDKEY($id);
+    if(defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) 
+        $post_id_key = $id;
+    $admin->print_error($database->get_error(), WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id_key);
 } else {
     if ($imageErrorMessage!='') {
-        $admin->print_error($MOD_NEWS_IMG['GENERIC_IMAGE_ERROR'].'<br />'.$imageErrorMessage, WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$admin->getIDKEY($id));
+        $post_id_key = $admin->getIDKEY($id);
+	if(defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) 
+            $post_id_key = $id;
+        $admin->print_error($MOD_NEWS_IMG['GENERIC_IMAGE_ERROR'].'<br />'.$imageErrorMessage, WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id_key);
     } else {
         if (isset($_POST['savegoback']) && $_POST['savegoback']=='1') {
             $admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
         } else {
-            $admin->print_success($TEXT['SUCCESS'], WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$admin->getIDKEY($id));
+	    $post_id_key = $admin->getIDKEY($id);
+	    if(defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) 
+        	$post_id_key = $id;
+            $admin->print_success($TEXT['SUCCESS'], WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id_key);
         }
     }
 }

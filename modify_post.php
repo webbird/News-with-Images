@@ -19,6 +19,8 @@ require_once __DIR__.'/functions.inc.php';
 // Include WB admin wrapper script
 require(WB_PATH.'/modules/admin.php');
 $post_id = $admin->checkIDKEY('post_id', 0, 'GET',true);
+if(defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) 
+    $post_id = intval($_GET['post_id']);
 if (!$post_id){
     $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
 	 .' (IDKEY) '.__FILE__.':'.__LINE__,
@@ -29,6 +31,8 @@ if (!$post_id){
 
 $FTAN = $admin->getFTAN();
 $post_id_key = $admin->getIDKEY($post_id);
+if(defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) 
+    $post_id_key = intval($_GET['post_id']);
 $mod_nwi_file_dir .= "$post_id/";
 $mod_nwi_thumb_dir = $mod_nwi_file_dir . "thumb/";
 
