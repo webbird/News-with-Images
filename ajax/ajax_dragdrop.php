@@ -33,6 +33,8 @@ if(!isset($_POST['action']) || !isset($_POST['post_id']) && !isset($_POST['group
             $i = count($aRows);
             foreach ($aRows as $recID) {
         	$id = $admin->checkIDKEY($recID,0,'key',true);
+		if(defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) 
+    	    	    $id = $recID;
 		if ($id<=0) {
         	    $aJsonRespond['message'] = 'invalid value';
         	    exit(json_encode($aJsonRespond));
@@ -50,6 +52,8 @@ if(!isset($_POST['action']) || !isset($_POST['post_id']) && !isset($_POST['group
             $i = 1;
             foreach ($aRows as $recID) {
         	$id = $admin->checkIDKEY($recID,0,'key',true);	    
+		if(defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) 
+    	    	    $id = $recID;
 		if ($id<=0) {
         	    $aJsonRespond['message'] = 'invalid value';
         	    exit(json_encode($aJsonRespond));
@@ -67,6 +71,8 @@ if(!isset($_POST['action']) || !isset($_POST['post_id']) && !isset($_POST['group
             $i = 1;
             foreach ($aRows as $recID) {
         	$id = $admin->checkIDKEY($recID,0,'key',true);	    
+		if(defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) 
+    	    	    $id = $recID;
 		if ($id<=0) {
         	    $aJsonRespond['message'] = 'invalid value';
         	    exit(json_encode($aJsonRespond));

@@ -169,20 +169,20 @@ $order->clean($section_id);
     if(($post['position'] != $num_posts)&&($setting_view_order == 0)) {
 ?>
     				<a href="<?php echo WB_URL; ?>/modules/news_img/move_down.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post_id_key; ?>" title="<?php echo $TEXT['MOVE_UP']; ?>">
-    					<span class="fa fa-fw fa-arrow-circle-up"></span>
+    					<span class="fa fa-fw fa-arrow-circle-up mod_news_img_arrow"></span>
     				</a>
 					
 <?php } else {
-    echo '<span class="fa fa-fw fa-arrow-circle-up nwi-disabled"></span>';
+    echo '<span class="fa fa-fw fa-arrow-circle-up nwi-disabled mod_news_img_arrow"></span>';
 }
 ?>					</td>
 					<td>
 <?php    if(($post['position'] != 1)&&($setting_view_order == 0)) { ?>
     				<a href="<?php echo WB_URL; ?>/modules/news_img/move_up.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post_id_key; ?>" title="<?php echo $TEXT['MOVE_DOWN']; ?>">
-    					<span class="fa fa-fw fa-arrow-circle-down"></span>
+    					<span class="fa fa-fw fa-arrow-circle-down mod_news_img_arrow"></span>
     				</a>					
 <?php } else {
-     echo '<span class="fa fa-fw fa-arrow-circle-down nwi-disabled"></span>';
+     echo '<span class="fa fa-fw fa-arrow-circle-down nwi-disabled mod_news_img_arrow"></span>';
 } ?>
 					</td>
 					<td>
@@ -327,6 +327,8 @@ if($query_groups->numRows() > 0) {
 	<?php
 	while($group = $query_groups->fetchRow()) {
 		$group_id_key = $admin->getIDKEY($group['group_id']);
+		if(defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) 
+    		    $group_id_key = $group['group_id'];
 		?>
     		<tr id="group_id:<?php echo $group_id_key; ?>">
 			<td class="dragdrop_item">&nbsp;</td>
@@ -346,14 +348,14 @@ if($query_groups->numRows() > 0) {
 			<td style="width:20px">
 			<?php if($group['position'] != 1) { ?>
 				<a href="<?php echo WB_URL; ?>/modules/news_img/move_up.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group_id_key; ?>" title="<?php echo $TEXT['MOVE_UP']; ?>">
-					<span class="fa fa-fw fa-arrow-circle-up"></span>
+					<span class="fa fa-fw fa-arrow-circle-up mod_news_img_arrow"></span>
 				</a>
 			<?php } ?>
 			</td>
 			<td style="width:20px">
 			<?php if($group['position'] != $num_groups) { ?>
 				<a href="<?php echo WB_URL; ?>/modules/news_img/move_down.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group_id_key; ?>" title="<?php echo $TEXT['MOVE_DOWN']; ?>">
-					<span class="fa fa-fw fa-arrow-circle-down"></span>
+					<span class="fa fa-fw fa-arrow-circle-down mod_news_img_arrow"></span>
 				</a>
 			<?php } ?>
 			</td>

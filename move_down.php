@@ -25,11 +25,15 @@ if(!isset($_GET['post_id'])) {
 		exit(0);
 	} else {
 		$id = $admin->checkIDKEY('group_id', false, 'GET');
+		if(defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) 
+    		    $id = $_GET['group_id'];
 		$id_field = 'group_id';
 		$table = TABLE_PREFIX.'mod_news_img_groups';
 	}
 } else {
 	$id = $admin->checkIDKEY('post_id', false, 'GET');
+	if(defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) 
+    	    $id = $_GET['post_id'];
 	$id_field = 'post_id';
 	$table = TABLE_PREFIX.'mod_news_img_posts';
 }

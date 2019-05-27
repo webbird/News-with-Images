@@ -336,6 +336,8 @@ if ($query_img->numRows() > 0) {
 
     while ($row = $query_img->fetchRow()) {
         $row_id_key = $admin->getIDKEY($row['id']);
+	if(defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) 
+    	    $row_id_key = $row['id'];
         $up='<span style="display:inline-block;width:20px;"></span>';
         $down=$up;
         if (!$first) {
