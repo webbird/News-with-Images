@@ -6,6 +6,7 @@
 .mod_news_img table.striped tr:nth-child(even){background-color:#fff}
 .mod_news_img table img.preview{height:50px;max-height:50px;}
 .mod_news_img th {background-color:#ccc;}
+.mod_nwi_tag{display:inline-block;width:30%;overflow:hidden;}
 
 .dragdrop_handle {
     background-color: #ccc;

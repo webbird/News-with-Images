@@ -240,7 +240,28 @@ if(!defined('NWI_USE_SECOND_BLOCK')){
     $old_file_dir = WB_PATH.PAGES_DIRECTORY.'/beitragsbilder/';
     $old_thumb_dir = WB_PATH.PAGES_DIRECTORY.'/beitragsbilder/thumb/';
 
-require_once __DIR__.'/functions.inc.php';
+    // 2019-07-05 Bianka Martinovic
+    //            add database tables for tags
+    $database->query(sprintf("CREATE TABLE IF NOT EXISTS `%smod_news_img_tags` (
+          `tag_id` int(11) NOT NULL AUTO_INCREMENT,
+          `section_id` int(11) NOT NULL,
+          `tag` varchar(255) NOT NULL,
+          PRIMARY KEY (`tag_id`),
+          KEY `section_id` (`section_id`),
+          CONSTRAINT `FK_%smod_news_img_tags_%ssections` FOREIGN KEY (`section_id`) REFERENCES `%ssections` (`section_id`) ON DELETE CASCADE ON UPDATE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;",
+        TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX
+    ));
+
+    $database->query(sprintf("CREATE TABLE IF NOT EXISTS `%smod_news_img_tags_posts` (
+          `post_id` int(11) NOT NULL,
+          `tag_id` int(11) NOT NULL,
+          UNIQUE KEY `post_id_tag_id` (`post_id`,`tag_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;"
+        , TABLE_PREFIX
+    ));
+
+    require_once __DIR__.'/functions.inc.php';
 
     // make sure the folder exists
     if(!is_dir($mod_nwi_file_dir)) {

@@ -86,6 +86,8 @@ if ($admin->get_post('title') == '' and $admin->get_post('url') == '') {
     $image = $database->escapeString($admin->get_post('image'));
     $active = $database->escapeString($admin->get_post('active'));
     $group = $database->escapeString($admin->get_post('group'));
+
+    $tags = $admin->get_post('tags');
 }
 
 $group_id = 0;
@@ -345,6 +347,25 @@ if ((!($database->is_error()))&&($old_section_id!=$section_id)) {
     // Clean up ordering
     $order = new order(TABLE_PREFIX.'mod_news_img_posts', 'position', 'post_id', 'section_id');
     $order->clean($old_section_id);
+}
+
+// remove current tags
+$database->query(sprintf(
+    "DELETE FROM `%smod_news_img_tags_posts` WHERE `post_id`=$post_id",
+    TABLE_PREFIX
+));
+// re-add marked tags
+if(is_array($tags) && count($tags)>0) {
+    $existing = mod_nwi_get_tags();
+    foreach(array_values($tags) as $t) {
+        $t = intval($t);
+        if(array_key_exists($t,$existing)) {
+            $database->query(sprintf(
+                "INSERT IGNORE INTO `%smod_news_img_tags_posts` VALUES('$post_id','$t')",
+                TABLE_PREFIX
+            ));
+        }
+    }
 }
 
 //   exit;

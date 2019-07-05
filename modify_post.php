@@ -271,7 +271,39 @@ $jscal_today = date('Y/m/d H:i', time()+TIMEZONE);
         	<img src="<?php echo THEME_URL ?>/images/clock_del_16.png" style="cursor: pointer;" title="<?php echo $TEXT['DELETE_DATE']; ?>" alt="<?php echo $TEXT['DELETE_DATE']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" onclick="document.modify.enddate.value=''" />
     	</td>
     </tr>
-    </table>
+    <?php
+    // Loop through existing tags
+    $query_tags = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_tags` WHERE `section_id`='$section_id'");
+    if (!empty($query_tags) && $query_tags->numRows() > 0) {
+        // get already assigned tags
+        $assigned_tags = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_tags_posts` WHERE `post_id`='$post_id'");
+        $assigned = array();
+        while($a=$assigned_tags->fetchRow()) {
+            $assigned[$a['tag_id']] = 1;
+        }
+?>
+    <tr>
+    	<td class="setting_name"><?php echo $MOD_NEWS_IMG['TAGS']; ?>:</td>
+    	<td class="setting_value">
+<?php
+        $i = 1;
+        while ($t = $query_tags->fetchRow()) {
+?>
+            <input type="checkbox" name="tags[]" value="<?php echo $t['tag_id'] ?>"<?php if(array_key_exists($t['tag_id'],$assigned)): echo " checked='checked'"; endif; ?> /> <span class="mod_nwi_tag"><?php echo $t['tag'] ?></span>
+<?php
+            $i++;
+            if($i==4) {
+                echo "<br />";
+                $i=0;
+            }
+        }
+?>
+    	</td>
+    </tr>
+<?php
+    }
+?>
+    </table><hr />
 
     <table>
     <tr>

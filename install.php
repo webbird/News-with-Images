@@ -86,6 +86,27 @@ if(defined('WB_URL'))
                  . ' )';
 
     $database->query($mod_news);
+
+    // 2019-07-05 Bianka Martinovic
+    //            add database tables for tags
+    $database->query(sprintf("CREATE TABLE IF NOT EXISTS `%smod_news_img_tags` (
+          `tag_id` int(11) NOT NULL AUTO_INCREMENT,
+          `section_id` int(11) NOT NULL,
+          `tag` varchar(255) NOT NULL,
+          PRIMARY KEY (`tag_id`),
+          KEY `section_id` (`section_id`),
+          CONSTRAINT `FK_%smod_news_img_tags_%ssections` FOREIGN KEY (`section_id`) REFERENCES `%ssections` (`section_id`) ON DELETE CASCADE ON UPDATE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;",
+        TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX
+    ));
+
+    $database->query(sprintf("CREATE TABLE IF NOT EXISTS `%smod_news_img_tags_posts` (
+          `post_id` int(11) NOT NULL,
+          `tag_id` int(11) NOT NULL,
+          UNIQUE KEY `post_id_tag_id` (`post_id`,`tag_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;"
+        , TABLE_PREFIX
+    ));
         
     $mod_search = "SELECT * FROM `".TABLE_PREFIX."search` WHERE `value` = 'news_img'";
     $insert_search = $database->query($mod_search);

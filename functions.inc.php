@@ -24,6 +24,28 @@ $mod_nwi_thumb_dir = WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb/';
 // Include WB functions file
 require_once WB_PATH.'/framework/functions.php';
 
+/**
+ * get existing tags for current section
+ * @param  int $section_id
+ * @return array
+ **/
+function mod_nwi_get_tags($section_id=null) {
+    global $database;
+    $tags = array();
+    $where = null;
+    if(!empty($section_id)) {
+        $section_id = intval($section_id);
+        $where = "WHERE `section_id` = '$section_id'";
+    }
+    $query_tags = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_tags` $where");
+    if (!empty($query_tags) && $query_tags->numRows() > 0) {
+        while(null!==($t = $query_tags->fetchRow())) {
+            $tags[$t['tag_id']] = $t['tag'];
+        }
+    }
+    return $tags;
+}
+
 function mod_nwi_img_copy($source, $dest){
     if(is_dir($source)) {
         $dir_handle=opendir($source);
