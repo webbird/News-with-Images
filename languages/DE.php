@@ -60,6 +60,7 @@ $MOD_NEWS_IMG['SETTINGS'] = 'News Einstellungen';
 $MOD_NEWS_IMG['TAGS'] = 'Stichworte';
 $MOD_NEWS_IMG['TAGS_INFO'] = 'Um Stichworte zu verwenden, einen Beitrag bearbeiten und die gewünschten Stichworte anhaken';
 $MOD_NEWS_IMG['TO'] = "nach";
+$MOD_NEWS_IMG['NONE'] = "keine";
 
 //image settings
 $MOD_NEWS_IMG['CROP'] = 'Beschneiden';
