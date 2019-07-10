@@ -2,11 +2,18 @@
 
 .mod_news_img table{width:100%}
 .mod_news_img th, .mod_news_img td{padding:2px 5px;text-align:left;}
-.mod_news_img table.striped tr:nth-child(odd){background-color:#ececec}
+.mod_news_img table.striped tr:nth-child(odd),
+.mod_news_img_tag:nth-of-type(odd) {background-color:#ececec}
 .mod_news_img table.striped tr:nth-child(even){background-color:#fff}
 .mod_news_img table img.preview{height:50px;max-height:50px;}
 .mod_news_img th {background-color:#ccc;}
-.mod_nwi_tag{display:inline-block;width:30%;overflow:hidden;}
+.mod_news_img_tag {	padding:0.2em 0; }
+.mod_news_img_taglist {
+	border:1px solid #ececec;
+	max-height:100px;
+	overflow-y:scroll;
+}
+
 
 .dragdrop_handle {
     background-color: #ccc;
