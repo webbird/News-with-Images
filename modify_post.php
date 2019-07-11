@@ -285,19 +285,11 @@ $jscal_today = date('Y/m/d H:i', time()+TIMEZONE);
     <tr>
     	<td class="setting_name"><?php echo $MOD_NEWS_IMG['TAGS']; ?>:</td>
     	<td class="setting_value">
-<?php
-        $i = 1;
-        while ($t = $query_tags->fetchRow()) {
-?>
-            <input type="checkbox" name="tags[]" value="<?php echo $t['tag_id'] ?>"<?php if(array_key_exists($t['tag_id'],$assigned)): echo " checked='checked'"; endif; ?> /> <span class="mod_nwi_tag"><?php echo $t['tag'] ?></span>
-<?php
-            $i++;
-            if($i==4) {
-                echo "<br />";
-                $i=0;
-            }
-        }
-?>
+		<div class="mod_news_img_taglist">
+		<?php  while ($t = $query_tags->fetchRow()) { ?>
+            <div class="mod_news_img_tag"><input type="checkbox" name="tags[]" id="<?php echo $t['tag_id'] ?>" value="<?php echo $t['tag_id'] ?>"<?php if(array_key_exists($t['tag_id'],$assigned)): echo " checked='checked'"; endif; ?> /> <label class="mod_nwi_tag" for="<?php echo $t['tag_id'] ?>"><?php echo $t['tag'] ?></label></div>
+		<?php  } ?>
+			</div>
     	</td>
     </tr>
 <?php
