@@ -26,6 +26,7 @@
                     <th><?php echo $TEXT['TITLE'] ?></th>
                     <th><?php echo $TEXT['GROUP'] ?></th>
                     <th><?php echo $TEXT['ACTIVE'] ?></th>
+                    <th><?php echo $MOD_NEWS_IMG['TAGS'] ?></th>
                     <th><?php echo $TEXT['PUBL_START_DATE']; ?></th>
                     <th><?php echo $TEXT['PUBL_END_DATE']; ?></th>
                     <th></th>
@@ -64,6 +65,9 @@
 <?php else: ?>
                         <span class="fa fa-fw fa-eye-slash nwi-inactive"></span>
 <?php endif; ?></a>
+                    </td>
+                    <td>
+                        <?php echo $post['tags'] ?>
                     </td>
                     <td>
                         <?php echo($post['published_when'] >0 ? gmdate(DATE_FORMAT.' '.TIME_FORMAT, $post['published_when']+TIMEZONE) : '-') ?>

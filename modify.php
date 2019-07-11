@@ -76,7 +76,8 @@ $order = new order(TABLE_PREFIX.'mod_news_img_posts', 'position', 'post_id', 'se
 $order->clean($section_id);
 
 $query_posts = $database->query(sprintf(
-    "SELECT * FROM `%smod_news_img_posts` WHERE `section_id` = '$section_id' ORDER BY `$order_by` DESC",
+    "SELECT *, (select count(`post_id`) FROM `wbce_mod_news_img_tags_posts` AS t2 WHERE t2.post_id=t1.post_id ) as tags " .
+    "FROM `%smod_news_img_posts` AS t1 WHERE `section_id` = '$section_id' ORDER BY `$order_by` DESC",
     TABLE_PREFIX
 ));
 

@@ -15,7 +15,6 @@
 
 require_once __DIR__.'/functions.inc.php';
 
-
 // Include WB admin wrapper script
 require(WB_PATH.'/modules/admin.php');
 $post_id = $admin->checkIDKEY('post_id', 0, 'GET',true);
@@ -85,7 +84,6 @@ if (isset($_GET['id']) && (isset($_GET['up']) || isset($_GET['down']))) {
     }
 }
 
-// Get header and footer
 $query_content = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `post_id` = '$post_id'");
 $fetch_content = $query_content->fetchRow();
 
@@ -115,228 +113,77 @@ $link = implode(PAGE_SPACER, $parts);
 $jscal_use_time = true; // whether to use a clock, too
 require_once(WB_PATH."/include/jscalendar/wb-setup.php");
 $jscal_today = date('Y/m/d H:i', time()+TIMEZONE);
-?>
-<link href="uploader/css/jquery.dm-uploader.css" rel="stylesheet">
-<link href="uploader/styles.css" rel="stylesheet">
-<div class="mod_news_img">
-    <script src="<?php echo WB_URL; ?>/modules/news_img/js/jquery.furl.js"></script>
-    
-    <h2><?php echo $TEXT['ADD'].'/'.$TEXT['MODIFY'].' '.$TEXT['POST']; ?></h2>
-    <div class="jsadmin jcalendar hide"></div>
-    <form name="modify" action="<?php echo WB_URL; ?>/modules/news_img/save_post.php" method="post" enctype="multipart/form-data">
-    <?php echo $FTAN; ?>
-    <input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
-    <input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
-    <input type="hidden" name="post_id" value="<?php echo $post_id; ?>" />
-    <input type="hidden" name="savegoback" id="savegoback" value="" />
 
-    <table>
-    <tr>
-    	<td class="setting_name"><?php echo $TEXT['TITLE']; ?>:</td>
-    	<td class="setting_value">
-    		<input type="text" name="title" id="title<?php echo $page_id ?>" value="<?php echo(htmlspecialchars($fetch_content['title'])); ?>" maxlength="255" />
-    	</td>
-    </tr>
-<?php
-    //if(!strlen($fetch_content['title']) && !strlen($fetch_content['link'])): // new post
-?>
-    <tr>
-    	<td class="setting_name"><?php echo $MOD_NEWS_IMG['LINK']; ?>:</td>
-    	<td class="setting_value">
-    		<?php echo $linkbase ?>/<input type="text" name="link" id="link<?php echo $page_id ?>" value="<?php echo(htmlspecialchars($link)); ?>" maxlength="255" style="width:80%" /><?php echo PAGE_SPACER.$post_id.PAGE_EXTENSION ?>
-    	</td>
-    </tr>
-<?php // endif;?>
-    <tr>
-    	<td class="setting_name"><?php echo $MOD_NEWS_IMG['PREVIEWIMAGE']; ?>:</td>
-    	<td>
-<?php
-         if ($fetch_content['image'] != "") {
-             echo '<img class="img_list" style="float:left;margin-right:15px" src="'.WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post_id.'/'.$fetch_content['image'].'" /> '.$fetch_content['image'].'<br /><a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='. $post_id_key.'&post_img='.$fetch_content['image'].'">'.$TEXT['DELETE'].'</a>';
-             echo '<input type="hidden" name="previewimage" value="'.$fetch_content['image'].'" />';
-         } else {
-             echo '<input type="file" name="postfoto" accept="image/*" />  <br />';
-         }
-?>
-		</td>
-    </tr>
-    <tr>
-        <td class="setting_name"><?php echo $TEXT['GROUP']; ?>:</td>
-        <td class="setting_value">
-            <select name="group">
-<?php
-        // We encode the group_id, section_id and page_id into an urlencoded serialized array.
-        // So we have a single string that we can submit safely and decode it when receiving.
-            echo '<option value="'.urlencode(serialize(array('g' => 0, 's' => $section_id, 'p' => $page_id))).'">'
-            . $TEXT['NONE']." (".$TEXT['CURRENT']." ".$TEXT['SECTION']." ".$section_id.")</option>";
-            $query = $database->query("SELECT `group_id`,`title` FROM `".TABLE_PREFIX."mod_news_img_groups`"
-            . " WHERE `section_id` = '$section_id' ORDER BY `position` ASC");
-            if ($query->numRows() > 0) {
-                // Loop through groups
-                while ($group = $query->fetchRow()) {
-                    echo '<option value="'
-                . urlencode(serialize(array('g' => intval($group['group_id']), 's' => $section_id, 'p' => $page_id))).'"';
-                    if ($fetch_content['group_id'] == $group['group_id']) {
-                        echo ' selected="selected"';
-                    }
-                    echo '>'.$group['title'].' ('.$TEXT['CURRENT']." ".$TEXT['SECTION'].' '.$section_id.')</option>';
-                }
-            }
-            // this was just assignment to a group within the local section. Let's find out which sections exist
-        // and offer to move the post to another news_img section
-            $query_sections = $database->query("SELECT `section_id`,`page_id` FROM `".TABLE_PREFIX."mod_news_img_settings`"
-            . " WHERE `section_id` != '$section_id' ORDER BY `page_id`,`section_id` ASC");
-            $pid = $page_id;
-            if ($query_sections->numRows() > 0) {
-                // Loop through all news_img sections, do sanity checks and filter out the current section which is handled above
-                while ($sect = $query_sections->fetchRow()) {
-                    if ($sect['section_id'] != $section_id) {
-                        if ($sect['page_id'] != $pid) { // for new pages insert a separator
-                            $pid = intval($sect['page_id']);
-                            $page_title = "";
-                            $page_details = "";
-                            if ($pid != 0) { // find out the page title and print separator line
-                                $page_details = $admin->get_page_details($pid);
-                                if (!empty($page_details)) {
-                                    $page_title=isset($page_details['page_title'])?$page_details['page_title']:"";
-                                    echo '<option disabled value="0">'
-                                .'[--- '.$TEXT['PAGE'].' '.$pid.' ('.$page_title.') ---]</option>';
-                                }
-                            }
-                        }
-                        if ($pid != 0) {
-                            echo '<option value="'.urlencode(serialize(array('g' => 0, 's' => $sect['section_id'], 'p' => $pid))).'">'
-                       . $TEXT['NONE']." (".$TEXT['SECTION']." ".$sect['section_id'].")</option>";
-                            // now loop through groups of this section, at least for the ones which are not dummy sections
-                            $query_groups = $database->query("SELECT `group_id`,`title` FROM `".TABLE_PREFIX."mod_news_img_groups`"
-                    . " WHERE `section_id` = '".intval($sect['section_id'])."' ORDER BY `position` ASC");
-                            if ($query_groups->numRows() > 0) {
-                                // Loop through groups
-                                while ($group = $query_groups->fetchRow()) {
-                                    echo '<option value="'
-                        . urlencode(serialize(array(
-                        'g' => intval($group['group_id']),
-                        's' => intval($sect['section_id']),
-                        'p' => $pid)))
-                    .'">'.$group['title'].' ('.$TEXT['SECTION'].' '.$sect['section_id'].')</option>';
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-?>
-            </select>
-        </td>
-    </tr>
-    <tr>
-    	<td class="setting_name"><?php echo $TEXT['ACTIVE']; ?>:</td>
-    	<td class="setting_value">
-    		<input type="radio" name="active" id="active_true" value="1" <?php if ($fetch_content['active'] == 1) {
-                    echo ' checked="checked"';
-} ?> />
-    		<a href="#" onclick="javascript: document.getElementById('active_true').checked = true;">
-    		<?php echo $TEXT['YES']; ?>
-    		</a>
-    		&nbsp;
-    		<input type="radio" name="active" id="active_false" value="0" <?php if ($fetch_content['active'] == 0) {
-                    echo ' checked="checked"';
-} ?> />
-    		<a href="#" onclick="javascript: document.getElementById('active_false').checked = true;">
-    		<?php echo $TEXT['NO']; ?>
-    		</a>
-    	</td>
-    </tr>
-    <tr>
-    	<td class="setting_name"><?php echo $TEXT['PUBL_START_DATE']; ?>:</td>
-    	<td class="setting_value">
-    	   <input type="text" id="publishdate" name="publishdate" value="<?php if ($fetch_content['published_when']==0) {
-                    print date($jscal_format, time()+TIMEZONE);
-} else {
-                    print date($jscal_format, $fetch_content['published_when']+TIMEZONE);
-}?>" style="width:33%;" />
-        	<img src="<?php echo THEME_URL ?>/images/clock_16.png" id="publishdate_trigger" style="cursor: pointer;" title="<?php echo $TEXT['CALENDAR']; ?>" alt="<?php echo $TEXT['CALENDAR']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" />
-        	<img src="<?php echo THEME_URL ?>/images/clock_del_16.png" style="cursor: pointer;" title="<?php echo $TEXT['DELETE_DATE']; ?>" alt="<?php echo $TEXT['DELETE_DATE']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" onclick="document.modify.publishdate.value=''" />
-    	</td>
-    </tr>
-    <tr>
-    	<td class="setting_name"><?php echo $TEXT['PUBL_END_DATE']; ?>:</td>
-    	<td class="setting_value">
-    	   <input type="text" id="enddate" name="enddate" value="<?php if ($fetch_content['published_until']==0) {
-                    print "";
-} else {
-                    print date($jscal_format, $fetch_content['published_until']+TIMEZONE);
-}?>" style="width:33%;" />
-        	<img src="<?php echo THEME_URL ?>/images/clock_16.png" id="enddate_trigger" style="cursor: pointer;" title="<?php echo $TEXT['CALENDAR']; ?>" alt="<?php echo $TEXT['CALENDAR']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" />
-        	<img src="<?php echo THEME_URL ?>/images/clock_del_16.png" style="cursor: pointer;" title="<?php echo $TEXT['DELETE_DATE']; ?>" alt="<?php echo $TEXT['DELETE_DATE']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" onclick="document.modify.enddate.value=''" />
-    	</td>
-    </tr>
-    <?php
-    // Loop through existing tags
-    $query_tags = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_tags` WHERE `section_id`='$section_id'");
-    if (!empty($query_tags) && $query_tags->numRows() > 0) {
-        // get already assigned tags
-        $assigned_tags = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_tags_posts` WHERE `post_id`='$post_id'");
-        $assigned = array();
-        while($a=$assigned_tags->fetchRow()) {
-            $assigned[$a['tag_id']] = 1;
-        }
-?>
-    <tr>
-    	<td class="setting_name"><?php echo $MOD_NEWS_IMG['TAGS']; ?>:</td>
-    	<td class="setting_value">
-		<div class="mod_news_img_taglist">
-		<?php  while ($t = $query_tags->fetchRow()) { ?>
-            <div class="mod_news_img_tag"><input type="checkbox" name="tags[]" id="<?php echo $t['tag_id'] ?>" value="<?php echo $t['tag_id'] ?>"<?php if(array_key_exists($t['tag_id'],$assigned)): echo " checked='checked'"; endif; ?> /> <label class="mod_nwi_tag" for="<?php echo $t['tag_id'] ?>"><?php echo $t['tag'] ?></label></div>
-		<?php  } ?>
-			</div>
-    	</td>
-    </tr>
-<?php
+$groups = array();
+$groups_on_other_nwi_sections = array();
+
+// We encode the group_id, section_id and page_id into an urlencoded serialized array.
+// So we have a single string that we can submit safely and decode it when receiving.
+$query = $database->query(sprintf(
+    "SELECT `group_id`,`title` FROM `%smod_news_img_groups` " .
+    "WHERE `section_id` = '$section_id' ORDER BY `position` ASC",
+    TABLE_PREFIX
+));
+if ($query->numRows() > 0) {
+    // Loop through groups
+    while ($group = $query->fetchRow()) {
+        $groups[urlencode(serialize(array('g' => intval($group['group_id']), 's' => $section_id, 'p' => $page_id)))] = $group;
     }
-?>
-    </table><hr />
-
-    <table>
-    <tr>
-    	<td valign="top"><?php echo $TEXT['SHORT']; ?>:</td>
-    </tr>
-    <tr>
-    	<td>
-    	<?php
-        show_wysiwyg_editor("short", "short", htmlspecialchars($fetch_content['content_short']), "100%", "350px");
-        ?>
-    	</td>
-    </tr>
-    <tr>
-    	<td valign="top"><?php echo $TEXT['LONG']; ?>:</td>
-    </tr>
-    <tr>
-    	<td>
-<?php
-    show_wysiwyg_editor("long", "long", htmlspecialchars($fetch_content['content_long']), "100%", "650px");
-?>
-    	</td>
-    </tr>
-<?php
-    if(NWI_USE_SECOND_BLOCK){
-?>
-    <tr>
-    	<td valign="top"><?php echo $TEXT['BLOCK']; ?> 2:</td>
-    </tr>
-    <tr>
-    	<td>
-<?php
-        show_wysiwyg_editor("block2", "block2", htmlspecialchars($fetch_content['content_block2']), "100%", "350px");
-?>
-    	</td>
-    </tr>
-<?php
+    $query_sections = $database->query(sprintf(
+        "SELECT `section_id`,`page_id` FROM `%smod_news_img_settings` " .
+        "WHERE `section_id` != '$section_id' ORDER BY `page_id`,`section_id` ASC",
+        TABLE_PREFIX
+    ));
+    $pid = $page_id;
+    if ($query_sections->numRows() > 0) {
+        // Loop through all news_img sections, do sanity checks and filter out the current section which is handled above
+        while ($sect = $query_sections->fetchRow()) {
+            if ($sect['section_id'] != $section_id) {
+                if ($sect['page_id'] != $pid) { // for new pages insert a separator
+                    $pid = intval($sect['page_id']);
+                    $page_title = "";
+                    $page_details = "";
+                    if ($pid != 0) { // find out the page title and print separator line
+                        $page_details = $admin->get_page_details($pid);
+                        if (!empty($page_details)) {
+                            $page_title=isset($page_details['page_title'])?$page_details['page_title']:"";
+                        }
+                    }
+                }
+                if ($pid != 0) {
+                    $groups_on_other_nwi_sections[urlencode(serialize(array('g' => 0, 's' => $sect['section_id'], 'p' => $pid)))]
+                        = $TEXT['NONE']." (".$TEXT['SECTION']." ".$sect['section_id'].")";
+                    // now loop through groups of this section, at least for the ones which are not dummy sections
+                    $query_groups = $database->query(sprintf(
+                        "SELECT `group_id`,`title` FROM `%smod_news_img_groups` " .
+                        "WHERE `section_id` = '".intval($sect['section_id'])."' ORDER BY `position` ASC",
+                        TABLE_PREFIX
+                    ));
+                    if ($query_groups->numRows() > 0) {
+                        // Loop through groups
+                        while ($group = $query_groups->fetchRow()) {
+                            $groups_on_other_nwi_sections[urlencode(serialize(array(
+                                'g' => intval($group['group_id']),
+                                's' => intval($sect['section_id']),
+                                'p' => $pid)))] = $group['title'].' ('.$TEXT['SECTION'].' '.$sect['section_id'].')';
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
-?>
-    </table>
 
-<?php
+$assigned = array();
+$tags = mod_nwi_get_tags($section_id);
+$assigned_tags = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_tags_posts` WHERE `post_id`='$post_id'");
+        
+while($a=$assigned_tags->fetchRow()) {
+    $assigned[$a['tag_id']] = 1;
+}
+include __DIR__.'/templates/default/modify_post.phtml';
+
+
 
 
 // Include the ordering class
