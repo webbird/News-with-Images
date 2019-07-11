@@ -244,7 +244,6 @@ if(!defined('NWI_USE_SECOND_BLOCK')){
     //            add database tables for tags
     $database->query(sprintf("CREATE TABLE IF NOT EXISTS `%smod_news_img_tags` (
           `tag_id` int(11) NOT NULL AUTO_INCREMENT,
-          `section_id` int(11) NOT NULL,
           `tag` varchar(255) NOT NULL,
           PRIMARY KEY (`tag_id`),
           KEY `section_id` (`section_id`),
@@ -258,6 +257,14 @@ if(!defined('NWI_USE_SECOND_BLOCK')){
           `tag_id` int(11) NOT NULL,
           UNIQUE KEY `post_id_tag_id` (`post_id`,`tag_id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;"
+        , TABLE_PREFIX
+    ));
+
+    $database->query(sprintf("CREATE TABLE IF NOT EXISTS `%smod_news_img_tags_sections` (
+    	`section_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+    	`tag_id` INT(11) UNSIGNED NOT NULL,
+    	UNIQUE INDEX `section_id_tag_id` (`section_id`, `tag_id`)
+        ) ENGINE=InnoDB"
         , TABLE_PREFIX
     ));
 

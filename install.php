@@ -91,7 +91,6 @@ if(defined('WB_URL'))
     //            add database tables for tags
     $database->query(sprintf("CREATE TABLE IF NOT EXISTS `%smod_news_img_tags` (
           `tag_id` int(11) NOT NULL AUTO_INCREMENT,
-          `section_id` int(11) NOT NULL,
           `tag` varchar(255) NOT NULL,
           PRIMARY KEY (`tag_id`),
           KEY `section_id` (`section_id`),
@@ -107,6 +106,15 @@ if(defined('WB_URL'))
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;"
         , TABLE_PREFIX
     ));
+
+    $database->query(sprintf("CREATE TABLE IF NOT EXISTS `%smod_news_img_tags_sections` (
+    	`section_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+    	`tag_id` INT(11) UNSIGNED NOT NULL,
+    	UNIQUE INDEX `section_id_tag_id` (`section_id`, `tag_id`)
+        ) ENGINE=InnoDB"
+        , TABLE_PREFIX
+    ));
+
         
     $mod_search = "SELECT * FROM `".TABLE_PREFIX."search` WHERE `value` = 'news_img'";
     $insert_search = $database->query($mod_search);

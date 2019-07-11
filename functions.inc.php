@@ -32,19 +32,48 @@ require_once WB_PATH.'/framework/functions.php';
 function mod_nwi_get_tags($section_id=null) {
     global $database;
     $tags = array();
-    $where = null;
+    $where = "WHERE `section_id`=0";
     if(!empty($section_id)) {
         $section_id = intval($section_id);
-        $where = "WHERE `section_id` = '$section_id'";
+        $where .= " OR `section_id` = '$section_id'";
     }
-    $query_tags = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_tags` $where");
+    $query_tags = $database->query(sprintf(
+        "SELECT * FROM `%smod_news_img_tags` AS t1 " .
+        "JOIN `%smod_news_img_tags_sections` AS t2 " .
+        "ON t1.tag_id=t2.tag_id ".
+        $where, TABLE_PREFIX, TABLE_PREFIX
+    ));
     if (!empty($query_tags) && $query_tags->numRows() > 0) {
         while(null!==($t = $query_tags->fetchRow())) {
-            $tags[$t['tag_id']] = $t['tag'];
+            $tags[$t['tag_id']] = $t;
         }
     }
     return $tags;
 }
+
+/**
+ *
+ * @access public
+ * @return
+ **/
+function mod_nwi_tag_exists($section_id,$tag)
+{
+    global $database;
+    $sql   = sprintf(
+        "SELECT * FROM `%smod_news_img_tags` AS t1 " .
+        "JOIN `%smod_news_img_tags_sections` AS t2 " .
+        "ON `t1`.`tag_id`=`t2`.`tag_id` " .
+        "WHERE `tag`='%s' ".
+        "AND (`t2`.`section_id`=$section_id OR `t2`.`section_id`=0)",
+        TABLE_PREFIX, TABLE_PREFIX, $tag
+    );
+    $query = $database->query($sql);
+    if (!empty($query) && $query->numRows() > 0) {
+        return true;
+    }
+    return false;
+}   // end function mod_nwi_tag_exists()
+
 
 function mod_nwi_img_copy($source, $dest){
     if(is_dir($source)) {

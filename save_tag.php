@@ -52,18 +52,32 @@ else
 	$tag = strip_tags($tag);
 }
 
-// Update row
-if(empty($tag_id)) {
-    $database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_tags` ( `section_id`, `tag` ) VALUES ($section_id,'$tag')");
-} else {
-    $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_tags` SET `tag`='$tag' WHERE `tag_id`=$tag_id");
+// make global
+$tag_section_id = $section_id;
+if($admin->get_post('global_tag') == 'on') {
+    $tag_section_id = 0;
 }
-
-// Check if there is a db error, otherwise say successful
-if($database->is_error()) {
-	$admin->print_error($database->get_error(), WB_URL.'/modules/news_img/modify.php?page_id='.$page_id.'&section_id='.$section_id);
+if(mod_nwi_tag_exists($tag_section_id,$tag)) {
+    $admin->print_error($MOD_NEWS_IMG['TAG_EXISTS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id.'&section_id='.$section_id);
 } else {
-	$admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+
+    // Update row
+    if(empty($tag_id)) {
+        $database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_tags` ( `tag` ) VALUES ('$tag')");
+        $tag_id = $database->getLastInsertId();
+        if(!empty($tag_id)) {
+            $database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_tags_sections` (`section_id`,`tag_id`) VALUES ($tag_section_id, $tag_id);");
+        }
+    } else {
+        $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_tags` SET `tag`='$tag' WHERE `tag_id`=$tag_id");
+    }
+
+    // Check if there is a db error, otherwise say successful
+    if($database->is_error()) {
+    	$admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+    } else {
+    	$admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+    }
 }
 
 // Print admin footer
