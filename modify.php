@@ -82,6 +82,7 @@ $query_posts = $database->query(sprintf(
 ));
 
 $posts = array();
+$importable_sections = 0;
 
 // if there are already some posts, list them
 if ($query_posts->numRows() > 0) {
@@ -113,6 +114,7 @@ if ($query_posts->numRows() > 0) {
     }
 // ... else find importable items from other sections
 } else {
+
     // count groups
     $query_groups = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_groups` WHERE `section_id` = '$section_id'");
     $num_groups = $query_groups->numRows();
