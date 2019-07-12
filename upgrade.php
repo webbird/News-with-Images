@@ -245,9 +245,7 @@ if(!defined('NWI_USE_SECOND_BLOCK')){
     $database->query(sprintf("CREATE TABLE IF NOT EXISTS `%smod_news_img_tags` (
           `tag_id` int(11) NOT NULL AUTO_INCREMENT,
           `tag` varchar(255) NOT NULL,
-          PRIMARY KEY (`tag_id`),
-          KEY `section_id` (`section_id`),
-          CONSTRAINT `FK_%smod_news_img_tags_%ssections` FOREIGN KEY (`section_id`) REFERENCES `%ssections` (`section_id`) ON DELETE CASCADE ON UPDATE CASCADE
+          PRIMARY KEY (`tag_id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;",
         TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX
     ));
