@@ -75,7 +75,7 @@ function mod_nwi_get_tags_for_post($post_id)
 
     if (!empty($query_tags) && $query_tags->numRows() > 0) {
         while(null!==($t = $query_tags->fetchRow())) {
-            $tags[] = $t['tag'];
+            $tags[$t['tag_id']] = $t['tag'];
         }
     }
 

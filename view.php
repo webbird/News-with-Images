@@ -87,7 +87,6 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
         $query_extra = '';
     }
  
-
     if (isset($_GET['m']) and is_numeric($_GET['m']) and isset($_GET['y']) and is_numeric($_GET['y']) and isset($_GET['method']) and is_numeric($_GET['method'])) {
         $startdate = mktime(0, 0, 0, $_GET['m'], 1, $_GET['y']);
         $enddate = mktime(0, 0, 0, $_GET['m']+1, 1, $_GET['y']);
@@ -151,13 +150,37 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
         $limit_sql = "";
     }
     
+    $sql_filter_posts = null;
+    $tags = (isset($_GET['tags']) ? $_GET['tags'] : null);
+    if(!empty($tags)) {
+        $tags = explode(",",$tags);
+        $r = $database->query(
+            "SELECT `t2`.`post_id` FROM `".TABLE_PREFIX."mod_news_img_tags` as `t1` ".
+            "JOIN `".TABLE_PREFIX."mod_news_img_tags_posts` AS `t2` ".
+            "ON `t1`.`tag_id`=`t2`.`tag_id` ".
+            "WHERE `tag` IN ('".implode("', '", $tags)."') ".
+            "GROUP BY `t2`.`post_id`"
+        );
+        while(null!==($row=$r->fetchRow())) {
+            $filter_posts[] = $row['post_id'];
+        }
+        if(count($filter_posts)>0) {
+            $sql_filter_posts = " AND `p`.`post_id` IN (".implode(',',array_values($filter_posts)).") ";
+        }
+    }
+    
     // Query posts (for this page)
-    $query_posts = $database->query("SELECT p.*,g.active,g.position FROM `".TABLE_PREFIX."mod_news_img_posts` AS p
-        LEFT JOIN `".TABLE_PREFIX."mod_news_img_groups` AS g ON (g.group_id = p.group_id OR p.group_id = 0 AND g.group_id = NULL)
-        WHERE p.section_id = '$section_id' AND (g.active = 1 OR p.group_id = 0) AND p.active = 1 AND p.title != ''"
-    .str_replace(array('group_id','posted_when','published_when'), array('p.group_id','p.posted_when','p.published_when'), $query_extra)
-        ."AND (p.published_when = 0 OR p.published_when <= $t) AND (p.published_until = 0 OR p.published_until >= $t)
-        ORDER BY g.position,p.$order_by DESC".$limit_sql);
+    $query_posts = $database->query(sprintf(
+        "SELECT p.*,g.active,g.position FROM `%smod_news_img_posts` AS p ".
+        "LEFT JOIN `%smod_news_img_groups` AS g " .
+        "ON (g.group_id = p.group_id OR p.group_id = 0 AND g.group_id = NULL) " .
+        "WHERE p.section_id = '$section_id' AND (g.active = 1 OR p.group_id = 0) AND p.active = 1 AND p.title != ''" .
+        str_replace(array('group_id','posted_when','published_when'), array('p.group_id','p.posted_when','p.published_when'), $query_extra) .
+        "AND (p.published_when = 0 OR p.published_when <= $t) AND (p.published_until = 0 OR p.published_until >= $t) " .
+        $sql_filter_posts .
+        "ORDER BY g.position,p.$order_by DESC".$limit_sql,
+        TABLE_PREFIX,TABLE_PREFIX
+    ));
     $num_posts = $query_posts->numRows();
     // Create previous and next links
     if ($setting_posts_per_page != 0) {
@@ -299,8 +322,10 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
 
                 // tags
                 $tags = mod_nwi_get_tags_for_post($post['post_id']);
-                for($i=0;$i<count($tags);$i++) {
-                    $tags[$i] = "<span class=\"mod_nwi_tag\" id=\"mod_nwi_tag_".$post['post_id']."_".$i."\">".$tags[$i]."</span>";
+
+                foreach($tags as $i => $tag) {
+                    $tags[$i] = "<span class=\"mod_nwi_tag\" id=\"mod_nwi_tag_".$post['post_id']."_".$i."\">"
+                              . "<a href=\"".$wb->page_link()."?tags=".$tag."\">".$tag."</a></span>";
                 }
 
                 // anzahl der post images  - wichtig für link "weiterlesen"  SHOW_READ_MORE
@@ -368,7 +393,7 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
                             $group_image_url,
                             $long,
                             $post['post_id'],
-                            implode(", ",$tags),
+                            implode(" ",$tags),
                         );
                     } else {
                         $values = array(
@@ -397,7 +422,7 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
                             $group_image_url,
                             $long,
                             $post['post_id'],
-                            implode(", ",$tags),
+                            implode(" ",$tags),
                         );
                     }
                 } else {
@@ -428,7 +453,7 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
                             $group_image_url,
                             '',
                             $post['post_id'],
-                            implode(", ",$tags),
+                            implode(" ",$tags),
                         );
                     } else {
                         $values = array(
@@ -457,7 +482,7 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
                             $group_image_url,
                             '',
                             $post['post_id'],
-                            implode(", ",$tags),
+                            implode(" ",$tags),
                         );
                     }
                 }

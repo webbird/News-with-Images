@@ -7,16 +7,19 @@
 
     <h2><?php echo $TEXT['MODIFY'].'/'.$TEXT['DELETE'].' '.$TEXT['POST']; ?></h2>
 
+<?php if(count($posts)>0): ?>
     <div style="text-align:right;font-style:italic">
         <?php echo $MOD_NEWS_IMG['ORDERBY'], ": <span class=\"\" title=\"", $MOD_NEWS_IMG['ORDER_CUSTOM_INFO'] ,"\">", $lang_map[$setting_view_order] ?></span>
     </div>
+<?php endif; ?>
 
     <form name="modify_<?php echo $section_id; ?>" action="<?php echo WB_URL; ?>/modules/news_img/manage_posts.php" method="post" enctype="multipart/form-data">
+        <?php echo $FTAN; ?>
+        <input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
+        <input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
+        <input type="hidden" name="savegoback" id="savegoback" value="" />
 
-    <?php echo $FTAN; ?>
-    <input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
-    <input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
-    <input type="hidden" name="savegoback" id="savegoback" value="" />
+<?php if(count($posts)>0): ?>
         <table class="striped dragdrop_form" id="mod_news_post_list">
             <thead>
                 <tr>
@@ -38,8 +41,7 @@
                 </tr>
             </thead>
             <tbody>
-<?php if(count($posts)>0):
-    foreach($posts as $post): ?>
+    <?php foreach($posts as $post): ?>
                 <tr id="post_id:<?php echo $post['id_key']; ?>">
                     <td<?php if ($setting_view_order == 0): echo ' class="dragdrop_item"'; endif; ?>>&nbsp;</td>
                     <td>
@@ -106,10 +108,13 @@
                 </td>
                 <td<?php if ($setting_view_order == 0): ?> class="dragdrop_item"<?php endif; ?>>&nbsp;</td>
             </tr>
-<?php endforeach; else: echo $TEXT['NONE_FOUND']; endif; ?>
+<?php endforeach; ?>
         </tbody>
         </table>
-
+<?php else: echo $TEXT['NONE_FOUND']; ?>
+        <input type="button" class="mod_img_news_add" value="<?php echo $MOD_NEWS_IMG['ADD_POST']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/add_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo  $section_id; ?>&amp;section_key=<?php echo  $section_key; ?>';"  />
+<?php endif; ?>
+<?php if(count($posts)>0): ?>
         <div class="mod_news_post_tools"><?php echo $MOD_NEWS_IMG['ACTION']; ?>:
             <select name="action">
                 <option value="copy"><?php echo $MOD_NEWS_IMG['COPY']; ?></option>
@@ -120,6 +125,7 @@
             </select>
             <input name="continue" type="submit" onclick="return checkActionAndPosts()" value="<?php echo $MOD_NEWS_IMG['CONTINUE']; ?>" />
          </div>
+<?php endif; ?>
     </form>
 
 <script type="text/javascript">
@@ -177,12 +183,12 @@
             <tr id="group_id:<?php echo $group['id_key']; ?>">
                 <td class="dragdrop_item">&nbsp;</td>
                 <td style="width:20px">
-                    <a href="<?php echo WB_URL; ?>/modules/news_img/modify_group.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group_id_key; ?>" title="<?php echo $TEXT['MODIFY']; ?>">
+                    <a href="<?php echo WB_URL; ?>/modules/news_img/modify_group.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group['id_key']; ?>" title="<?php echo $TEXT['MODIFY']; ?>">
                         <span class="fa fa-fw fa-edit"></span>
                     </a>
                 </td>
                 <td>
-                    <a href="<?php echo WB_URL; ?>/modules/news_img/modify_group.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group_id_key; ?>">
+                    <a href="<?php echo WB_URL; ?>/modules/news_img/modify_group.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group['id_key']; ?>">
                         <?php echo $group['title'].' (ID: '.$group['group_id'].')'; ?>
                     </a>
                 </td>

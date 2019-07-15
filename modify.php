@@ -119,8 +119,7 @@ if ($query_posts->numRows() > 0) {
     $query_groups = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_groups` WHERE `section_id` = '$section_id'");
     $num_groups = $query_groups->numRows();
     if ($num_groups != 0) {
-        echo $TEXT['NONE_FOUND'];
-    } else {
+
         // news with images
         $query_nwi = $database->query(sprintf(
             "SELECT `section_id` FROM `%ssections`" .
