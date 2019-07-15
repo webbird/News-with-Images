@@ -155,7 +155,7 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
     $query_posts = $database->query("SELECT p.*,g.active,g.position FROM `".TABLE_PREFIX."mod_news_img_posts` AS p
         LEFT JOIN `".TABLE_PREFIX."mod_news_img_groups` AS g ON (g.group_id = p.group_id OR p.group_id = 0 AND g.group_id = NULL)
         WHERE p.section_id = '$section_id' AND (g.active = 1 OR p.group_id = 0) AND p.active = 1 AND p.title != ''"
-	.str_replace(array('group_id','posted_when','published_when'),array('p.group_id','p.posted_when','p.published_when'),$query_extra)
+    .str_replace(array('group_id','posted_when','published_when'), array('p.group_id','p.posted_when','p.published_when'), $query_extra)
         ."AND (p.published_when = 0 OR p.published_when <= $t) AND (p.published_until = 0 OR p.published_until >= $t)
         ORDER BY g.position,p.$order_by DESC".$limit_sql);
     $num_posts = $query_posts->numRows();
@@ -288,12 +288,9 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
                 }
 
                 $short = ($post['content_short']);
-<<<<<<< HEAD
 				$long = ($post['content_long']);
-=======
-		$long = ($post['content_long']);
->>>>>>> 5e0f055c8dd6855d7a6a076de2df7fa05e6d25d6
                 
+                // posting image
                 if ($post['image'] != "") {
                     $post_img = "<img src='".WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post['post_id'].'/'.$post['image']."' alt='".$post['title']."' />";
                 } else {
