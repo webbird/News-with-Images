@@ -288,7 +288,11 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
                 }
 
                 $short = ($post['content_short']);
+<<<<<<< HEAD
 				$long = ($post['content_long']);
+=======
+		$long = ($post['content_long']);
+>>>>>>> 5e0f055c8dd6855d7a6a076de2df7fa05e6d25d6
                 
                 if ($post['image'] != "") {
                     $post_img = "<img src='".WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post['post_id'].'/'.$post['image']."' alt='".$post['title']."' />";
