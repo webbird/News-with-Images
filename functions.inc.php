@@ -170,7 +170,7 @@ function mod_nwi_img_get_by_post($post_id=null)
     ));
 
     $images = array();
-    if ($query_img->numRows() > 0) {
+    if ($query_img && ($query_img->numRows() > 0)) {
         while ($row = $query_img->fetchRow()) {
             $images[] = $row;
         }
@@ -191,7 +191,7 @@ function mod_nwi_img_get_by_section($section_id)
         TABLE_PREFIX,TABLE_PREFIX,TABLE_PREFIX,$section_id
     ));
     $images = array();
-    if ($query_img->numRows() > 0) {
+    if ($query_img && ($query_img->numRows() > 0)) {
         while ($row = $query_img->fetchRow()) {
             $images[] = $row;
         }
