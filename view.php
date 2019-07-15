@@ -80,12 +80,12 @@ if ($query_users->numRows() > 0) {
 if (!defined('POST_ID') or !is_numeric(POST_ID)) {
     // -------------------------|   show main page    |-------------------------
 
-     // Check if we should only list posts from a certain group
-     if (isset($_GET['g']) and is_numeric($_GET['g'])) {
+    // Check if we should only list posts from a certain group
+    if (isset($_GET['g']) and is_numeric($_GET['g'])) {
         $query_extra = " AND group_id = '".$_GET['g']."'";
-     } else {
-         $query_extra = '';
-     }
+    } else {
+        $query_extra = '';
+    }
  
 
     if (isset($_GET['m']) and is_numeric($_GET['m']) and isset($_GET['y']) and is_numeric($_GET['y']) and isset($_GET['method']) and is_numeric($_GET['method'])) {
@@ -100,7 +100,7 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
             break;
         }
         $query_extra .= " AND ".$date_option." >= '$startdate' AND ".$date_option." < '$enddate'";
-    } 
+    }
 
     // Get settings
     $query_settings = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '$section_id'");
@@ -288,8 +288,8 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
                 }
 
                 $short = ($post['content_short']);
-				$long = ($post['content_long']);
-                
+                $long = ($post['content_long']);
+
                 // posting image
                 if ($post['image'] != "") {
                     $post_img = "<img src='".WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post['post_id'].'/'.$post['image']."' alt='".$post['title']."' />";
@@ -297,9 +297,15 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
                     $post_img = "<img src='".WB_URL."/modules/news_img/images/nopic.png' alt='empty placeholder' />";
                 }
 
-                // anzahl der post images  - wichtig für link "weiterlesen"  SCHOW_READ_MORE
-                $sql_result = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_news_img_img WHERE post_id = ".$post['post_id']);
-                $anz_post_img = $sql_result->numRows();
+                // tags
+                $tags = mod_nwi_get_tags_for_post($post['post_id']);
+                for($i=0;$i<count($tags);$i++) {
+                    $tags[$i] = "<span class=\"mod_nwi_tag\" id=\"mod_nwi_tag_".$post['post_id']."_".$i."\">".$tags[$i]."</span>";
+                }
+
+                // anzahl der post images  - wichtig für link "weiterlesen"  SHOW_READ_MORE
+                $sql_result = mod_nwi_img_get_by_post($post['post_id']);
+                $anz_post_img = count($sql_result);
 
                 // Replace vars with values
                 $post_long_len = strlen($post['content_long']);
@@ -329,21 +335,130 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
                     '[TEXT_READ_MORE]',
                     '[SHOW_READ_MORE]',
                     '[GROUP_IMAGE_URL]',
-					'[CONTENT_LONG]',
-					'[POST_ID]'
+                    '[CONTENT_LONG]',
+                    '[POST_ID]',
+                    '[TAGS]',
                 );
 
                 if (isset($users[$uid]['username']) and $users[$uid]['username'] != '') {
                     if (($post_long_len < 9) && ($anz_post_img < 1)) {
-                        $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, '#" onclick="javascript:void(0);return false;" style="cursor:no-drop;', $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, $uid, $users[$uid]['username'], $users[$uid]['display_name'], $users[$uid]['email'], '', 'hidden',$group_image_url,$long,$post['post_id']);
+                        $values = array(
+                            PAGE_TITLE,
+                            $group_id,
+                            $group_title,
+                            $group_image,
+                            $display_group,
+                            $display_image,
+                            $post['title'],
+                            $post_img,
+                            $short,
+                            '#" onclick="javascript:void(0);return false;" style="cursor:no-drop;',
+                            $post_date,
+                            $post_time,
+                            $create_date,
+                            $create_time,
+                            $publ_date,
+                            $publ_time,
+                            $uid,
+                            $users[$uid]['username'],
+                            $users[$uid]['display_name'],
+                            $users[$uid]['email'],
+                            '',
+                            'hidden',
+                            $group_image_url,
+                            $long,
+                            $post['post_id'],
+                            implode(", ",$tags),
+                        );
                     } else {
-                        $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, $post_link, $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, $uid, $users[$uid]['username'], $users[$uid]['display_name'], $users[$uid]['email'], $MOD_NEWS_IMG['TEXT_READ_MORE'], 'visible',$group_image_url,$long,$post['post_id']);
+                        $values = array(
+                            PAGE_TITLE,
+                            $group_id,
+                            $group_title,
+                            $group_image,
+                            $display_group,
+                            $display_image,
+                            $post['title'],
+                            $post_img,
+                            $short,
+                            $post_link,
+                            $post_date,
+                            $post_time,
+                            $create_date,
+                            $create_time,
+                            $publ_date,
+                            $publ_time,
+                            $uid,
+                            $users[$uid]['username'],
+                            $users[$uid]['display_name'],
+                            $users[$uid]['email'],
+                            $MOD_NEWS_IMG['TEXT_READ_MORE'],
+                            'visible',
+                            $group_image_url,
+                            $long,
+                            $post['post_id'],
+                            implode(", ",$tags),
+                        );
                     }
                 } else {
                     if (($post_long_len < 9) && ($anz_post_img < 1)) {
-                        $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, '#" onclick="javascript:void(0);return false;" style="cursor:no-drop;', $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, '', '', '', '', '','hidden',$group_image_url,'',$post['post_id']);
+                        $values = array(
+                            PAGE_TITLE,
+                            $group_id,
+                            $group_title,
+                            $group_image,
+                            $display_group,
+                            $display_image,
+                            $post['title'],
+                            $post_img,
+                            $short,
+                            '#" onclick="javascript:void(0);return false;" style="cursor:no-drop;',
+                            $post_date,
+                            $post_time,
+                            $create_date,
+                            $create_time,
+                            $publ_date,
+                            $publ_time,
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            'hidden',
+                            $group_image_url,
+                            '',
+                            $post['post_id'],
+                            implode(", ",$tags),
+                        );
                     } else {
-                        $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, $post_link, $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, '', '', '', '', $MOD_NEWS_IMG['TEXT_READ_MORE'],'visible',$group_image_url,'',$post['post_id']);
+                        $values = array(
+                            PAGE_TITLE,
+                            $group_id,
+                            $group_title,
+                            $group_image,
+                            $display_group,
+                            $display_image,
+                            $post['title'],
+                            $post_img,
+                            $short,
+                            $post_link,
+                            $post_date,
+                            $post_time,
+                            $create_date,
+                            $create_time,
+                            $publ_date,
+                            $publ_time,
+                            '',
+                            '',
+                            '',
+                            '',
+                            $MOD_NEWS_IMG['TEXT_READ_MORE'],
+                            'visible',
+                            $group_image_url,
+                            '',
+                            $post['post_id'],
+                            implode(", ",$tags),
+                        );
                     }
                 }
                 echo str_replace($vars, $values, $setting_post_loop);
@@ -457,9 +572,9 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
                 if ($group_image != "") {
                     $group_image= "<img src='".$group_image."' alt='".$group_title."' />";
                 }
-				
-				$post_short=$post['content_short'];
-				$post_long = ($post['content_long']);
+                
+                $post_short=$post['content_short'];
+                $post_long = ($post['content_long']);
                 $vars = array('[PAGE_TITLE]', '[GROUP_ID]', '[GROUP_TITLE]', '[GROUP_IMAGE]', '[DISPLAY_GROUP]', '[DISPLAY_IMAGE]', '[TITLE]', '[IMAGE]', '[SHORT]', '[BACK]', '[TEXT_BACK]', '[TEXT_LAST_CHANGED]', '[MODI_DATE]', '[TEXT_AT]', '[MODI_TIME]', '[CREATED_DATE]', '[CREATED_TIME]', '[PUBLISHED_DATE]', '[PUBLISHED_TIME]', '[TEXT_POSTED_BY]', '[TEXT_ON]', '[USER_ID]', '[USERNAME]', '[DISPLAY_NAME]', '[EMAIL]','[CONTENT_LONG]','[POST_ID]');
                
                 
@@ -468,8 +583,6 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
                 } else {
                     $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $post_short, $page_link, $MOD_NEWS_IMG['TEXT_BACK'], $MOD_NEWS_IMG['TEXT_LAST_CHANGED'], $post_date, $MOD_NEWS_IMG['TEXT_AT'], $post_time, $create_date, $create_time, $publ_date, $publ_time, $MOD_NEWS_IMG['TEXT_POSTED_BY'], $MOD_NEWS_IMG['TEXT_ON'], '', '', '', '',$post_long,$post['post_id']);
                 }
-
-                
             }
         } else {
             $wb->print_error($MESSAGE['FRONTEND']['SORRY_NO_ACTIVE_SECTIONS'], "javascript: history.go(-1);", false);
@@ -502,15 +615,17 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
         echo str_replace($vars, $values, $setting_post_footer);
 
         // Block2
-	if(NWI_USE_SECOND_BLOCK){
+        if (NWI_USE_SECOND_BLOCK) {
             $post_block2 = ($post['content_block2']);
-	    if(empty($post_block2) AND $setting_block2 != NULL) $post_block2 = $setting_block2;
-	    $post_block2 = str_replace($vars, $values, $post_block2);
+            if (empty($post_block2) and $setting_block2 != null) {
+                $post_block2 = $setting_block2;
+            }
+            $post_block2 = str_replace($vars, $values, $post_block2);
             define("NEWS_BLOCK2", $post_block2);
             define("TOPIC_BLOCK2", $post_block2); // re-use the constant from topics for backwards compatibility
             if (!defined("MODULES_BLOCK2")) {
-        	define("MODULES_BLOCK2", $post_block2);
+                define("MODULES_BLOCK2", $post_block2);
             }
-	}
+        }
     }
 }

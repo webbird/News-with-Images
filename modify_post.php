@@ -15,8 +15,11 @@
 
 require_once __DIR__.'/functions.inc.php';
 
+// Include the ordering class
+require_once WB_PATH.'/framework/class.order.php';
+
 // Include WB admin wrapper script
-require(WB_PATH.'/modules/admin.php');
+require WB_PATH.'/modules/admin.php';
 $post_id = $admin->checkIDKEY('post_id', 0, 'GET',true);
 if(defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) 
     $post_id = intval($_GET['post_id']);
@@ -40,13 +43,12 @@ if (isset($_GET['img_id'])) {
     $img_id = $admin->checkIDKEY('img_id', 0, 'GET');
     if (!$img_id){
 	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
-	     .' (IDKEY) '.__FILE__.':'.__LINE__,
-             ADMIN_URL.'/pages/index.php');
+    	     .' (IDKEY) '.__FILE__.':'.__LINE__, ADMIN_URL.'/pages/index.php');
 	$admin->print_footer();
 	exit();
     }
-    $query_img=$database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `id` = '$img_id'");
-    $row = $query_img->fetchRow();
+    
+    $row = mod_nwi_img_get($img_id);
  
     if (!$row) {
         echo "Datei existiert nicht!";
@@ -67,7 +69,6 @@ if (isset($_GET['post_img'])) {
 
 // re-order images
 if (isset($_GET['id']) && (isset($_GET['up']) || isset($_GET['down']))) {
-    require WB_PATH.'/framework/class.order.php';
     $order = new order(TABLE_PREFIX.'mod_news_img_img', 'position', 'id', 'post_id');
     $id = $admin->checkIDKEY('id', 0, 'GET');
     if (!$id){
@@ -181,57 +182,42 @@ $assigned_tags = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_t
 while($a=$assigned_tags->fetchRow()) {
     $assigned[$a['tag_id']] = 1;
 }
-include __DIR__.'/templates/default/modify_post.phtml';
 
-
-
-
-// Include the ordering class
-require_once(WB_PATH.'/framework/class.order.php');
 // Create new order object and reorder
 $order = new order(TABLE_PREFIX.'mod_news_img_img', 'position', 'id', 'post_id');
 $order->clean($post_id);
 
-//show all images
-// 2014-04-10 by BlackBird Webprogrammierung: added position to sort order
-$query_img = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = ".$post_id." ORDER BY `position`,`id` ASC");
+$postimg = mod_nwi_img_get_by_post($post_id);
+$images = array();
+$seenimg = array();
 
-if ($query_img->numRows() > 0) {
-    echo '<div id="fotoshow"><a name="fs"></a><h3>'.$MOD_NEWS_IMG['GALLERYIMAGES'].'</h3><table class="dragdrop_form"><tbody>';
+if (count($postimg)>0) {
     $i=1;
-
-    // 2014-04-10 by BlackBird Webprogrammierung:
-    // added up/down links
-    $first=true;
-    $last=$query_img->numRows();
-
-    while ($row = $query_img->fetchRow()) {
-        $row_id_key = $admin->getIDKEY($row['id']);
-	if(defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) 
+    foreach($postimg as $row)
+    {
+        $row['id_key'] = $admin->getIDKEY($row['id']);
+	    if(defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) {
     	    $row_id_key = $row['id'];
-        $up='<span style="display:inline-block;width:20px;"></span>';
-        $down=$up;
-        if (!$first) {
-            $up = '<a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='. $post_id_key.'&id='.$row_id_key.'&up=1">'
+        }
+        $row['up'] = '<span style="display:inline-block;width:20px;"></span>';
+        $row['down'] = $row['up'];
+        if ($i>1) { // not first
+            $row['up'] = '<a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='. $post_id_key.'&id='.$row_id_key.'&up=1">'
                 . '<img src="'.THEME_URL.'/images/up_16.png"  class="mod_news_img_arrow" /></a>';
         }
-        if ($i!=$last) {
-            $down = '<a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='. $post_id_key.'&id='.$row_id_key.'&down=1">'
+        if($i != (count($postimg)-1)) { // not last
+            $row['down'] = '<a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='. $post_id_key.'&id='.$row_id_key.'&down=1">'
                   . '<img src="'.THEME_URL.'/images/down_16.png"  class="mod_news_img_arrow" /></a>';
         }
-        echo '<tr id="img_id:'.$row_id_key.'">'.
-	     '<td class="dragdrop_item">&nbsp;</td>'.
-             '<td>'.$up.$down.'</td>',
-             '<td><a href="javascript:void(0);" onmouseover="XBT(this, {id:\'tt'.$i.'\'})"><img class="img_list" src="'.WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post_id.'/thumb/'.$row["picname"].'" /></a><div id="tt'.$i.'" class="xbtooltip"><img src="'.WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post_id.'/'.$row["picname"].'" /></div></td>',
-             '<td>'.$row["picname"].'<br /><input type="text" name="picdesc['.$row["id"].']" value="'.$row["picdesc"].'"></td>',
-             '<td><a onclick="return confirm(\''.$MOD_NEWS_IMG['DELETEIMAGE'].'\')" href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id_key.'&img_id='.$row_id_key.'#fs"><img src="'.THEME_URL.'/images/delete_16.png" /></a></td>'.
-             '<td class="dragdrop_item">&nbsp;</td>'.
-	     '</tr>';
         $i++;
-        $first=false;
+        $images[] = $row;
+        $seenimg[$row['picname']]=1;
     }
-    echo '</tbody></table></div>';
 }
+
+$allimg = mod_nwi_img_get_by_section($section_id);
+
+include __DIR__.'/templates/default/modify_post.phtml';
 
 // load imagemaxsize for the current section
 $query_settings = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '$section_id'");

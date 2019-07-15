@@ -88,6 +88,7 @@ if ($admin->get_post('title') == '' and $admin->get_post('url') == '') {
     $group = $database->escapeString($admin->get_post('group'));
 
     $tags = $admin->get_post('tags');
+    $mediafile = $database->escapeString($admin->get_post('mediafile'));
 }
 
 $group_id = 0;
@@ -145,7 +146,7 @@ if (!is_writable(WB_PATH.PAGES_DIRECTORY.'/posts/')) {
     mod_nwi_create_file($filename, $file_create_time);
 }
 
-// get publisedwhen and publisheduntil
+// get publishedwhen and publisheduntil
 $publishedwhen = jscalendar_to_timestamp($database->escapeString($admin->get_post('publishdate')));
 if ($publishedwhen == '' || $publishedwhen < 1) {
     $publishedwhen=0;
@@ -293,6 +294,13 @@ if (isset($_FILES["postfoto"]) && $_FILES["postfoto"]["name"] != "") {
     //input file nur bei leerem db-feld
 } elseif (!isset($_FILES["postfoto"])) {
     $image = basename($database->escapeString($_POST['previewimage']));
+} else {
+    if(!empty($mediafile)) {
+    }
+    echo "FILE [",__FILE__,"] FUNC [",__FUNCTION__,"] LINE [",__LINE__,"]<br /><textarea style=\"width:100%;height:200px;color:#000;background-color:#fff;\">";
+    print_r($_POST);
+    echo "</textarea><br />";
+echo "---else---$mediafile---";exit;
 }
   
 // strip HTML from title
@@ -330,9 +338,9 @@ $database->query(
 // when no error has occurred go ahead and update the image descriptions
 if (!($database->is_error())) {
     //update Bildbeschreibungen der tabelle mod_news_img_img
-    $query_img = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `post_id` = ".$post_id);
-    if ($query_img->numRows() > 0) {
-        while ($row = $query_img->fetchRow()) {
+    $images = mod_nwi_img_get_by_post($post_id);
+    if (count($images) > 0) {
+        foreach ($images as $row) {
             $row_id = $row['id'];
             $picdesc = isset($_POST['picdesc'][$row_id])
                           ? strip_tags($_POST['picdesc'][$row_id])
@@ -356,7 +364,7 @@ $database->query(sprintf(
 ));
 // re-add marked tags
 if(is_array($tags) && count($tags)>0) {
-    $existing = mod_nwi_get_tags();
+    $existing = mod_nwi_get_tags($section_id);
     foreach(array_values($tags) as $t) {
         $t = intval($t);
         if(array_key_exists($t,$existing)) {

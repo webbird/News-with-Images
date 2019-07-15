@@ -76,9 +76,9 @@ $order = new order(TABLE_PREFIX.'mod_news_img_posts', 'position', 'post_id', 'se
 $order->clean($section_id);
 
 $query_posts = $database->query(sprintf(
-    "SELECT *, (select count(`post_id`) FROM `wbce_mod_news_img_tags_posts` AS t2 WHERE t2.post_id=t1.post_id ) as tags " .
+    "SELECT *, (select count(`post_id`) FROM `%smod_news_img_tags_posts` AS t2 WHERE t2.post_id=t1.post_id ) as tags " .
     "FROM `%smod_news_img_posts` AS t1 WHERE `section_id` = '$section_id' ORDER BY `$order_by` DESC",
-    TABLE_PREFIX
+    TABLE_PREFIX, TABLE_PREFIX
 ));
 
 $posts = array();
@@ -155,7 +155,7 @@ if ($query_posts->numRows() > 0) {
 
         $nwi_sections = array();
         $news_sections = array();
-        $topics = array();
+        $topics_sections = array();
 
         if ($query_nwi->numRows() > 0) {
             // Loop through possible sections
@@ -171,16 +171,18 @@ if ($query_posts->numRows() > 0) {
         }
 
         foreach ($topics_names as $topics_name) {
+            $topics_sections[$topics_name] = array();
             $query_topics = $database->query(sprintf(
                 "SELECT `section_id` FROM `%ssections`" .
                 " WHERE `module` = '$topics_name' ORDER BY `section_id` ASC",
                 TABLE_PREFIX
             ));
             if ($query_topics->numRows() > 0) {
-                echo '<option disabled value="0">[--- '.$topics_name.' ---]</option>';
+                #echo '<option disabled value="0">[--- '.$topics_name.' ---]</option>';
                 // Loop through possible sections
                 while ($source = $query_topics->fetchRow()) {
-                    echo '<option value="'.$source['section_id'].'">'.$TEXT['SECTION'].' '.$source['section_id'].'</option>';
+                    #echo '<option value="'.$source['section_id'].'">'.$TEXT['SECTION'].' '.$source['section_id'].'</option>';
+                    $topics_sections[$topics_name][] = $source;
                 }
             }
         }

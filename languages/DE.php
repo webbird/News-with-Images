@@ -54,6 +54,7 @@ $MOD_NEWS_IMG['OPTIONS'] ='Einstellungen';
 $MOD_NEWS_IMG['ORDER_CUSTOM_INFO'] = 'Die Einstellung &quot;benutzerdefiniert&quot; erlaubt das manuelle Sortieren der Beitr&auml;ge &uuml;ber auf-/ab-Pfeile.';
 $MOD_NEWS_IMG['ORDERBY']  = 'Sortierung';
 $MOD_NEWS_IMG['OVERVIEW_SETTINGS'] ='&Uuml;bersichtsseite';
+$MOD_NEWS_IMG['OR'] = 'oder';
 $MOD_NEWS_IMG['POST_ACTIVE'] = 'Beitrag ist sichtbar';
 $MOD_NEWS_IMG['POST_CONTENT'] = 'Nachrichten-Inhalt';
 $MOD_NEWS_IMG['POST_INACTIVE'] = 'Beitrag ist nicht sichtbar';
@@ -66,6 +67,7 @@ $MOD_NEWS_IMG['TAG_EXISTS'] = 'Stichwort existiert bereits';
 $MOD_NEWS_IMG['TAGS'] = 'Stichworte';
 $MOD_NEWS_IMG['TAGS_INFO'] = 'Um Stichworte zu verwenden, einen Beitrag bearbeiten und die gewünschten Stichworte anhaken';
 $MOD_NEWS_IMG['TO'] = "nach";
+$MOD_NEWS_IMG['UPLOAD'] = 'Upload';
 $MOD_NEWS_IMG['NONE'] = "keine";
 
 //image settings

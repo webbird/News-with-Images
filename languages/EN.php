@@ -51,6 +51,7 @@ $MOD_NEWS_IMG['MOVE'] = "move";
 $MOD_NEWS_IMG['NEW_POST'] = 'Create new post';
 $MOD_NEWS_IMG['NONE'] = "None";
 $MOD_NEWS_IMG['OPTIONS'] ='Options';
+$MOD_NEWS_IMG['OR'] = 'oder';
 $MOD_NEWS_IMG['ORDER_CUSTOM_INFO'] = 'The setting &quot;custom&quot; allows the manual sorting of articles via up/down arrows.';
 $MOD_NEWS_IMG['ORDERBY']  = 'Order by';
 $MOD_NEWS_IMG['OVERVIEW_SETTINGS'] ='Overview page settings';
@@ -65,8 +66,8 @@ $MOD_NEWS_IMG['TAG'] = 'Keyword';
 $MOD_NEWS_IMG['TAG_EXISTS'] = 'Keyword already exists';
 $MOD_NEWS_IMG['TAGS'] = 'Keywords';
 $MOD_NEWS_IMG['TAGS_INFO'] = 'To make use of the keywords, edit a post and select the keywords you want to attach';
-
 $MOD_NEWS_IMG['TO'] = "to";
+$MOD_NEWS_IMG['UPLOAD'] = 'Upload';
 
 //image settings
 $MOD_NEWS_IMG['CROP'] = 'Crop';

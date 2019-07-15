@@ -24,18 +24,23 @@ $mod_nwi_thumb_dir = WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb/';
 // Include WB functions file
 require_once WB_PATH.'/framework/functions.php';
 
+// ========== Tags ==========
+
 /**
  * get existing tags for current section
  * @param  int $section_id
  * @return array
  **/
-function mod_nwi_get_tags($section_id=null) {
+function mod_nwi_get_tags($section_id=null,$alltags=false) {
     global $database;
     $tags = array();
     $where = "WHERE `section_id`=0";
     if(!empty($section_id)) {
         $section_id = intval($section_id);
         $where .= " OR `section_id` = '$section_id'";
+    }
+    if($alltags===true) {
+        $where = null;
     }
     $query_tags = $database->query(sprintf(
         "SELECT * FROM `%smod_news_img_tags` AS t1 " .
@@ -50,6 +55,33 @@ function mod_nwi_get_tags($section_id=null) {
     }
     return $tags;
 }
+
+/**
+ *
+ * @access 
+ * @return
+ **/
+function mod_nwi_get_tags_for_post($post_id)
+{
+    global $database;
+    $tags = array();
+        $query_tags = $database->query(sprintf(
+        "SELECT * FROM `%smod_news_img_tags` AS t1 " .
+        "JOIN `%smod_news_img_tags_posts` AS t2 " .
+        "ON t1.`tag_id`=t2.`tag_id` ".
+        "WHERE t2.`post_id`=$post_id",
+        TABLE_PREFIX, TABLE_PREFIX
+    ));
+
+    if (!empty($query_tags) && $query_tags->numRows() > 0) {
+        while(null!==($t = $query_tags->fetchRow())) {
+            $tags[] = $t['tag'];
+        }
+    }
+
+    return $tags;
+}   // end function mod_nwi_get_tags_for_post()
+
 
 /**
  *
@@ -74,6 +106,7 @@ function mod_nwi_tag_exists($section_id,$tag)
     return false;
 }   // end function mod_nwi_tag_exists()
 
+// ========== Images ==========
 
 function mod_nwi_img_copy($source, $dest){
     if(is_dir($source)) {
@@ -95,6 +128,64 @@ function mod_nwi_img_copy($source, $dest){
         if(file_exists($source))
             copy($source, $dest);
     }
+}
+
+function mod_nwi_img_get($pic_id)
+{
+    global $database;
+    $query_img = $database->query(sprintf(
+        "SELECT * FROM `%smod_news_img_img` WHERE `id` = %d",
+        TABLE_PREFIX,intval($pic_id)
+    ));
+    if ($query_img->numRows() > 0) {
+        return $query_img->fetchRow();
+    }
+    return array();
+}
+
+function mod_nwi_img_get_by_post($post_id=null)
+{
+    global $database;
+    $where = null;
+    if(!(empty($post_id))) {
+        $where = "WHERE `post_id`=$post_id";
+    }
+    $query_img = $database->query(sprintf(
+        "SELECT * FROM `%smod_news_img_img` AS t1 ".
+        "LEFT JOIN `%smod_news_img_posts_img` AS t2 ".
+        "ON t1.`id`=t2.`pic_id` ".
+        "%s ORDER BY `position`,`id` ASC",
+        TABLE_PREFIX,TABLE_PREFIX,$where
+    ));
+
+    $images = array();
+    if ($query_img->numRows() > 0) {
+        while ($row = $query_img->fetchRow()) {
+            $images[] = $row;
+        }
+    }
+    return $images;
+}
+
+function mod_nwi_img_get_by_section($section_id)
+{
+    global $database;
+    $query_img = $database->query(sprintf(
+        "SELECT t1.* FROM `%smod_news_img_img` AS t1 " .
+        "JOIN `%smod_news_img_posts_img` AS t2 " .       // img to post
+        "ON `t1`.`id`=`t2`.`pic_id` ".
+        "JOIN `%smod_news_img_posts` AS t3 ".            // post to section
+        "ON t2.`post_id`=t3.`post_id` ".
+        "WHERE `t3`.`section_id`=%d GROUP BY `picname`",
+        TABLE_PREFIX,TABLE_PREFIX,TABLE_PREFIX,$section_id
+    ));
+    $images = array();
+    if ($query_img->numRows() > 0) {
+        while ($row = $query_img->fetchRow()) {
+            $images[] = $row;
+        }
+    }
+    return $images;
 }
 
 function mod_nwi_img_makedir($dir, $with_thumb=true)
@@ -154,6 +245,78 @@ header('Location: ../');
             change_mode($dir.'/index.php', 'file');
         }
     }
+}
+
+/**
+ * resize image
+ *
+ * return values:
+ *    true - ok
+ *    1    - image is smaller than new size
+ *    2    - invalid type (unable to handle)
+ *
+ * @param $src    - image source
+ * @param $dst    - save to
+ * @param $width  - new width
+ * @param $height - new height
+ * @param $crop   - 0=no, 1=yes
+ **/
+function mod_nwi_image_resize($src, $dst, $width, $height, $crop=0)
+{
+    //var_dump($src);
+    if (!list($w, $h) = getimagesize($src)) {
+        return 2;
+    }
+
+    $type = strtolower(substr(strrchr($src, "."), 1));
+    if ($type == 'jpeg') {
+        $type = 'jpg';
+    }
+    switch ($type) {
+        case 'bmp': $img = imagecreatefromwbmp($src); break;
+        case 'gif': $img = imagecreatefromgif($src); break;
+        case 'jpg': $img = imagecreatefromjpeg($src); break;
+        case 'png': $img = imagecreatefrompng($src); break;
+        default: return 2;
+    }
+
+    // resize
+    if ($crop) {
+        if ($w < $width or $h < $height) {
+            return 1;
+        }
+        $ratio = max($width/$w, $height/$h);
+        $h = $height / $ratio;
+        $x = ($w - $width / $ratio) / 2;
+        $w = $width / $ratio;
+    } else {
+        if ($w < $width and $h < $height) {
+            return 1;
+        }
+        $ratio = min($width/$w, $height/$h);
+        $width = $w * $ratio;
+        $height = $h * $ratio;
+        $x = 0;
+    }
+
+    $new = imagecreatetruecolor($width, $height);
+
+    // preserve transparency
+    if ($type == "gif" or $type == "png") {
+        imagecolortransparent($new, imagecolorallocatealpha($new, 0, 0, 0, 127));
+        imagealphablending($new, false);
+        imagesavealpha($new, true);
+    }
+
+    imagecopyresampled($new, $img, 0, 0, $x, 0, $width, $height, $w, $h);
+
+    switch ($type) {
+        case 'bmp': imagewbmp($new, $dst); break;
+        case 'gif': imagegif($new, $dst); break;
+        case 'jpg': imagejpeg($new, $dst); break;
+        case 'png': imagepng($new, $dst); break;
+    }
+    return true;
 }
 
 function mod_nwi_byte_convert($bytes)
@@ -228,76 +391,4 @@ require(WB_PATH."/index.php");
         }
         change_mode($filename);
     }
-}
-
-/**
- * resize image
- *
- * return values:
- *    true - ok
- *    1    - image is smaller than new size
- *    2    - invalid type (unable to handle)
- *
- * @param $src    - image source
- * @param $dst    - save to
- * @param $width  - new width
- * @param $height - new height
- * @param $crop   - 0=no, 1=yes
- **/
-function mod_nwi_image_resize($src, $dst, $width, $height, $crop=0)
-{
-    //var_dump($src);
-    if (!list($w, $h) = getimagesize($src)) {
-        return 2;
-    }
-
-    $type = strtolower(substr(strrchr($src, "."), 1));
-    if ($type == 'jpeg') {
-        $type = 'jpg';
-    }
-    switch ($type) {
-        case 'bmp': $img = imagecreatefromwbmp($src); break;
-        case 'gif': $img = imagecreatefromgif($src); break;
-        case 'jpg': $img = imagecreatefromjpeg($src); break;
-        case 'png': $img = imagecreatefrompng($src); break;
-        default: return 2;
-    }
-
-    // resize
-    if ($crop) {
-        if ($w < $width or $h < $height) {
-            return 1;
-        }
-        $ratio = max($width/$w, $height/$h);
-        $h = $height / $ratio;
-        $x = ($w - $width / $ratio) / 2;
-        $w = $width / $ratio;
-    } else {
-        if ($w < $width and $h < $height) {
-            return 1;
-        }
-        $ratio = min($width/$w, $height/$h);
-        $width = $w * $ratio;
-        $height = $h * $ratio;
-        $x = 0;
-    }
-
-    $new = imagecreatetruecolor($width, $height);
-
-    // preserve transparency
-    if ($type == "gif" or $type == "png") {
-        imagecolortransparent($new, imagecolorallocatealpha($new, 0, 0, 0, 127));
-        imagealphablending($new, false);
-        imagesavealpha($new, true);
-    }
-
-    imagecopyresampled($new, $img, 0, 0, $x, 0, $width, $height, $w, $h);
-
-    switch ($type) {
-        case 'bmp': imagewbmp($new, $dst); break;
-        case 'gif': imagegif($new, $dst); break;
-        case 'jpg': imagejpeg($new, $dst); break;
-        case 'png': imagepng($new, $dst); break;
-    }
-    return true;
 }
