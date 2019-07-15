@@ -6,10 +6,6 @@ if(file_exists(__DIR__.'/config.php')){
     include __DIR__.'/config.php';
 }
 
-if(!defined('NWI_USE_SECOND_BLOCK')){
-   define('NWI_USE_SECOND_BLOCK',true);
-}
-
 // load module language file
 $lang = (dirname(__FILE__)) . '/languages/' . LANGUAGE . '.php';
 require_once(!file_exists($lang) ? (dirname(__FILE__)) . '/languages/EN.php' : $lang);
@@ -17,18 +13,32 @@ require_once(!file_exists($lang) ? (dirname(__FILE__)) . '/languages/EN.php' : $
 $mod_nwi_file_dir = WB_PATH.MEDIA_DIRECTORY.'/.news_img/';
 $mod_nwi_thumb_dir = WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb/';
 
-/**
- * fist of all include framework to make it available (for interoperability)
- **/
-
 // Include WB functions file
 require_once WB_PATH.'/framework/functions.php';
+
+// ========== Groups ==========
+/**
+ *
+ * @access 
+ * @return
+ **/
+function mod_nwi_get_group(int $group_id)
+{
+    global $database;
+    $query_content = $database->query(sprintf(
+        "SELECT * FROM `%smod_news_img_groups` WHERE `group_id`=%d",
+        TABLE_PREFIX,$group_id
+    ));
+    return $query_content->fetchRow();
+}   // end function mod_nwi_get_group()
+
 
 // ========== Tags ==========
 
 /**
  * get existing tags for current section
- * @param  int $section_id
+ * @param  int   $section_id
+ * @param  bool  $alltags
  * @return array
  **/
 function mod_nwi_get_tags($section_id=null,$alltags=false) {
@@ -54,23 +64,23 @@ function mod_nwi_get_tags($section_id=null,$alltags=false) {
         }
     }
     return $tags;
-}
+}   // end function mod_nwi_get_tags()
 
 /**
- *
- * @access 
- * @return
+ * get tags for given post
+ * @param  int   $post_id
+ * @return array
  **/
 function mod_nwi_get_tags_for_post($post_id)
 {
     global $database;
     $tags = array();
-        $query_tags = $database->query(sprintf(
+    $query_tags = $database->query(sprintf(
         "SELECT * FROM `%smod_news_img_tags` AS t1 " .
         "JOIN `%smod_news_img_tags_posts` AS t2 " .
         "ON t1.`tag_id`=t2.`tag_id` ".
-        "WHERE t2.`post_id`=$post_id",
-        TABLE_PREFIX, TABLE_PREFIX
+        "WHERE t2.`post_id`=%d",
+        TABLE_PREFIX, TABLE_PREFIX, $post_id
     ));
 
     if (!empty($query_tags) && $query_tags->numRows() > 0) {
@@ -84,11 +94,12 @@ function mod_nwi_get_tags_for_post($post_id)
 
 
 /**
- *
- * @access public
- * @return
+ * check if tag is valid for given section
+ * @param  int    $section_id
+ * @param  string $tag
+ * @return bool
  **/
-function mod_nwi_tag_exists($section_id,$tag)
+function mod_nwi_tag_exists(int $section_id, string $tag)
 {
     global $database;
     $sql   = sprintf(
@@ -96,8 +107,8 @@ function mod_nwi_tag_exists($section_id,$tag)
         "JOIN `%smod_news_img_tags_sections` AS t2 " .
         "ON `t1`.`tag_id`=`t2`.`tag_id` " .
         "WHERE `tag`='%s' ".
-        "AND (`t2`.`section_id`=$section_id OR `t2`.`section_id`=0)",
-        TABLE_PREFIX, TABLE_PREFIX, $tag
+        "AND (`t2`.`section_id`=%d OR `t2`.`section_id`=0)",
+        TABLE_PREFIX, TABLE_PREFIX, $tag, $section_id
     );
     $query = $database->query($sql);
     if (!empty($query) && $query->numRows() > 0) {
