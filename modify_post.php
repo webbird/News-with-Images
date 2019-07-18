@@ -20,34 +20,54 @@ require_once WB_PATH.'/framework/class.order.php';
 
 // Include WB admin wrapper script
 require WB_PATH.'/modules/admin.php';
-$post_id = $admin->checkIDKEY('post_id', 0, 'GET',true);
-if(defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) 
+$post_id = $admin->checkIDKEY('post_id', 0, 'GET', true);
+if (defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) {
     $post_id = intval($_GET['post_id']);
-if (!$post_id){
-    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
-	 .' (IDKEY) '.__FILE__.':'.__LINE__,
-         ADMIN_URL.'/pages/index.php');
+}
+if (!$post_id) {
+    $admin->print_error(
+        $MESSAGE['GENERIC_SECURITY_ACCESS']
+     .' (IDKEY) '.__FILE__.':'.__LINE__,
+         ADMIN_URL.'/pages/index.php'
+    );
     $admin->print_footer();
     exit();
 }
 
 $FTAN = $admin->getFTAN();
 $post_id_key = $admin->getIDKEY($post_id);
-if(defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) 
+if (defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) {
     $post_id_key = intval($_GET['post_id']);
+}
+
+// ----- delete previewimage ---------------------------------------------------
+if (isset($_GET['post_img'])) {
+    $post_img = $post_data['image'];
+    $database->query(sprintf(
+        "UPDATE `%smod_news_img_posts` SET `image` = '' WHERE `post_id`=%d",
+        TABLE_PREFIX, intval($post_id)
+    ));
+    @unlink($mod_nwi_file_dir.$post_img);
+    $post_data['image'] = null;
+}   //end delete preview image
+
 $mod_nwi_file_dir .= "$post_id/";
 $mod_nwi_thumb_dir = $mod_nwi_file_dir . "thumb/";
 
-// delete image
+// get post
+$post_data = mod_nwi_post_get($post_id);
+
+// ----- delete gallery image --------------------------------------------------
 if (isset($_GET['img_id'])) {
     $img_id = $admin->checkIDKEY('img_id', 0, 'GET');
-    if (!$img_id){
-	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
-    	     .' (IDKEY) '.__FILE__.':'.__LINE__, ADMIN_URL.'/pages/index.php');
-	$admin->print_footer();
-	exit();
+    if (!$img_id) {
+        $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
+             .' (IDKEY) '.__FILE__.':'.__LINE__, ADMIN_URL.'/pages/index.php');
+        $admin->print_footer();
+        exit();
     }
     
+    $img_id = intval($img_id);
     $row = mod_nwi_img_get($img_id);
  
     if (!$row) {
@@ -56,27 +76,24 @@ if (isset($_GET['img_id'])) {
         unlink($mod_nwi_file_dir.$row['picname']);
         unlink($mod_nwi_thumb_dir.$row['picname']);
     }
-    $database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_img` WHERE `id` = '$img_id'");
-}   //end delete
-
-// delete previewimage
-if (isset($_GET['post_img'])) {
-    $post_img = basename($_GET['post_img']);
-    $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `image` = '' WHERE `post_id` = '$post_id'");
-    @unlink($mod_nwi_file_dir.$post_img);
-    @unlink($mod_nwi_thumb_dir.$post_img);
-}   //end delete  preview
+    $database->query(sprintf(
+        "DELETE FROM `%smod_news_img_img` WHERE `id` = '%d'",
+        TABLE_PREFIX,$img_id
+    ));
+}   //end delete gallery image
 
 // re-order images
 if (isset($_GET['id']) && (isset($_GET['up']) || isset($_GET['down']))) {
     $order = new order(TABLE_PREFIX.'mod_news_img_img', 'position', 'id', 'post_id');
     $id = $admin->checkIDKEY('id', 0, 'GET');
-    if (!$id){
-	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
-	     .' (IDKEY) '.__FILE__.':'.__LINE__,
-             ADMIN_URL.'/pages/index.php');
-	$admin->print_footer();
-	exit();
+    if (!$id) {
+        $admin->print_error(
+            $MESSAGE['GENERIC_SECURITY_ACCESS']
+             .' (IDKEY) '.__FILE__.':'.__LINE__,
+                 ADMIN_URL.'/pages/index.php'
+        );
+        $admin->print_footer();
+        exit();
     }
     if (isset($_GET['up'])) {
         $order->move_up(intval($id));
@@ -85,9 +102,7 @@ if (isset($_GET['id']) && (isset($_GET['up']) || isset($_GET['down']))) {
     }
 }
 
-$query_content = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `post_id` = '$post_id'");
-$fetch_content = $query_content->fetchRow();
-
+// make sure we have a WYSIWYG editor
 if (!defined('WYSIWYG_EDITOR') or WYSIWYG_EDITOR=="none" or !file_exists(WB_PATH.'/modules/'.WYSIWYG_EDITOR.'/include.php')) {
     function show_wysiwyg_editor($name, $id, $content, $width, $height)
     {
@@ -95,14 +110,14 @@ if (!defined('WYSIWYG_EDITOR') or WYSIWYG_EDITOR=="none" or !file_exists(WB_PATH
     }
 } else {
     $id_list=array("short","long");
-    if(NWI_USE_SECOND_BLOCK){
+    if (NWI_USE_SECOND_BLOCK) {
         $id_list[]="block2";
     }
     require(WB_PATH.'/modules/'.WYSIWYG_EDITOR.'/include.php');
 }
 
 // split link
-$link = $fetch_content['link'];
+$link = $post_data['link'];
 $parts = explode('/', $link);
 $link = array_pop($parts);
 $linkbase = implode('/', $parts);
@@ -122,8 +137,8 @@ $groups_on_other_nwi_sections = array();
 // So we have a single string that we can submit safely and decode it when receiving.
 $query = $database->query(sprintf(
     "SELECT `group_id`,`title` FROM `%smod_news_img_groups` " .
-    "WHERE `section_id` = '$section_id' ORDER BY `position` ASC",
-    TABLE_PREFIX
+    "WHERE `section_id`=%d ORDER BY `position` ASC",
+    TABLE_PREFIX, $section_id
 ));
 if ($query->numRows() > 0) {
     // Loop through groups
@@ -132,14 +147,17 @@ if ($query->numRows() > 0) {
     }
     $query_sections = $database->query(sprintf(
         "SELECT `section_id`,`page_id` FROM `%smod_news_img_settings` " .
-        "WHERE `section_id` != '$section_id' ORDER BY `page_id`,`section_id` ASC",
-        TABLE_PREFIX
+        "WHERE `section_id` != %d ORDER BY `page_id`,`section_id` ASC",
+        TABLE_PREFIX, $section_id
     ));
     $pid = $page_id;
-    if ($query_sections->numRows() > 0) {
+    if ($query_sections->numRows() > 0)
+    {
         // Loop through all news_img sections, do sanity checks and filter out the current section which is handled above
-        while ($sect = $query_sections->fetchRow()) {
-            if ($sect['section_id'] != $section_id) {
+        while ($sect = $query_sections->fetchRow())
+        {
+            if ($sect['section_id'] != $section_id)
+            {
                 if ($sect['page_id'] != $pid) { // for new pages insert a separator
                     $pid = intval($sect['page_id']);
                     $page_title = "";
@@ -157,8 +175,8 @@ if ($query->numRows() > 0) {
                     // now loop through groups of this section, at least for the ones which are not dummy sections
                     $query_groups = $database->query(sprintf(
                         "SELECT `group_id`,`title` FROM `%smod_news_img_groups` " .
-                        "WHERE `section_id` = '".intval($sect['section_id'])."' ORDER BY `position` ASC",
-                        TABLE_PREFIX
+                        "WHERE `section_id` = %d ORDER BY `position` ASC",
+                        TABLE_PREFIX, intval($sect['section_id'])
                     ));
                     if ($query_groups->numRows() > 0) {
                         // Loop through groups
@@ -177,9 +195,12 @@ if ($query->numRows() > 0) {
 
 $assigned = array();
 $tags = mod_nwi_get_tags($section_id);
-$assigned_tags = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_tags_posts` WHERE `post_id`='$post_id'");
+$assigned_tags = $database->query(sprintf(
+    "SELECT * FROM `%smod_news_img_tags_posts` WHERE `post_id`=%d",
+    TABLE_PREFIX, $post_id
+));
         
-while($a=$assigned_tags->fetchRow()) {
+while ($a=$assigned_tags->fetchRow()) {
     $assigned[$a['tag_id']] = 1;
 }
 
@@ -187,17 +208,17 @@ while($a=$assigned_tags->fetchRow()) {
 $order = new order(TABLE_PREFIX.'mod_news_img_img', 'position', 'id', 'post_id');
 $order->clean($post_id);
 
+// get images
 $postimg = mod_nwi_img_get_by_post($post_id);
 $images = array();
 $seenimg = array();
 
 if (count($postimg)>0) {
     $i=1;
-    foreach($postimg as $row)
-    {
+    foreach ($postimg as $row) {
         $row['id_key'] = $admin->getIDKEY($row['id']);
-	    if(defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) {
-    	    $row_id_key = $row['id'];
+        if (defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) {
+            $row_id_key = $row['id'];
         }
         $row['up'] = '<span style="display:inline-block;width:20px;"></span>';
         $row['down'] = $row['up'];
@@ -205,7 +226,7 @@ if (count($postimg)>0) {
             $row['up'] = '<a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='. $post_id_key.'&id='.$row_id_key.'&up=1">'
                 . '<img src="'.THEME_URL.'/images/up_16.png"  class="mod_news_img_arrow" /></a>';
         }
-        if($i != (count($postimg)-1)) { // not last
+        if ($i != (count($postimg)-1)) { // not last
             $row['down'] = '<a href="'.WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='. $post_id_key.'&id='.$row_id_key.'&down=1">'
                   . '<img src="'.THEME_URL.'/images/down_16.png"  class="mod_news_img_arrow" /></a>';
         }

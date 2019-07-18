@@ -3,11 +3,11 @@
  */
 
 .dm-uploader {
-	border: 0.25rem dashed #A5A5C7;
+	border: 1px dashed #A5A5C7;
 	text-align: center;
+    padding:15px;
 }
 .dm-uploader.active {
 	border-color: red;
-
 	border-style: solid;
 }

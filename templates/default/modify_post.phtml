@@ -17,7 +17,7 @@
             <tr>
             	<td class="setting_name"><?php echo $TEXT['TITLE']; ?>:</td>
             	<td class="setting_value">
-            		<input type="text" name="title" id="title<?php echo $page_id ?>" value="<?php echo(htmlspecialchars($fetch_content['title'])); ?>" maxlength="255" />
+            		<input type="text" name="title" id="title<?php echo $page_id ?>" value="<?php echo(htmlspecialchars($post_data['title'])); ?>" maxlength="255" />
             	</td>
             </tr>
             <tr>
@@ -29,19 +29,21 @@
             <tr>
             	<td class="setting_name"><?php echo $MOD_NEWS_IMG['PREVIEWIMAGE']; ?>:</td>
             	<td>
-<?php if ($fetch_content['image'] != ""): ?>
-                    <img class="img_list" style="float:left;margin-right:15px" src="<?php echo WB_URL.MEDIA_DIRECTORY ?>/.news_img/<?php echo $post_id.'/'.$fetch_content['image'] ?>" /> <?php echo $fetch_content['image'] ?><br />
-                    <a href="<?php echo WB_URL ?>/modules/news_img/modify_post.php?page_id=<?php echo $page_id ?>&section_id=<?php echo $section_id ?>&post_id=<?php echo $post_id_key ?>&post_img=<?php echo $fetch_content['image'] ?>"><?php echo $TEXT['DELETE'] ?></a>
-                    <input type="hidden" name="previewimage" value="<?php echo $fetch_content['image'] ?>" />
+<?php if ($post_data['image'] != ""): ?>
+                    <img class="img_list" style="float:left;margin-right:15px" src="<?php echo WB_URL.MEDIA_DIRECTORY."/.news_img/".$post_data['image'] ?>" /> <?php echo $post_data['image'] ?><br />
+                    <a class="btn" href="<?php echo WB_URL ?>/modules/news_img/modify_post.php?page_id=<?php echo $page_id ?>&section_id=<?php echo $section_id ?>&post_id=<?php echo $post_id_key ?>&post_img=<?php echo $post_data['image'] ?>">
+                        <i class="fa fa-fw fa-trash"></i> <?php echo $TEXT['DELETE'] ?>
+                    </a>
+                    <input type="hidden" name="previewimage" value="<?php echo $post_data['image'] ?>" />
 <?php else: ?>
                     <?php echo $MOD_NEWS_IMG['UPLOAD'] ?> <input type="file" name="postfoto" accept="image/*" />
 <?php if(isset($allimg) && is_array($allimg) && count($allimg)>0): ?>
                     <?php echo $MOD_NEWS_IMG['OR'] ?>:
                     <select name="mediafile" id="mediafile">
-                        <option value="" selected="selected"></option>
-                    <?php foreach($allimg as $img): if(!array_key_exists($img['picname'],$seenimg)): ?>
+                        <option value="" selected="selected"><?php echo $MOD_NEWS_IMG['CHOOSE_EXISTING'] ?></option>
+                    <?php foreach($allimg as $img): ?>
                         <option value="<?php echo $img['id'] ?>"><?php echo $img['picname'] ?></option>
-                    <?php endif; endforeach; ?>
+                    <?php endforeach; ?>
                     </select><br />
 <?php endif; endif; ?>
         		</td>
@@ -52,7 +54,7 @@
                     <select name="group">
                         <option value="<?php echo urlencode(serialize(array('g' => 0, 's' => $section_id, 'p' => $page_id))) ?>"><?php echo $TEXT['NONE']." (".$TEXT['CURRENT']." ".$TEXT['SECTION']." ".$section_id ?>)</option>
 <?php if(isset($groups) && is_array($groups) && count($groups)>0): foreach($groups as $id => $group): ?>
-                        <option value="<?php echo $id ?>"<?php if ($fetch_content['group_id'] == $group['group_id']): ?> selected="selected"<?php endif; ?>><?php echo $group['title'].' ('.$TEXT['CURRENT']." ".$TEXT['SECTION'].' '.$section_id ?>)</option>
+                        <option value="<?php echo $id ?>"<?php if ($post_data['group_id'] == $group['group_id']): ?> selected="selected"<?php endif; ?>><?php echo $group['title'].' ('.$TEXT['CURRENT']." ".$TEXT['SECTION'].' '.$section_id ?>)</option>
 <?php endforeach; endif; if(isset($groups_on_other_nwi_sections) && is_array($groups_on_other_nwi_sections) && count($groups_on_other_nwi_sections)>0): ?>
                         <option disabled value="0">[--- <?php echo $TEXT['PAGE'].' '.$pid.' ('.$page_title ?>) ---]</option>
 <?php foreach($groups_on_other_nwi_sections as $id => $group): ?>
@@ -64,12 +66,12 @@
             <tr>
             	<td class="setting_name"><?php echo $TEXT['ACTIVE']; ?>:</td>
             	<td class="setting_value">
-            		<input type="radio" name="active" id="active_true" value="1" <?php if ($fetch_content['active'] == 1): echo ' checked="checked"'; endif; ?> />
+            		<input type="radio" name="active" id="active_true" value="1" <?php if ($post_data['active'] == 1): echo ' checked="checked"'; endif; ?> />
             		<a href="#" onclick="javascript: document.getElementById('active_true').checked = true;">
             		<?php echo $TEXT['YES']; ?>
             		</a>
             		&nbsp;
-            		<input type="radio" name="active" id="active_false" value="0" <?php if ($fetch_content['active'] == 0): echo ' checked="checked"'; endif; ?> />
+            		<input type="radio" name="active" id="active_false" value="0" <?php if ($post_data['active'] == 0): echo ' checked="checked"'; endif; ?> />
             		<a href="#" onclick="javascript: document.getElementById('active_false').checked = true;">
             		<?php echo $TEXT['NO']; ?>
             		</a>
@@ -78,7 +80,7 @@
             <tr>
             	<td class="setting_name"><?php echo $TEXT['PUBL_START_DATE']; ?>:</td>
             	<td class="setting_value">
-            	   <input type="text" id="publishdate" name="publishdate" value="<?php if ($fetch_content['published_when']==0): print date($jscal_format, time()+TIMEZONE); else: print date($jscal_format, $fetch_content['published_when']+TIMEZONE); endif; ?>" style="width:33%;" />
+            	   <input type="text" id="publishdate" name="publishdate" value="<?php if ($post_data['published_when']==0): print date($jscal_format, time()+TIMEZONE); else: print date($jscal_format, $post_data['published_when']+TIMEZONE); endif; ?>" style="width:33%;" />
                 	<img src="<?php echo THEME_URL ?>/images/clock_16.png" id="publishdate_trigger" style="cursor: pointer;" title="<?php echo $TEXT['CALENDAR']; ?>" alt="<?php echo $TEXT['CALENDAR']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" />
                 	<img src="<?php echo THEME_URL ?>/images/clock_del_16.png" style="cursor: pointer;" title="<?php echo $TEXT['DELETE_DATE']; ?>" alt="<?php echo $TEXT['DELETE_DATE']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" onclick="document.modify.publishdate.value=''" />
             	</td>
@@ -86,7 +88,7 @@
             <tr>
             	<td class="setting_name"><?php echo $TEXT['PUBL_END_DATE']; ?>:</td>
             	<td class="setting_value">
-            	   <input type="text" id="enddate" name="enddate" value="<?php if ($fetch_content['published_until']!=0): print date($jscal_format, $fetch_content['published_until']+TIMEZONE); endif; ?>" style="width:33%;" />
+            	   <input type="text" id="enddate" name="enddate" value="<?php if ($post_data['published_until']!=0): print date($jscal_format, $post_data['published_until']+TIMEZONE); endif; ?>" style="width:33%;" />
                 	<img src="<?php echo THEME_URL ?>/images/clock_16.png" id="enddate_trigger" style="cursor: pointer;" title="<?php echo $TEXT['CALENDAR']; ?>" alt="<?php echo $TEXT['CALENDAR']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" />
                 	<img src="<?php echo THEME_URL ?>/images/clock_del_16.png" style="cursor: pointer;" title="<?php echo $TEXT['DELETE_DATE']; ?>" alt="<?php echo $TEXT['DELETE_DATE']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" onclick="document.modify.enddate.value=''" />
             	</td>
@@ -120,7 +122,7 @@
         <tr>
         	<td>
         	<?php
-            show_wysiwyg_editor("short", "short", htmlspecialchars($fetch_content['content_short']), "100%", "150px");
+            show_wysiwyg_editor("short", "short", htmlspecialchars($post_data['content_short']), "100%", "150px");
             ?>
         	</td>
         </tr>
@@ -130,7 +132,7 @@
         <tr>
         	<td>
 <?php
-    show_wysiwyg_editor("long", "long", htmlspecialchars($fetch_content['content_long']), "100%", "350px");
+    show_wysiwyg_editor("long", "long", htmlspecialchars($post_data['content_long']), "100%", "350px");
 ?>
         	</td>
         </tr>
@@ -141,7 +143,7 @@
         <tr>
         	<td>
 <?php
-        show_wysiwyg_editor("block2", "block2", htmlspecialchars($fetch_content['content_block2']), "100%", "350px");
+        show_wysiwyg_editor("block2", "block2", htmlspecialchars($post_data['content_block2']), "100%", "350px");
 ?>
         	</td>
         </tr>
@@ -152,9 +154,10 @@
 <?php ?>
     <div id="fotoshow"><a name="fs"></a>
     <h3><?php echo $MOD_NEWS_IMG['GALLERYIMAGES'] ?></h3>
+<?php if(isset($images) && is_array($images) && count($images)>0): $i=1; ?>
     <table class="dragdrop_form">
         <tbody>
-<?php if(isset($images) && is_array($images) && count($images)>0): $i=1; foreach($images as $image): ?>
+<?php foreach($images as $image): ?>
             <tr id="img_id:<?php echo $image['id_key'] ?>">
 	            <td class="dragdrop_item">&nbsp;</td>
                 <td><?php echo $image['up'].$image['down'] ?></td>
@@ -177,6 +180,7 @@
                 </td>
                 <td class="dragdrop_item">&nbsp;</td>
             </tr>
-<?php $i++; endforeach; endif; ?>
+<?php $i++; endforeach; ?>
         </tbody>
     </table>
+<?php endif; ?>

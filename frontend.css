@@ -39,7 +39,10 @@
 .mod_nwi_default .mod_nwi_spacer {
   padding:1em 0;
 }		
-.mod_nwi_default .mod_nwi_tag{
+.mod_nwi_default .mod_nwi_tags {
+  padding:0.5em 0;
+}
+.mod_nwi_default .mod_nwi_tag {
   display:inline-block;
   background-color:#ccc;
   padding:2px 5px;

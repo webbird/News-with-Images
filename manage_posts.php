@@ -34,8 +34,11 @@ if (!$admin->checkFTAN()){
 } else $admin->print_header();
 
 $action='';
-if($_POST['action']=='copy'||$_POST['action']=='move'||$_POST['action']=='delete'||$_POST['action']=='activate'||$_POST['action']=='deactivate') {
-    $action=$_POST['action'];
+$known_actions = array(
+    'copy', 'copy_with_tags', 'move', 'delete', 'activate', 'deactivate'
+);
+if(in_array($_POST['action'], $known_actions)) {
+    $action = $_POST['action'];
 } else {
     header("Location: ".ADMIN_URL."/pages/index.php");
     exit(0);

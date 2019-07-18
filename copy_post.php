@@ -40,8 +40,6 @@ require WB_PATH.'/framework/class.order.php';
 
 $section_id = intval($_POST['section_id']);
 $page_id = intval($_POST['page_id']);
-
-
 $group_id = 0;
 $old_section_id = $section_id;
 $old_page_id = $page_id;
@@ -66,13 +64,15 @@ if (!empty($group)) {
 $mod_nwi_file_base=$mod_nwi_file_dir; 
 
 $posts=array();
-if(isset($_POST['manage_posts'])&&is_array($_POST['manage_posts'])) $posts=$_POST['manage_posts'];
-foreach($posts as $idx=>$pid) {
+if(isset($_POST['manage_posts'])&&is_array($_POST['manage_posts'])) {
+    $posts=$_POST['manage_posts'];
+}
+
+foreach($posts as $idx=>$pid)
+{
     $original_post_id = intval($pid);
-
-    if($original_post_id != 0){
-        //trigger_error("copying $original_post_id");
-
+    if($original_post_id != 0)
+    {
 	// Get new order
 	$order = new order(TABLE_PREFIX.'mod_news_img_posts', 'position', 'post_id', 'section_id');
 	$position = $order->get_new($section_id);
@@ -98,8 +98,6 @@ foreach($posts as $idx=>$pid) {
 	$active = 0;
 	$publishedwhen =  $fetch_content['published_when'];
 	$publisheduntil =  $fetch_content['published_until'];
-
-
 
 	// Get page link URL
 	$query_page = $database->query("SELECT `level`,`link` FROM `".TABLE_PREFIX."pages` WHERE `page_id` = '$page_id'");

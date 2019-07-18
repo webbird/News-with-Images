@@ -24,9 +24,11 @@ $MOD_NEWS_IMG['ADD_GROUP'] = 'Gruppe anlegen';
 $MOD_NEWS_IMG['ADD_POST'] = 'Beitrag verfassen';
 $MOD_NEWS_IMG['ADD_TAG'] = 'Stichwort hinzufügen';
 $MOD_NEWS_IMG['ALL'] = "Alle";
+$MOD_NEWS_IMG['CHOOSE_EXISTING'] = '--- aus vorhandenen wählen ---';
 $MOD_NEWS_IMG['CONTINUE'] = "Weiter";
 $MOD_NEWS_IMG['COPY'] = "kopieren";
 $MOD_NEWS_IMG['COPY_POST'] = 'Beitrag kopieren';
+$MOD_NEWS_IMG['COPY_WITH_TAGS'] = 'kopieren (inkl. Tags)';
 $MOD_NEWS_IMG['DEACTIVATE'] = "deaktivieren";
 $MOD_NEWS_IMG['DEACTIVATE_POST'] = "Beitrag deaktivieren";
 $MOD_NEWS_IMG['DELETE'] = "l&ouml;schen";
@@ -84,7 +86,7 @@ $MOD_NEWS_IMG['TEXT_DEFAULTS_CLICK'] = 'Anklicken um Gr&ouml;&szlig;e zu w&auml;
 $MOD_NEWS_IMG['THUMB_SIZE'] = 'Gr&ouml;&szlig;e der Thumbnails';
 
 // Uploader
-$MOD_NEWS_IMG['DRAG_N_DROP_HERE'] = 'Dateien hier mit Drag &amp; Drop ablegen';
+$MOD_NEWS_IMG['DRAG_N_DROP_HERE'] = 'Dateien hier mit Drag &amp; Drop ablegen oder [Durchsuchen...] anklicken';
 $MOD_NEWS_IMG['CLICK_TO_ADD'] = 'Klicken, um Dateien hinzuzuf&uuml;gen';
 $MOD_NEWS_IMG['NO_FILES_UPLOADED'] = 'Keine Dateien hochgeladen.';
 $MOD_NEWS_IMG['COMPLETE_MESSAGE'] = 'Speichern Sie Ihre &Auml;nderungen, um den Upload in der Galerie anzuzeigen';

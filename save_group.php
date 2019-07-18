@@ -57,7 +57,11 @@ else
 }
 
 // Update row
-$database->query("UPDATE `".TABLE_PREFIX."mod_news_img_groups` SET `title` = '$title', `active` = '$active' WHERE `group_id` = '$group_id'");
+$database->query(sprintf(
+    "UPDATE `%smod_news_img_groups` SET `title` = '$title', `active` = '$active' " .
+    "WHERE `group_id`=%d",
+    TABLE_PREFIX, intval($group_id)
+));
 
 // Check if the user uploaded an image or wants to delete one
 if(isset($_FILES['image']['tmp_name']) AND $_FILES['image']['tmp_name'] != '')

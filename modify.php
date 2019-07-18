@@ -87,7 +87,7 @@ $importable_sections = 0;
 // if there are already some posts, list them
 if ($query_posts->numRows() > 0) {
     $num_posts = $query_posts->numRows();
-    while ($post = $query_posts->fetchRow()) {
+    while(false!==($post = $query_posts->fetchRow())) {
         $post['id_key'] = $admin->getIDKEY($post['post_id']);
         if (defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) {
             $post['id_key'] = $post['post_id'];
@@ -114,12 +114,10 @@ if ($query_posts->numRows() > 0) {
     }
 // ... else find importable items from other sections
 } else {
-
     // count groups
     $query_groups = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_groups` WHERE `section_id` = '$section_id'");
     $num_groups = $query_groups->numRows();
     if ($num_groups != 0) {
-
         // news with images
         $query_nwi = $database->query(sprintf(
             "SELECT `section_id` FROM `%ssections`" .
@@ -137,7 +135,7 @@ if ($query_posts->numRows() > 0) {
         // topics
         $topics_names = array();
         $query_tables = $database->query("SHOW TABLES");
-        while ($table_info = $query_tables->fetchRow()) {
+        while (false!==($table_info = $query_tables->fetchRow())) {
             $table_name = $table_info[0];
             $topics_name=preg_replace('/'.TABLE_PREFIX.'mod_/', '', $table_name);
             $res = $database->query("SHOW COLUMNS FROM `$table_name` LIKE 'topic_id'");
@@ -197,7 +195,7 @@ $groups = array();
 $query_groups = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_groups` WHERE `section_id` = '$section_id' ORDER BY `position` ASC");
 if ($query_groups->numRows() > 0) {
     $num_groups = $query_groups->numRows();
-    while ($group = $query_groups->fetchRow()) {
+    while (false!==($group = $query_groups->fetchRow())) {
         $group['id_key'] = $admin->getIDKEY($group['group_id']);
         if (defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) {
             $group['id_key'] = $group['group_id'];

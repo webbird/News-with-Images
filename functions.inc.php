@@ -17,6 +17,7 @@ $mod_nwi_thumb_dir = WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb/';
 require_once WB_PATH.'/framework/functions.php';
 
 // ========== Groups ==========
+
 /**
  *
  * @access 
@@ -59,7 +60,7 @@ function mod_nwi_get_tags($section_id=null,$alltags=false) {
         $where, TABLE_PREFIX, TABLE_PREFIX
     ));
     if (!empty($query_tags) && $query_tags->numRows() > 0) {
-        while(null!==($t = $query_tags->fetchRow())) {
+        while(false!==($t = $query_tags->fetchRow())) {
             $tags[$t['tag_id']] = $t;
         }
     }
@@ -84,7 +85,7 @@ function mod_nwi_get_tags_for_post($post_id)
     ));
 
     if (!empty($query_tags) && $query_tags->numRows() > 0) {
-        while(null!==($t = $query_tags->fetchRow())) {
+        while(false!==($t = $query_tags->fetchRow())) {
             $tags[$t['tag_id']] = $t['tag'];
         }
     }
@@ -170,8 +171,8 @@ function mod_nwi_img_get_by_post($post_id=null)
     ));
 
     $images = array();
-    if ($query_img && ($query_img->numRows() > 0)) {
-        while ($row = $query_img->fetchRow()) {
+    if (!empty($query_img) && $query_img->numRows() > 0) {
+        while (false!==($row = $query_img->fetchRow())) {
             $images[] = $row;
         }
     }
@@ -181,6 +182,7 @@ function mod_nwi_img_get_by_post($post_id=null)
 function mod_nwi_img_get_by_section($section_id)
 {
     global $database;
+    // all gallery images
     $query_img = $database->query(sprintf(
         "SELECT t1.* FROM `%smod_news_img_img` AS t1 " .
         "JOIN `%smod_news_img_posts_img` AS t2 " .       // img to post
@@ -191,12 +193,195 @@ function mod_nwi_img_get_by_section($section_id)
         TABLE_PREFIX,TABLE_PREFIX,TABLE_PREFIX,$section_id
     ));
     $images = array();
-    if ($query_img && ($query_img->numRows() > 0)) {
-        while ($row = $query_img->fetchRow()) {
+    if (!empty($query_img) && $query_img->numRows() > 0) {
+        while (false!==($row = $query_img->fetchRow())) {
             $images[] = $row;
         }
     }
+/*
+
+(
+    [0] => Array
+        (
+            [0] => 60
+            [id] => 60
+            [1] => 2015-11-10_10_49_19_2.png
+            [picname] => 2015-11-10_10_49_19_2.png
+            [2] =>
+            [picdesc] =>
+        )
+    [1] => Array
+        (
+            [0] => 12508803_1695055897443354_5488451947572868016_n.jpg
+            [image] => 12508803_1695055897443354_5488451947572868016_n.jpg
+        )
+)
+*/
+
+    // all (other) preview images
+    $query_preview = $database->query(sprintf(
+        "SELECT `image` FROM `%smod_news_img_posts` " .
+        "WHERE `image`<>'' AND `section_id`=%d",
+        TABLE_PREFIX, $section_id
+    ));
+    if (!empty($query_preview) && $query_preview->numRows() > 0) {
+        while (false!==($row = $query_preview->fetchRow())) {
+            $images[] = array(
+                'id' => 0,
+                'picname' => $row['image'],
+                'picdesc' => null
+            );
+        }
+    }
+echo "FILE [",__FILE__,"] FUNC [",__FUNCTION__,"] LINE [",__LINE__,"]<br /><textarea style=\"width:100%;height:200px;color:#000;background-color:#fff;\">";
+print_r($images);
+echo "</textarea><br />";
     return $images;
+}
+
+function mod_nwi_img_upload($post_id,$is_preview_image=false)
+{
+    global $database, $mod_nwi_file_dir;
+
+    // upload.php = 'file'
+    // modify_post.php (preview image) = 'postfoto'
+    $key = 'file';
+    if($is_preview_image) {
+        $key = 'postfoto';
+    } else {
+        $mod_nwi_file_dir .= "$post_id/";
+    }
+    $mod_nwi_thumb_dir = $mod_nwi_file_dir . "thumb/";
+    $imageErrorMessage = null;
+
+    // get section id
+    $post_data = mod_nwi_post_get($post_id);
+    $section_id = intval($post_data['section_id']);
+
+    // get settings
+    $settings = mod_nwi_settings_get($section_id);
+
+    $settings['imgmaxsize'] = intval($settings['imgmaxsize']);
+    $iniset = ini_get('upload_max_filesize');
+    $iniset = mod_nwi_return_bytes($iniset);
+
+    // preview images size
+    $previewwidth = $previewheight = $thumbwidth = $thumbheight = '';
+    if (substr_count($settings['resize_preview'], 'x')>0) {
+        list($previewwidth, $previewheight) = explode('x', $settings['resize_preview'], 2);
+    }
+    if (substr_count($settings['imgthumbsize'], 'x')>0) {
+        list($thumbwidth, $thumbheight) = explode('x', $settings['imgthumbsize'], 2);
+    }
+
+    // gallery images size
+    $imagemaxsize  = ($settings['imgmaxsize']>0 && $settings['imgmaxsize'] < $iniset)
+        ? $settings['imgmaxsize']
+        : $iniset;
+
+    $imagemaxwidth  = $settings['imgmaxwidth'];
+    $imagemaxheight = $settings['imgmaxheight'];
+    $crop           = ($settings['crop_preview'] == 'Y') ? 1 : 0;
+
+    // make sure the folder exists
+    if(!is_dir($mod_nwi_file_dir)) {
+        mod_nwi_img_makedir($mod_nwi_file_dir);
+    }
+
+    // handle upload
+    if(isset($_FILES[$key]) && is_array($_FILES[$key]))
+    {
+        $picture = $_FILES[$key];
+        if (isset($picture['name']) && $picture['name'] && (strlen($picture['name']) > 3))
+        {
+            $pic_error = '';
+            // change special characters
+            $imagename = media_filename($picture['name']);
+            // all lowercase
+            $imagename = strtolower($imagename) ;
+            // if file exists, find new name by adding a number
+            if (file_exists($mod_nwi_file_dir.$imagename)) {
+                $num = 1;
+                $f_name = pathinfo($mod_nwi_file_dir.$imagename, PATHINFO_FILENAME);
+                $suffix = pathinfo($mod_nwi_file_dir.$imagename, PATHINFO_EXTENSION);
+                while (file_exists($mod_nwi_file_dir.$f_name.'_'.$num.'.'.$suffix)) {
+                    $num++;
+                }
+                $imagename = $f_name.'_'.$num.'.'.$suffix;
+            }
+            $filepath = $mod_nwi_file_dir.$imagename;
+            // check size limit
+            if (empty($picture['size']) || $picture['size'] > $imagemaxsize) {
+                $imageErrorMessage .= $MOD_NEWS_IMG['IMAGE_LARGER_THAN'].mod_nwi_byte_convert($imagemaxsize).'<br />';
+            } elseif (strlen($imagename) > '256') {
+                $imageErrorMessage .= $MOD_NEWS_IMG['IMAGE_FILENAME_ERROR'].'<br />';
+            } else {
+                // move to media folder
+                if (true===move_uploaded_file($picture['tmp_name'], $filepath)) {
+                    // preview images have a different size (smaller in most cases)
+                    if($is_preview_image) {
+                        $imagemaxwidth  = $previewwidth;
+                        $imagemaxheight = $previewheight;
+                    }
+                    // resize image (if larger than max width and height)
+                    if (list($w, $h) = getimagesize($mod_nwi_file_dir.$imagename)) {
+                        if ($w>$imagemaxwidth || $h>$imagemaxheight) {
+                            if (true !== ($pic_error = @mod_nwi_image_resize($mod_nwi_file_dir.$imagename, $mod_nwi_file_dir.$imagename, $imagemaxwidth, $imagemaxheight, $crop))) {
+                                $imageErrorMessage .= $pic_error.'<br />';
+                                @unlink($mod_nwi_file_dir.$imagename); // delete image (cleanup)
+                            }
+                        }
+                    }
+                    if($is_preview_image) {
+                        $database->query(sprintf(
+                            "UPDATE `%smod_news_img_posts` SET `image`='%s' " .
+                            "WHERE `post_id`=%d",
+                            TABLE_PREFIX, $imagename, $post_id
+                        ));
+                        if($database->is_error()) {
+                            $imageErrorMessage .= $database->get_error()."<br />";
+                        }
+                    } else {
+                        // create thumb
+                        if (true !== ($pic_error = @mod_nwi_image_resize($mod_nwi_file_dir.$imagename, $mod_nwi_thumb_dir.$imagename, $thumbwidth, $thumbheight, $crop))) {
+                            $imageErrorMessage .= $pic_error.'<br />';
+                            @unlink($mod_nwi_file_dir.$imagename); // delete image (cleanup)
+                        } else {
+                            $pic_id = null;
+                            // insert image into image table
+                            $database->query(sprintf(
+                                "INSERT INTO `%smod_news_img_img` " .
+                                "(`picname`) " .
+                                "VALUES ('%s')",
+                                TABLE_PREFIX,$imagename
+                            ));
+                            if($database->is_error()) {
+                                $imageErrorMessage .= $database->get_error()."<br />";
+                            } else {
+                                $pic_id = $database->getLastInsertId();
+                            }
+                            // image position
+                            $order = new order(TABLE_PREFIX.'mod_news_img_img', 'position', 'id', 'post_id');
+                            $position = $order->get_new($post_id);
+                            // connect with current post
+                            $database->query(sprintf(
+                                "INSERT INTO `%smod_news_img_posts_img` " .
+                                "(`post_id`,`pic_id`,`position`) " .
+                                "VALUES ('%s',%d,%d)",
+                                TABLE_PREFIX,$post_id,$pic_id,$position
+                            ));
+                            if($database->is_error()) {
+                                $imageErrorMessage .= $database->get_error()."<br />";
+                            }
+                        }
+                    }
+                } else {
+                    $imageErrorMessage .= "Unable to move uploaded image ".$picture['tmp_name']." to ".$mod_nwi_file_dir.$imagename."<br />";
+                }
+            }
+        }
+    }
+    return $imageErrorMessage;
 }
 
 function mod_nwi_img_makedir($dir, $with_thumb=true)
@@ -329,6 +514,38 @@ function mod_nwi_image_resize($src, $dst, $width, $height, $crop=0)
     }
     return true;
 }
+
+function mod_nwi_post_get($post_id)
+{
+    global $database;
+    $query_content = $database->query(sprintf(
+        "SELECT * FROM `%smod_news_img_posts` WHERE `post_id`=%d",
+        TABLE_PREFIX, $post_id
+    ));
+    if(!empty($query_content)) {
+        return $query_content->fetchRow();
+    }
+    return array();
+}
+
+/**
+ *
+ * @access 
+ * @return
+ **/
+ function mod_nwi_settings_get($section_id)
+{
+    global $database;
+    $query_content = $database->query(sprintf(
+        "SELECT * FROM `%smod_news_img_settings` WHERE `section_id`=%d",
+        TABLE_PREFIX,
+        $section_id
+    ));
+    if(!empty($query_content)) {
+        return $query_content->fetchRow();
+    }
+    return array();
+}   // end function mod_nwi_settings_get()
 
 function mod_nwi_byte_convert($bytes)
 {
