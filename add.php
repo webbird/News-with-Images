@@ -46,7 +46,7 @@ $post_content = '[CONTENT]<br />
 [IMAGES]
 </div>
 ';
-$image_loop = '<img src="[IMAGE]" data-caption="[DESCRIPTION]" />';
+$image_loop = '<img src="[IMAGE]" alt="[DESCRIPTION]" title="[DESCRIPTION]" data-caption="[DESCRIPTION]" />';
 $post_footer = '<div class="div_link">
 <a href="[BACK]">[TEXT_BACK]</a>
 </div>';
