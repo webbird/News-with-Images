@@ -1278,7 +1278,7 @@ function mod_nwi_post_process($post,$section_id,$users)
     // posting (preview) image
     if ($post['image'] != "") {
         $imgdata = mod_nwi_img_get($post['image']);
-        $post_img = "<img src='".WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post['image']."' alt='".htmlentities($post['title'])."' />";
+        $post_img = "<img src='".WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post['image']."' alt='".htmlspecialchars($post['title'], ENT_QUOTES | ENT_HTML401)."' />";
     } else {
         $post_img = "<img src='".WB_URL."/modules/news_img/images/nopic.png' alt='empty placeholder' style='width:".$previewwidth."px;' />";
     }
@@ -1363,7 +1363,7 @@ function mod_nwi_post_process($post,$section_id,$users)
     $post['display_group']   = ($group_id == 0) ? 'none' : 'inherit';
     if ($post['group_image'] != "") {
         $post['group_image_url'] = $post['group_image'];
-        $post['group_image'] = "<img class='mod_nwi_grouppic' src='".$post['group_image_url']."' alt='".htmlentities($post['group_title'])."' title='".htmlentities($TEXT['GROUP'].": ".$post['group_title'])."' />";
+        $post['group_image'] = "<img class='mod_nwi_grouppic' src='".$post['group_image_url']."' alt='".htmlspecialchars($post['group_title'], ENT_QUOTES | ENT_HTML401)."' title='".htmlspecialchars($TEXT['GROUP'].": ".$post['group_title'], ENT_QUOTES | ENT_HTML401)."' />";
     }
 
     // fallback to group image if there's no preview image
