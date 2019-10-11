@@ -206,10 +206,13 @@ header('Location: ../');
     // install the droplet(s)
     if(!defined('CAT_PATH')) {
         try {
-        include WB_PATH.'/modules/droplets/functions.inc.php';
-        make_dir(WB_PATH.'/temp/unzip');
-        wbce_unpack_and_import(WB_PATH.'/modules/news_img/droplets/droplet_getNewsItems.zip', WB_PATH . '/temp/unzip/');
-        rm_full_dir(WB_PATH.'/temp/unzip');
+            include __DIR__.'/droplets.functions.php';
+			$sDropletFile = __DIR__.'/droplets/getNewsItems.php';
+			if(is_readable($sDropletFile)){
+				if(importDropletFromFile($sDropletFile)){
+					echo 'Droplet <b>getNewsItems</b> installed successfully.<br>';
+				}
+			}
         } catch ( \Exception $e ) {}
     } else {
         CAT_Helper_Droplet::installDroplet(WB_PATH.'/modules/news_img/droplets/droplet_getNewsItems.zip');

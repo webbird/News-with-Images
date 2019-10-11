@@ -69,7 +69,7 @@ if (defined('POST_ID') && is_numeric(POST_ID)) {
     // tags
     $tags = mod_nwi_get_tags_for_post(POST_ID);
     foreach ($tags as $i => $tag) {
-        $tags[$i] = "<span class=\"mod_nwi_tag\" id=\"mod_nwi_tag_".$post['post_id']."_".$i."\""
+        $tags[$i] = "<span class=\"mod_nwi_tag\" id=\"mod_nwi_tag_".POST_ID."_".$i."\""
                   . (strlen($tag['tag_color']>0) ? "style=\"color:".$tag['tag_color']."\"" : "" ) .">"
                   . "<a href=\"".$wb->page_link(POST_ID)."?tags=".$tag['tag']."\">".$tag['tag']."</a></span>";
     }

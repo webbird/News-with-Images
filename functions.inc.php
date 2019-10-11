@@ -948,7 +948,7 @@ function mod_nwi_post_show(int $post_id)
  * @access 
  * @return
  **/
-function mod_nwi_posts_getall(int $section_id, bool $is_backend, string $query_extra, bool $process)
+function mod_nwi_posts_getall(int $section_id, bool $is_backend, string $query_extra, bool $process=true)
 {
     global $database, $admin;
 
@@ -1014,7 +1014,6 @@ function mod_nwi_posts_getall(int $section_id, bool $is_backend, string $query_e
     $query_posts = $database->query($sql);
 
     if(!empty($query_posts) && $query_posts->numRows()>0) {
-        if($process === true) {
             // map group index to title
             $group_map = array();
             foreach($groups as $i => $g) {

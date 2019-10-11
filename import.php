@@ -336,9 +336,7 @@ if ($module_type == "news_img") {
 
             // update tags
             $assigned_tags = mod_nwi_get_tags_for_post($post['post_id']);
-echo "FILE [",__FILE__,"] FUNC [",__FUNCTION__,"] LINE [",__LINE__,"]<br /><textarea style=\"width:100%;height:200px;color:#000;background-color:#fff;\">";
-print_r($assigned_tags);
-echo "</textarea><br />";
+
             if(is_array($assigned_tags) && count($assigned_tags)>0) {
                 foreach($assigned_tags as $id => $t) {
                     foreach($copied_tags as $cid => $ct) {
@@ -385,7 +383,7 @@ echo "</textarea><br />";
     $admin->print_footer();
 } elseif ($module_type == "news") {
 
-// =========================================== Classical News ======================================
+// =========================================== Classic News ======================================
 
     $query_settings = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_settings` WHERE `section_id` = '$source_id'");
     $fetch_settings = $query_settings->fetchRow();
@@ -565,6 +563,7 @@ echo "</textarea><br />";
     
     // Print admin footer
     $admin->print_footer();
+
 } elseif ($module_type == "topics") {
 
     // ==================================================== topics ===============================================
@@ -682,7 +681,7 @@ echo "</textarea><br />";
     "WHERE `section_id` = '$section_id'");
 
 
-    // Check if there is a db error, otherwise say successful
+    // Check if there is a db error
     if ($database->is_error()) {
         $admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
         // Print admin footer
@@ -690,8 +689,6 @@ echo "</textarea><br />";
         exit();
     }
 
-    // Include the ordering class
-    require_once(WB_PATH.'/framework/class.order.php');
     // Create new order object and reorder
     $order = new order(TABLE_PREFIX.'mod_news_img_posts', 'position', 'post_id', 'section_id');
     $order->clean($source_id);
@@ -779,8 +776,8 @@ echo "</textarea><br />";
             );
         
             // Update row
-            $database->query(
-                "UPDATE `".TABLE_PREFIX."mod_news_img_posts` "
+            $database->query(sprintf(
+                "UPDATE `%smod_news_img_posts` SET "
                 . "`section_id` = '$section_id', "
                  . "`group_id` = '$group_id', "
                  . "`title` = '".mod_nwi_escapeString($title)."', "
@@ -794,8 +791,9 @@ echo "</textarea><br />";
                  . "`published_until` = '$publisheduntil', "
                  . "`posted_when` = '".time()."', "
                  . "`posted_by` = '".$posted_by."' "
-                 . "WHERE `post_id` = '$post_id'"
-            );
+                 . "WHERE `post_id` = '$post_id'",
+                 TABLE_PREFIX
+            ));
             $additional_picture_path = WB_PATH.$fetch_settings['picture_dir'].'/topic'.$fetch_content['topic_id'];
             if (is_dir($additional_picture_path)) {
                 $order = new order(TABLE_PREFIX.'mod_news_img_img', 'position', 'post_id', 'section_id');
