@@ -13,10 +13,9 @@
  *
  */
 
-global $page_id, $section_id, $post_id;
+global $page_id, $section_id, $post_id, $allowed_suffixes;
 
 require_once __DIR__.'/functions.inc.php';
-require_once WB_PATH."/include/jscalendar/jscalendar-functions.php";
 
 // Get id
 if (!isset($_POST['post_id']) or !is_numeric($_POST['post_id'])) {
@@ -32,17 +31,25 @@ $update_when_modified = true; // Tells script to update when this page was last 
 $admin_header = FALSE;
 // Include WB admin wrapper script
 require WB_PATH.'/modules/admin.php';
-if (!$admin->checkFTAN()) {
-    $admin->print_header();
-    $admin->print_error(
-        $MESSAGE['GENERIC_SECURITY_ACCESS']
-	 .' (FTAN) '.__FILE__.':'.__LINE__,
-         ADMIN_URL.'/pages/index.php'
-    );
-    $admin->print_footer();
-    exit();
+if(!defined('CAT_PATH')) {
+    if (!$admin->checkFTAN()) {
+        $admin->print_header();
+        $admin->print_error(
+            $MESSAGE['GENERIC_SECURITY_ACCESS']
+    	 .' (FTAN) '.__FILE__.':'.__LINE__,
+             ADMIN_URL.'/pages/index.php'
+        );
+        $admin->print_footer();
+        exit();
+    } else {
+        $admin->print_header();
+    }
+}
+
+if(!defined('CAT_PATH')) {
+    include __DIR__.'/config/wbce_config.php';
 } else {
-    $admin->print_header();
+    include __DIR__.'/config/bc_config.php';
 }
 
 $group = '';
@@ -56,16 +63,17 @@ if ($admin->get_post('title') == '' and $admin->get_post('url') == '') {
     }
     $admin->print_error($MESSAGE['GENERIC']['FILL_IN_ALL'], WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id_key);
 } else {
-    $title = $database->escapeString($admin->get_post('title'));
-    $link = $database->escapeString($admin->get_post('link'));
-    $short = $database->escapeString($admin->get_post('short'));
-    $long = $database->escapeString($admin->get_post('long'));
-    if (NWI_USE_SECOND_BLOCK) {
-        $block2 = $database->escapeString($admin->get_post('block2'));
+    $settings = mod_nwi_settings_get($section_id);
+    $title = mod_nwi_escapeString($admin->get_post('title'));
+    $link = mod_nwi_escapeString($admin->get_post('link'));
+    $short = mod_nwi_escapeString($admin->get_post('short'));
+    $long = mod_nwi_escapeString($admin->get_post('long'));
+    if ($settings['use_second_block']=='Y') {
+        $block2 = mod_nwi_escapeString($admin->get_post('block2'));
     }
-    $image = $database->escapeString($admin->get_post('image'));
-    $active = $database->escapeString($admin->get_post('active'));
-    $group = $database->escapeString($admin->get_post('group'));
+    $image = mod_nwi_escapeString($admin->get_post('image'));
+    $active = mod_nwi_escapeString($admin->get_post('active'));
+    $group = mod_nwi_escapeString($admin->get_post('group'));
 
     $tags = $admin->get_post('tags');
 }
@@ -127,87 +135,18 @@ if (!is_writable(WB_PATH.PAGES_DIRECTORY.'/posts/')) {
     mod_nwi_create_file($filename, $file_create_time);
 }
 
-// get publishedwhen and publisheduntil
-$publishedwhen = jscalendar_to_timestamp($database->escapeString($admin->get_post('publishdate')));
-if ($publishedwhen == '' || $publishedwhen < 1) {
-    $publishedwhen=0;
-} else {
-    $publishedwhen -= TIMEZONE;
-}
-
-$publisheduntil = jscalendar_to_timestamp($database->escapeString($admin->get_post('enddate')), $publishedwhen);
-if ($publisheduntil == '' || $publisheduntil < 1) {
-    $publisheduntil=0;
-} else {
-    $publisheduntil -= TIMEZONE;
-}
-
-if (!defined('ORDERING_CLASS_LOADED')) {
-    require WB_PATH.'/framework/class.order.php';
-}
+list($publishedwhen, $publisheduntil) = mod_nwi_get_dates();
 
 // post images (gallery images)
+$imageErrorMessage = '';
 if (isset($_FILES["foto"])) {
-    echo "FILE [",__FILE__,"] FUNC [",__FUNCTION__,"] LINE [",__LINE__,"]<br /><textarea style=\"width:100%;height:200px;color:#000;background-color:#fff;\">";
-    print_r($_FILES);
-    echo "</textarea><br />";
-    mod_nwi_img_upload($post_id);
+    $imageErrorMessage = mod_nwi_img_upload($post_id);
 }
 
 // ----- post (preview) picture; shown on overview page ----------------------------------
 if (isset($_FILES["postfoto"]) && $_FILES["postfoto"]["name"] != "") {
-    mod_nwi_img_upload($post_id, true);
-} else {
-    if (!empty($mediafile)) {
-        // use existing image as preview image
-        $imgdata = mod_nwi_img_get($mediafile);
-        $image = $imgdata['picname'];
-        $settings = mod_nwi_settings_get($section_id);
-        // preview images size
-        $previewwidth = $previewheight = '';
-        if (substr_count($settings['resize_preview'], 'x')>0) {
-            list($previewwidth, $previewheight) = explode('x', $settings['resize_preview'], 2);
-        }
-        $crop = ($settings['crop_preview'] == 'Y') ? 1 : 0;
-echo "image $image post $post_id section $section_id width $previewwidth height $previewheight crop $crop<br />";
-//image 2015-11-10_10_49_19.png post 25 section 48 width 125 height 125 crop 0
-        mod_nwi_image_resize($mod_nwi_file_dir.$post_id.'/'.$image, $mod_nwi_file_dir.$image, $previewwidth, $previewheight, $crop);
-        $database->query(sprintf(
-            "UPDATE `%smod_news_img_posts` SET `image`='%s' " .
-            "WHERE `post_id`=%d",
-            TABLE_PREFIX, $image, $post_id
-        ));
-    }
-
-    /*
-Array
-(
-    [formtoken] => 7d6429d0-7f9d61ecbc03d572030b5bf2cc35bcfea21ce281
-    [section_id] => 48
-    [page_id] => 24
-    [post_id] => 25
-    [savegoback] =>
-    [title] => Test mit Bild
-    [link] => test-mit-bild
-    [mediafile] => 60
-    [group] => a%3A3%3A%7Bs%3A1%3A%22g%22%3Bi%3A0%3Bs%3A1%3A%22s%22%3Bi%3A48%3Bs%3A1%3A%22p%22%3Bi%3A24%3B%7D
-    [active] => 1
-    [publishdate] => 16.07.2019 15:27
-    [enddate] =>
-    [short] => <p>Workbench</p>
-
-    [long] =>
-    [block2] =>
-    [picdesc] => Array
-        (
-            [60] =>
-        )
-
-    [save] => Speichern
-)
-
-    */
-}
+    $imageErrorMessage .= mod_nwi_img_upload($post_id, true);
+} 
   
 // strip HTML from title
 $title = strip_tags($title);
@@ -223,8 +162,7 @@ if ($old_section_id!=$section_id) {
 // Update row
 $database->query(
     "UPDATE `".TABLE_PREFIX."mod_news_img_posts`"
-    . " SET `page_id` = '$page_id',"
-    . " `section_id` = '$section_id',"
+    . " SET `section_id` = '$section_id',"
     . " $position"
     . " `group_id` = '$group_id',"
     . " `title` = '$title',"
@@ -243,13 +181,13 @@ $database->query(
 // when no error has occurred go ahead and update the image descriptions
 if (!($database->is_error())) {
     //update Bildbeschreibungen der tabelle mod_news_img_img
-    $images = mod_nwi_img_get_by_post($post_id);
+    $images = mod_nwi_img_get_by_post($post_id,false);
     if (count($images) > 0) {
         foreach ($images as $row) {
             $row_id = $row['id'];
             $picdesc = isset($_POST['picdesc'][$row_id])
-                          ? strip_tags($_POST['picdesc'][$row_id])
-                          : '';
+                     ? mod_nwi_escapeString(strip_tags($_POST['picdesc'][$row_id]))
+                     : '';
             $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_img` SET `picdesc` = '$picdesc' WHERE id = '$row_id'");
         }
     }
@@ -281,8 +219,7 @@ if (is_array($tags) && count($tags)>0) {
     }
 }
 
-//   exit;
-// Check if there is a db error, otherwise say successful
+// Check result
 if ($database->is_error()) {
     $post_id_key = $admin->getIDKEY($id);
     if (defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) {

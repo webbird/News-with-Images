@@ -1,4 +1,8 @@
 @import url('font-awesome/css/font-awesome.min.css');
+@import url(css/datetimepickers/xdsoft/jquery.datetimepicker.min.css);
+@import url(css/datetimepickers/zebra/default/zebra_datepicker.min.css); 
+@import url(css/datetimepickers/nehakadam/DateTimePicker.min.css); 
+@import url(js/spectrum.css); 
 
 .mod_news_img table{width:100%}
 .mod_news_img th, .mod_news_img td{padding:2px 5px;text-align:left;}
@@ -6,6 +10,9 @@
 .mod_news_img table.striped tr:nth-child(even){background-color:#fff}
 .mod_news_img table img.preview{height:50px;max-height:50px;}
 .mod_news_img th {background-color:#ccc;}
+
+.mod_news_img input[type="submit"],.mod_news_img input[type="button"]{width:150px;padding:5px;margin-top:5px}
+
 .mod_news_img .mod_news_img_tag {padding:0.2em 0;}
 .mod_news_img .mod_news_img_taglist {border:1px solid #ececec;max-height:100px;overflow-y:scroll;}
 
@@ -33,8 +40,8 @@
 .mod_news_img .mod_img_news_add_group,
 .mod_news_img .mod_img_news_options,
 .mod_news_img .mod_news_img_help {
-	padding:0.25em 1em !important;
-	margin-right:1em !important;
+/* ? padding:0.25em 1em !important;
+	margin-right:1em !important;*/
 }
 
 .mod_news_img .mod_img_news_add_group,
@@ -176,3 +183,150 @@ item row hover onmouseover
 
 .mod_news_img a.btn{display:inline-block;width:150px;background-color:#ccc;text-align:center;text-decoration:none;}
 .mod_news_img a.btn:hover{color:#c00;}
+
+
+
+
+
+
+
+/* ===== TABS ===== */
+.mod_news_img .tabs {
+    float: none;
+    list-style: none;
+    padding: 0;
+}
+.mod_news_img .tabs:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+.mod_news_img .tabs input[type=radio] {
+    display:none;
+}
+.mod_news_img .tabs label.tab {
+    display: block;
+    float: left;
+    width: 20%;
+    color: #ccc;
+    font-size: 1.3em;
+    font-weight: normal;
+    text-decoration: none;
+    text-align: center;
+    line-height:1.3em;
+    cursor: pointer;
+    -webkit-transition: all 0.5s; /* Safari 3.1 to 6.0 */
+    transition: all 0.5s;
+    margin-right: 0 !important;
+    padding:5px;
+    border:1px solid #ccc;
+    border-bottom-color: #3498db;
+}
+
+.mod_news_img .tabs label.tab i {
+    padding: 5px;
+    margin-right: 0;
+}
+.mod_news_img .tabs label.tab:hover {
+    color: #3498db;
+}
+.mod_news_img .tab-content {
+    display: none;
+    width: 100%;
+    float: left;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.mod_news_img .tabs [id^="tab"]:checked + label.tab {
+    color: #3498db;
+    border-color: #3498db;
+    border-bottom:1px solid #F3F3F3;
+    font-weight:900;
+}
+.mod_news_img #tab1:checked ~ #tab-content1,
+.mod_news_img #tab2:checked ~ #tab-content2,
+.mod_news_img #tab3:checked ~ #tab-content3 {
+    display: block;
+}
+
+@media (min-width: 768px) {
+    .tabs i {
+        padding: 5px;
+        margin-right: 10px;
+    }
+    .tabs label.tab span {
+        display: inline-block;
+    }
+}
+
+/* Flat Theme colors */
+div.container table#former_positioning_table div.mod_news_img .tabs label.tab{border-bottom-color: #505b6d}
+div.container table#former_positioning_table div.mod_news_img .tabs [id^="tab"]:checked + label.tab {border-color:#505b6d;color:#505b6d;border-bottom:1px solid #F3F3F3;}
+div.container table#former_positioning_table div.mod_news_img .tabs label.tab:hover{color:#505b6d}
+
+/* BC 1.3 */
+div#fc_content_container div#fc_main_content div.mod_news_img{padding:15px}
+
+ /* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 17px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 13px;
+  width: 13px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(13px);
+  -ms-transform: translateX(13px);
+  transform: translateX(13px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 17px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
