@@ -902,7 +902,7 @@ function mod_nwi_post_move($section_id,$page_id,$with_tags=false)
 
         // Specify the filename
         $filename = WB_PATH.PAGES_DIRECTORY.'/'.$post_link.PAGE_EXTENSION;
-        mod_nwi_create_file($filename, '');
+        mod_nwi_create_file($filename, '', $post_id);
     }
     return true;
 }
@@ -1673,9 +1673,13 @@ function mod_nwi_return_bytes($val)
     return $val;
 }
 
-function mod_nwi_create_file($filename, $filetime=null)
+function mod_nwi_create_file($filename, $filetime=null, $postID=null)
 {
     global $page_id, $section_id, $post_id;
+
+    if(!empty($postID)) {
+        $post_id = $postID;
+    }
 
     // We need to create a new file
     // First, delete old file if it exists
