@@ -79,8 +79,8 @@ if (defined('POST_ID') && is_numeric(POST_ID)) {
 
     $replacements = array_merge(
         $default_replacements,
-        array_change_key_case($post,CASE_UPPER),
         $TEXT,
+        array_change_key_case($post,CASE_UPPER),
         $MOD_NEWS_IMG,
         array(
             'IMAGE'           => $post['post_img'],
