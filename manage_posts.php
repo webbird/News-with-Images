@@ -45,7 +45,8 @@ if (!$admin->checkFTAN()) {
 // validate action
 $action = '';
 $known_actions = array(
-    'copy', 'copy_with_tags', 'move', 'move_with_tags', 'delete', 'activate', 'deactivate', 'tags'
+    'copy',     'copy_with_tags', 'move', 'move_with_tags', 'delete',
+    'activate', 'deactivate',     'tags', 'group'
 );
 if (in_array($_POST['action'], $known_actions)) {
     $action = $_POST['action'];
@@ -76,6 +77,41 @@ if(isset($_POST['exec']) && isset($_POST['manage_posts'])) {
             break;
         case "move_with_tags":
             $result = mod_nwi_post_move($section_id, $page_id, true);
+            break;
+        case "group":
+            $result = false;
+            $posts = array();
+            $group = null;
+            // get post IDs
+            if(isset($_POST['manage_posts']) && is_array($_POST['manage_posts'])) {
+                $posts = $_POST['manage_posts'];
+            }
+            // get group
+            if(isset($_POST['group']) && !empty($_POST['group'])) {
+                $gid_value = urldecode($_POST['group']);
+                $values = unserialize($gid_value);
+                if (!isset($values['s']) or  !isset($values['g']) or  !isset($values['p'])) {
+                    header("Location: ".ADMIN_URL."/pages/index.php");
+                    exit(0);
+                }
+                if (intval($values['p'])!=0) {
+                    $group_id = intval($values['g']);
+                    $section_id = intval($values['s']);
+                    $page_id = intval($values['p']);
+                    $group = mod_nwi_get_group($group_id);
+                }
+            }
+            if(!empty($group) && !empty($posts)) {
+                foreach($posts as $post_id) {
+                    // Update row
+                    $database->query(sprintf(
+                        "UPDATE `%smod_news_img_posts` ".
+                        "SET `group_id`=%d WHERE `post_id`=%d",
+                        TABLE_PREFIX,$group_id,intval($post_id)
+                    ));
+                }
+                $result = true;
+            }
             break;
         case "tags":
             $result = false;
