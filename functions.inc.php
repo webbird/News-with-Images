@@ -1922,7 +1922,8 @@ function mod_nwi_display_news_items(
     $skip = null,
     $tags = null,
     $groups_on_tags = false,        // wether to use the group_id if $skip or $tags is set
-    $view = null                 // CSS view to use
+    $view = null,                   // CSS view to use
+    $aslist = false
 ) {
 	$output = mod_nwi_get_news_items(
 		$options = array(
@@ -1942,6 +1943,7 @@ function mod_nwi_display_news_items(
             'tags'               => $tags,
             'groups_on_tags'     => $groups_on_tags,
             'view'               => $view,
+            'aslist'             => $aslist,
 		)
 	);
 	echo $output;
@@ -1967,8 +1969,9 @@ function mod_nwi_get_news_items($options=array())
 		'lang_filter' => false,	          // flag to enable language filter (default:= false, show only news from a news page, which language fits $lang_id)
         'skip' => null,                   // do not show posts with the given list of tags (default:=none)
         'tags' => null,                   // show posts with only the given list of tags
-        'groups_on_tags' => false,
-        'view' => 'default',
+        'groups_on_tags' => false,        // wether to use the group_id if $skip or $tags is set
+        'view' => 'default',              // use css from subfolder ('default','faq',...)
+        'aslist' => false                 // unordered list of titles
 	);
 
 	// merge defaults and options array and remove unsupported keys
@@ -2175,6 +2178,15 @@ function mod_nwi_get_news_items($options=array())
             }
             $posts[] = mod_nwi_post_process($post, $post['section_id'], $users);
         }
+    }
+
+    if(!empty($settings['aslist']) && $settings['aslist']==true) {
+        $output = array('<ul class="nia_posts">');
+        foreach($posts as $p) {
+            $output[] = '<li class="nia_post"><a href="'.WB_URL.PAGES_DIRECTORY.$p['link'].PAGE_EXTENSION.'">'.$p['title'].'</a></li>';
+        }
+        $output[] = '</ul>';
+        return implode("\n",$output);
     }
 
     $tpl = '/templates/default/view.phtml';
