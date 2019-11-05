@@ -59,6 +59,8 @@ list($vars,$default_replacements) = mod_nwi_replacements();
 
 // switch: posting list or post details
 
+$page_keywords = array();
+
 // ----- read post ---------------------------------------------------------------
 if (defined('POST_ID') && is_numeric(POST_ID)) {
 
@@ -72,6 +74,9 @@ if (defined('POST_ID') && is_numeric(POST_ID)) {
         $tags[$i] = "<span class=\"mod_nwi_tag\" id=\"mod_nwi_tag_".POST_ID."_".$i."\""
                   . (strlen($tag['tag_color']>0) ? "style=\"color:".$tag['tag_color']."\"" : "" ) .">"
                   . "<a href=\"".$wb->page_link(POST_ID)."?tags=".$tag['tag']."\">".$tag['tag']."</a></span>";
+        if(!isset($page_keywords[$tag['tag']])) {
+            $page_keywords[] = htmlspecialchars($tag['tag'], ENT_QUOTES | ENT_HTML401);
+        }
     }
 
     $post = mod_nwi_post_show(intval(POST_ID));
@@ -120,8 +125,22 @@ if (defined('POST_ID') && is_numeric(POST_ID)) {
 } else {
     $posts = mod_nwi_post_list(intval($section_id));
     $tpl_data = mod_nwi_posts_render($section_id,$posts,$settings['posts_per_page']);
+    $tags = mod_nwi_get_tags($section_id);
+    foreach($tags as $t) {
+        $page_keywords[] = htmlspecialchars($t['tag'], ENT_QUOTES | ENT_HTML401);
+    }
+
 }
 
 $view = (strlen($settings['view']) ? $settings['view'] : 'default');
-
+if(!defined('CAT_PATH')) {
+    if (defined('WBCE_VERSION') && version_compare(WBCE_VERSION, '1.4.0', '>')) {
+        I::insertMetaTag(array (
+             "setname" => "keywords",
+             "name"    => "keywords",
+             "content" => implode(' ',$page_keywords),
+             "append"  => ", "
+        ));
+    }
+}
 include __DIR__.'/templates/default/view.phtml';

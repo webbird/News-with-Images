@@ -11,6 +11,9 @@
 .mod_news_img table img.preview{height:50px;max-height:50px;}
 .mod_news_img th {background-color:#ccc;}
 
+.mod_news_img div.scrollable{height:300px;overflow:auto}
+.mod_news_img div.scrollable table th{position:sticky;top:0}
+
 .mod_news_img input[type="submit"],.mod_news_img input[type="button"]{width:150px;padding:5px;margin-top:5px}
 
 .mod_news_img .mod_news_img_tag {padding:0.2em 0;}

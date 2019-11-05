@@ -1121,8 +1121,13 @@ function mod_nwi_posts_render($section_id,$posts,$posts_per_page=0)
             $num_of = $position+$posts_per_page;
         }
 
+        if($num_of>$total_num) {
+            $num_of=$total_num;
+        }
+
         $out_of = ($position+1).'-'.$num_of.' '.strtolower($TEXT['OUT_OF']).' '.$total_num;
         $of = ($position+1).'-'.$num_of.' '.strtolower($TEXT['OF']).' '.$total_num;
+
         if($previous_link || $next_link) {
             $display_previous_next_links = 'visible';
         }
