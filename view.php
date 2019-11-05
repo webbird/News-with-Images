@@ -73,7 +73,7 @@ if (defined('POST_ID') && is_numeric(POST_ID)) {
     foreach ($tags as $i => $tag) {
         $tags[$i] = "<span class=\"mod_nwi_tag\" id=\"mod_nwi_tag_".POST_ID."_".$i."\""
                   . (strlen($tag['tag_color']>0) ? "style=\"color:".$tag['tag_color']."\"" : "" ) .">"
-                  . "<a href=\"".$wb->page_link(POST_ID)."?tags=".$tag['tag']."\">".$tag['tag']."</a></span>";
+                  . "<a href=\"".$wb->page_link(PAGE_ID)."?tags=".$tag['tag']."\">".$tag['tag']."</a></span>";
         if(!isset($page_keywords[$tag['tag']])) {
             $page_keywords[] = htmlspecialchars($tag['tag'], ENT_QUOTES | ENT_HTML401);
         }
