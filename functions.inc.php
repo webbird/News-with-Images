@@ -629,7 +629,7 @@ function mod_nwi_post_copy($section_id,$page_id,$with_tags=false)
         	} else {
         	    // Specify the filename
         	    $filename = WB_PATH.PAGES_DIRECTORY.'/'.$post_link.PAGE_EXTENSION;
-        	    mod_nwi_create_file($filename, $file_create_time);
+        	    mod_nwi_create_file($filename, $file_create_time, $post_id);
         	}
 
             // create image dir and copy images
