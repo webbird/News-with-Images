@@ -1077,12 +1077,14 @@ function mod_nwi_posts_render($section_id,$posts,$posts_per_page=0)
 
     // filter by tags
     $tags_header = null;
+    $tags_append = null;
     if(isset($_GET['tags']) && strlen($_GET['tags'])) {
         $requested_tags = mod_nwi_escape_tags($_GET['tags']);
         foreach ($requested_tags as $i => $tag) {
             $requested_tags[$i] = "<span class=\"mod_nwi_tag\" id=\"mod_nwi_tag_".$i."\">".$tag."</span>";
         }
         $tags_header = implode("\n",$requested_tags);
+        $tags_append = $_GET['tags'];
     }
 
     // Create previous and next links
@@ -1091,9 +1093,9 @@ function mod_nwi_posts_render($section_id,$posts,$posts_per_page=0)
         $cnt = mod_nwi_posts_count($section_id); // all posts in this section
         $total_num = $cnt['count'];
         if ($position > 0) {
-            $pl_prepend = '<a href="?p='.($position-$posts_per_page).'">';
+            $pl_prepend = '<a href="?p='.($position-$posts_per_page).(empty($tags_append) ? '' : '&amp;tags='.$tags_append).'">';
             if (isset($_GET['g']) and is_numeric($_GET['g'])) {
-                $pl_prepend = '<a href="?p='.($position-$posts_per_page).'&amp;g='.$_GET['g'].'">';
+                $pl_prepend = '<a href="?p='.($position-$posts_per_page).(empty($tags_append) ? '' : '&amp;tags='.$tags_append).'&amp;g='.$_GET['g'].'">';
             }
             $pl_append = '</a>';
             $previous_link = $pl_prepend.$TEXT['PREVIOUS'].$pl_append;
@@ -1107,9 +1109,9 @@ function mod_nwi_posts_render($section_id,$posts,$posts_per_page=0)
             $next_page_link = '';
         } else {
             if (isset($_GET['g']) and is_numeric($_GET['g'])) {
-                $nl_prepend = '<a href="?p='.($position+$posts_per_page).'&amp;g='.$_GET['g'].'"> ';
+                $nl_prepend = '<a href="?p='.($position+$posts_per_page).(empty($tags_append) ? '' : '&amp;tags='.$tags_append).'&amp;g='.$_GET['g'].'"> ';
             } else {
-                $nl_prepend = '<a href="?p='.($position+$posts_per_page).'"> ';
+                $nl_prepend = '<a href="?p='.($position+$posts_per_page).(empty($tags_append) ? '' : '&amp;tags='.$tags_append).'"> ';
             }
             $nl_append = '</a>';
             $next_link = $nl_prepend.$TEXT['NEXT'].$nl_append;
