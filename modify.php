@@ -55,7 +55,7 @@ if (!is_array($posts) || count($posts)<1) {
     // count groups
     $query_groups = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_news_img_groups` WHERE `section_id` = '$section_id'");
     $num_groups = $query_groups->numRows();
-    if ($num_groups != 0) {
+    if ($num_groups == 0) {
         // news with images
         $query_nwi = $database->query(sprintf(
             "SELECT `section_id` FROM `%ssections`" .
