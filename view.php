@@ -89,6 +89,7 @@ if (defined('POST_ID') && is_numeric(POST_ID)) {
         $MOD_NEWS_IMG,
         array(
             'IMAGE'           => $post['post_img'],
+			'IMAGE_URL' 	  => WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post['image'],
             'IMAGES'          => implode("", $images),
             'SHORT'           => $post['content_short'],
             'LINK'            => $post['post_link'],

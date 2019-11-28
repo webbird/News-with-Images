@@ -1876,6 +1876,7 @@ function mod_nwi_replacements()
         'GROUP_IMAGE_URL',              // image url
         'GROUP_TITLE',                  // group title
         'IMAGE',                        // preview image
+		'IMAGE_URL',					// URL of preview image without <img src>
         'IMAGES',                       // gallery images
         'LINK',                         // "read more" link
         'MODI_DATE',                    // post modification date
