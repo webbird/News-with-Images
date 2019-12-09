@@ -933,7 +933,11 @@ function mod_nwi_post_show(int $post_id)
     $post = mod_nwi_post_get($post_id);
 
     // get group data
-    if($post_id['group_id'] != 0) {
+	$gid = 0;
+	if (is_array($post_id)) {
+		$gid = $post_id['group_id'];
+	}
+    if($gid != 0) {
         $group = mod_nwi_get_group($post_id['group_id']);
         if($group['active'] != 1) {
             return false;
