@@ -185,11 +185,7 @@ require(WB_PATH."/index.php");
         $database->query("ALTER TABLE `".TABLE_PREFIX."mod_news_img_img` CHANGE COLUMN `bildname` `picname` VARCHAR(255) NOT NULL DEFAULT '' AFTER `id`, CHANGE COLUMN `bildbeschreibung` `picdesc` VARCHAR(255) NOT NULL DEFAULT '' AFTER `picname`");
     } catch(\PDOException $e) {}
 
-    // v5.0
-
-    if(file_exists(__DIR__.'/config.php')) {
-        @unlink(__DIR__.'/config.php');
-    }
+    // ----- v5.0 --------------------------------------------------------------
 
     try {
         $database->query(sprintf("ALTER TABLE `%smod_news_img_posts` DROP COLUMN `page_id`",TABLE_PREFIX));
@@ -309,6 +305,20 @@ require(WB_PATH."/index.php");
             }
         }
     }
+
+    // find second block setting in config.php and delete that file then
+    if(file_exists(__DIR__.'/config.php')) {
+        // 'grep' define('NWI_USE_SECOND_BLOCK',true);
+        require __DIR__.'/config.php';
+        if(defined('NWI_USE_SECOND_BLOCK') && NWI_USE_SECOND_BLOCK === true) {
+            $database->query(sprintf(
+                'UPDATE `%smod_news_img_settings` SET `use_second_block`=Y',
+                TABLE_PREFIX
+            ));
+        }
+        @unlink(__DIR__.'/config.php');
+    }
+
 
     // install the droplet(s)
     if(!defined('CAT_PATH')) {
