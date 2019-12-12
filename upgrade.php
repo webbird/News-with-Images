@@ -312,7 +312,7 @@ require(WB_PATH."/index.php");
         require __DIR__.'/config.php';
         if(defined('NWI_USE_SECOND_BLOCK') && NWI_USE_SECOND_BLOCK === true) {
             $database->query(sprintf(
-                'UPDATE `%smod_news_img_settings` SET `use_second_block`=Y',
+                'UPDATE `%smod_news_img_settings` SET `use_second_block`="Y"',
                 TABLE_PREFIX
             ));
         }
