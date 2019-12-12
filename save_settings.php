@@ -57,15 +57,11 @@ $raw = array('<', '>', '');
 
 // get current settings
 $settings = mod_nwi_settings_get($section_id);
-$block2='';
 
 $header = mod_nwi_escapeString(str_replace($friendly, $raw, $_POST['header']));
 $post_loop = mod_nwi_escapeString(str_replace($friendly, $raw, $_POST['post_loop']));
 $view_order = intval($_POST['view_order']);
 $footer = mod_nwi_escapeString(str_replace($friendly, $raw, $_POST['footer']));
-if ($settings['use_second_block']=='Y') {
-    $block2 = mod_nwi_escapeString(str_replace($friendly, $raw, $_POST['block2']));
-}
 $post_header = mod_nwi_escapeString(str_replace($friendly, $raw, $_POST['post_header']));
 $post_content = mod_nwi_escapeString(str_replace($friendly, $raw, $_POST['post_content']));
 $image_loop = mod_nwi_escapeString(str_replace($friendly, $raw, $_POST['image_loop']));
@@ -77,6 +73,7 @@ $gal_img_resize_height = mod_nwi_escapeString($_POST['gal_img_resize_height']);
 $gal_img_max_size = intval($_POST['gal_img_max_size'])*1024;
 $use_second_block = ( (isset($_POST['use_second_block']) && $_POST['use_second_block']=='Y') ? 'Y' : 'N');
 $view = mod_nwi_escapeString($_POST['view']);
+$block2 = mod_nwi_escapeString(str_replace($friendly, $raw, $_POST['block2']));
 
 // if the user chooses a new view, the setting are overwritten by the
 // defaults of this view!
@@ -124,6 +121,15 @@ if ($fetch_content['gallery'] != $gallery) {
 $gal_img_max_size = intval($gal_img_max_size);
 $gal_img_resize_width = intval($gal_img_resize_width);
 $gal_img_resize_height = intval($gal_img_resize_height);
+
+// if the "use block 2" setting changed...
+if($settings['use_second_block'] != $use_second_block) {
+    // from on to off: delete content
+    if($use_second_block == 'N') {
+        $block2 = '';
+    }
+}
+
 
 // Update settings
 $database->query(
