@@ -27,4 +27,4 @@ if(!function_exists('jscalendar_to_timestamp')) {
 }
 
 // datetimepicker
-$datetimepicker = 'zebra';
+$datetimepicker = 'xdsoft';

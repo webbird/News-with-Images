@@ -98,8 +98,6 @@ if (defined('POST_ID') && is_numeric(POST_ID)) {
             'TAGS'            => implode(" ", $tags),
             'CONTENT'         => $post['content_short'].$post['content_long'],
             'BACK'            => $page_link,
-            'NEWS_BLOCK2'     => $post_block2, // backward compatibility to News
-            'TOPIC_BLOCK2'    => $post_block2, // re-use the constant from topics for backwards compatibility
             'PREVIOUS_PAGE_LINK'
                 => (strlen($post['prev_link'])>0 ? '<a href="'.$post['prev_link'].'">'.$MOD_NEWS_IMG['TEXT_PREV_POST'].'</a>' : null),
             'NEXT_PAGE_LINK'
@@ -130,6 +128,12 @@ if (defined('POST_ID') && is_numeric(POST_ID)) {
         );
         if (!defined("MODULES_BLOCK2")) {
             define("MODULES_BLOCK2", $post_block2);
+        }
+        if(!defined("NEWS_BLOCK2")) {
+            define("NEWS_BLOCK2", $post_block2);
+        }
+        if(!defined("TOPIC_BLOCK2")) {
+            define("TOPIC_BLOCK2", $post_block2);
         }
     }
 

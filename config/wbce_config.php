@@ -30,4 +30,4 @@ switch(DATE_FORMAT) {
 }
 
 // datetimepicker
-$datetimepicker = 'zebra';
+$datetimepicker = 'xdsoft';
