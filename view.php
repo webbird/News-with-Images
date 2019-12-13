@@ -90,9 +90,9 @@ if (defined('POST_ID') && is_numeric(POST_ID)) {
         if (empty($post_block2) && !empty($settings['block2'])) {
             // get content from settings
             $post_block2 = $settings['block2'];
+        }
             if (!defined("MODULES_BLOCK2")) {
                 define("MODULES_BLOCK2", $post_block2);
-            }
         }
     }
 
