@@ -82,20 +82,6 @@ if (defined('POST_ID') && is_numeric(POST_ID)) {
     $post = mod_nwi_post_show(intval(POST_ID));
     $images = mod_nwi_img_get_by_post(intval(POST_ID),true);
 
-    // use block 2
-    $post_block2 = '';
-    if ($settings['use_second_block']=='Y') {
-        // get content from post
-        $post_block2 = ($post['content_block2']);
-        if (empty($post_block2) && !empty($settings['block2'])) {
-            // get content from settings
-            $post_block2 = $settings['block2'];
-        }
-            if (!defined("MODULES_BLOCK2")) {
-                define("MODULES_BLOCK2", $post_block2);
-        }
-    }
-
     $replacements = array_merge(
         $default_replacements,
         $TEXT,
@@ -122,6 +108,30 @@ if (defined('POST_ID') && is_numeric(POST_ID)) {
                 => ((strlen($post['prev_link'])>0 || strlen($post['next_link'])>0) ? 'visible' : 'hidden'),
         )
     );
+
+    // use block 2
+    $post_block2 = '';
+    if ($settings['use_second_block']=='Y') {
+        // get content from post
+        $post_block2 = ($post['content_block2']);
+        if (empty($post_block2) && !empty($settings['block2'])) {
+            // get content from settings
+            $post_block2 = $settings['block2'];
+        }
+        // replace placeholders
+        $post_block2 = preg_replace_callback(
+            '~\[('.implode('|',$vars).')+\]~',
+            function($match) use($replacements) {
+                return (isset($match[1]) && isset($replacements[$match[1]]))
+                    ? $replacements[$match[1]]
+                    : '';
+            },
+            $post_block2
+        );
+        if (!defined("MODULES_BLOCK2")) {
+            define("MODULES_BLOCK2", $post_block2);
+        }
+    }
 
     $output = preg_replace_callback(
         '~\[('.implode('|',$vars).')+\]~',
