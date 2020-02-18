@@ -132,7 +132,7 @@ if (!is_writable(WB_PATH.PAGES_DIRECTORY.'/posts/')) {
     }
     // Specify the filename
     $filename = WB_PATH.PAGES_DIRECTORY.'/'.$post_link.PAGE_EXTENSION;
-    mod_nwi_create_file($filename, $file_create_time);
+    mod_nwi_create_file($filename, $file_create_time, null, null);
 }
 
 list($publishedwhen, $publisheduntil) = mod_nwi_get_dates();

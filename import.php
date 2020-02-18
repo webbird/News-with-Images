@@ -298,7 +298,7 @@ if ($module_type == "news_img") {
             } else {
                 // Specify the filename
                 $filename = WB_PATH.PAGES_DIRECTORY.'/'.$post_link.PAGE_EXTENSION;
-                mod_nwi_create_file($filename, $file_create_time);
+                mod_nwi_create_file($filename, $file_create_time, null, null);
             }
 
 
@@ -505,7 +505,7 @@ if ($module_type == "news_img") {
                     } else {
                         // Specify the filename
                         $filename = WB_PATH.PAGES_DIRECTORY.'/'.$post_link.PAGE_EXTENSION;
-                        mod_nwi_create_file($filename, $file_create_time);
+                        mod_nwi_create_file($filename, $file_create_time, null, null);
                     }
 
                     if (!is_dir($mod_nwi_file_dir)) {
@@ -748,7 +748,7 @@ if ($module_type == "news_img") {
             } else {
                 // Specify the filename
                 $filename = WB_PATH.PAGES_DIRECTORY.'/'.$post_link.PAGE_EXTENSION;
-                mod_nwi_create_file($filename, $file_create_time);
+                mod_nwi_create_file($filename, $file_create_time, null, null);
             }
 
             if (!is_dir($mod_nwi_file_dir)) {

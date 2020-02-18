@@ -121,9 +121,11 @@ $link = $post_data['link'];
 $parts = explode('/', $link);
 $link = array_pop($parts);
 $linkbase = implode('/', $parts);
-$parts = explode(PAGE_SPACER, $link);
-array_pop($parts);
-$link = implode(PAGE_SPACER, $parts);
+if(strlen(PAGE_SPACER)) {
+    $parts = explode(PAGE_SPACER, $link);
+    array_pop($parts);
+    $link = implode(PAGE_SPACER, $parts);
+}
 $assigned = array();
 $tags = mod_nwi_get_tags($section_id);
 $assigned_tags = $database->query(sprintf(
@@ -136,7 +138,7 @@ while ($a=$assigned_tags->fetchRow()) {
 }
 
 // Create new order object and reorder
-$order = new order(TABLE_PREFIX.'mod_news_img_img', 'position', 'id', 'post_id');
+$order = new order(TABLE_PREFIX.'mod_news_img_img', 'position', 'id', 'post_{id');
 $order->clean($post_id);
 
 // get images

@@ -32,16 +32,29 @@ if (function_exists('ini_set')) {
 }
 
 // get settings for current section
-$settings = mod_nwi_settings_get(intval($section_id));
+$post_section = (
+    defined('POST_SECTION') ?
+    POST_SECTION :
+    $section_id
+);
+$settings = mod_nwi_settings_get(intval($post_section));
 
 // Get page info
 $query_page = $database->query(sprintf(
-    "SELECT `link` FROM `%spages` WHERE `page_id` = '%d'",
-    TABLE_PREFIX,intval(PAGE_ID)
+    "SELECT `t1`.`link` FROM `%spages` AS `t1` " .
+    "JOIN `%ssections` AS `t2` " .
+    "ON `t1`.`page_id`=`t2`.`page_id` " .
+    "WHERE `t2`.`section_id`=%d",
+    TABLE_PREFIX,TABLE_PREFIX,intval($post_section)
 ));
+
 if ($query_page->numRows() > 0) {
     $page = $query_page->fetchRow();
+    if($page['link']!=$wb->default_link) {
     $page_link = page_link($page['link']);
+    } else {
+        $page_link = WB_URL;
+    }
     if (isset($_GET['p']) and intval($_GET['p']) > 0) {
         $page_link .= '?p='.intval($_GET['p']);
     }
@@ -67,6 +80,9 @@ if (defined('POST_ID') && is_numeric(POST_ID)) {
     if(!$page_link) {
         exit($MESSAGE['PAGES']['NOT_FOUND']);
     }
+
+    // for functions that use global $section_id
+    $section_id = $post_section;
 
     // tags
     $tags = mod_nwi_get_tags_for_post(POST_ID);

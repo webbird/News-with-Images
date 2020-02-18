@@ -629,7 +629,7 @@ function mod_nwi_post_copy($section_id,$page_id,$with_tags=false)
         	} else {
         	    // Specify the filename
         	    $filename = WB_PATH.PAGES_DIRECTORY.'/'.$post_link.PAGE_EXTENSION;
-        	    mod_nwi_create_file($filename, $file_create_time, $post_id);
+        	    mod_nwi_create_file($filename, $file_create_time, $post_id, $section_id);
         	}
 
             // create image dir and copy images
@@ -902,7 +902,7 @@ function mod_nwi_post_move($section_id,$page_id,$with_tags=false)
 
         // Specify the filename
         $filename = WB_PATH.PAGES_DIRECTORY.'/'.$post_link.PAGE_EXTENSION;
-        mod_nwi_create_file($filename, '', $post_id);
+        mod_nwi_create_file($filename, '', $post_id, $section_id);
     }
     return true;
 }
@@ -916,8 +916,14 @@ function mod_nwi_post_show(int $post_id)
 {
     global $database, $admin, $section_id;
 
+    $post_section = (
+        defined('POST_SECTION') ?
+        POST_SECTION :
+        $section_id
+    );
+
     // get settings
-    $settings = mod_nwi_settings_get($section_id);
+    $settings = mod_nwi_settings_get($post_section);
 
     // get users
     $users = mod_nwi_users_get();
@@ -1684,12 +1690,17 @@ function mod_nwi_return_bytes($val)
     return $val;
 }
 
-function mod_nwi_create_file($filename, $filetime=null, $postID=null)
+function mod_nwi_create_file(string $filename, ?string $filetime=null, ?string $postID=null, ?string $sectionID)
 {
     global $page_id, $section_id, $post_id;
 
     if(!empty($postID)) {
         $post_id = $postID;
+    }
+    // on copy/move, the ID of the new sections is passed; in all other cases
+    // we use the ID of the current section
+    if(empty($sectionID)) {
+        $sectionID = $section_id;
     }
 
     // We need to create a new file
@@ -1713,7 +1724,7 @@ function mod_nwi_create_file($filename, $filetime=null, $postID=null)
     $content = ''.
 '<?php
 $page_id = '.$page_id.';
-$section_id = '.$section_id.';
+$section_id = '.$sectionID.';
 $post_id = '.$post_id.';
 
 define("POST_SECTION", $section_id);
