@@ -629,7 +629,7 @@ function mod_nwi_post_copy($section_id,$page_id,$with_tags=false)
         	} else {
         	    // Specify the filename
         	    $filename = WB_PATH.PAGES_DIRECTORY.'/'.$post_link.PAGE_EXTENSION;
-        	    mod_nwi_create_file($filename, $file_create_time, $post_id, $section_id);
+        	    mod_nwi_create_file($filename, $file_create_time, $post_id, $section_id, $page_id);
         	}
 
             // create image dir and copy images
@@ -1690,7 +1690,7 @@ function mod_nwi_return_bytes($val)
     return $val;
 }
 
-function mod_nwi_create_file(string $filename, ?string $filetime=null, ?string $postID=null, ?string $sectionID)
+function mod_nwi_create_file(string $filename, ?string $filetime=null, ?string $postID=null, ?string $sectionID=null, ?string $pageID=null)
 {
     global $page_id, $section_id, $post_id;
 
@@ -1701,6 +1701,9 @@ function mod_nwi_create_file(string $filename, ?string $filetime=null, ?string $
     // we use the ID of the current section
     if(empty($sectionID)) {
         $sectionID = $section_id;
+    }
+    if(empty($pageID)) {
+        $pageID = $page_id;
     }
 
     // We need to create a new file
@@ -1723,7 +1726,7 @@ function mod_nwi_create_file(string $filename, ?string $filetime=null, ?string $
     // Write to the filename
     $content = ''.
 '<?php
-$page_id = '.$page_id.';
+$page_id = '.$pageID.';
 $section_id = '.$sectionID.';
 $post_id = '.$post_id.';
 
@@ -1924,7 +1927,7 @@ function mod_nwi_replacements()
         'USERNAME',                     // user's (who posted) username
     );
     $default_replacements = array(
-        'PAGE_TITLE'        => PAGE_TITLE,
+        
     );
     return array($vars,$default_replacements);
 }

@@ -41,7 +41,7 @@ $settings = mod_nwi_settings_get(intval($post_section));
 
 // Get page info
 $query_page = $database->query(sprintf(
-    "SELECT `t1`.`link` FROM `%spages` AS `t1` " .
+    "SELECT `t1`.`link`, `t1`.`page_title`, `t1`.`menu_title` FROM `%spages` AS `t1` " .
     "JOIN `%ssections` AS `t2` " .
     "ON `t1`.`page_id`=`t2`.`page_id` " .
     "WHERE `t2`.`section_id`=%d",
@@ -111,6 +111,7 @@ if (defined('POST_ID') && is_numeric(POST_ID)) {
             'LINK'            => $post['post_link'],
             'MODI_DATE'       => $post['post_date'],
             'MODI_TIME'       => $post['post_time'],
+            'PAGE_TITLE'      => (strlen($page['page_title']) ? $page['page_title'] : $page['menu_title']),
             'TAGS'            => implode(" ", $tags),
             'CONTENT'         => $post['content_short'].$post['content_long'],
             'BACK'            => $page_link,
