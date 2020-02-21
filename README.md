@@ -112,6 +112,8 @@ Erlaubte Platzhalter:
 *   [PREVIOUS_LINK],"Vorherige", s.o.,
 *   [OUT_OF], [OF], "x von y",
 *   [DISPLAY_PREVIOUS_NEXT_LINKS] "hidden" / "visible", je nach dem, ob Paginierung erforderlich ist
+*   [BACK] URL der News-Übersichtsseite
+*   [TEXT_BACK] "Zurück zur Übersicht"
 
     #### Beitrag Schleife
 

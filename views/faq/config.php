@@ -39,7 +39,7 @@ $post_footer = ' <div class="mod_nwi_spacer"></div>
 <table class="mod_nwi_table" style="visibility: [DISPLAY_PREVIOUS_NEXT_LINKS]">
 <tr>
     <td class="mod_nwi_table_left">[PREVIOUS_PAGE_LINK]</td>
-    <td class="mod_nwi_table_center">[OF]</td>
+    <td class="mod_nwi_table_center"><a href="[BACK]">[TEXT_BACK]</a></td>
     <td class="mod_nwi_table_right">[NEXT_PAGE_LINK]</td>
 </tr>
 </table>
