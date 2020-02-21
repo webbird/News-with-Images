@@ -243,7 +243,7 @@ if ($module_type == "news_img") {
                     $group_id=0;
                 } else {
                     $group_result=$query_groups->fetchRow();
-                    $group_title=$group_result['title'];
+                    $group_title=mod_nwi_escapeString($group_result['title']);
                     $query_groups = $database->query(sprintf(
                         "SELECT `group_id` FROM `%smod_news_img_groups` " .
                         "WHERE `section_id` = '$section_id' " .
