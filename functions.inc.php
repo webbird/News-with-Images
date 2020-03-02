@@ -2192,7 +2192,8 @@ function mod_nwi_get_news_items($options=array())
             // tags
             $tags = mod_nwi_get_tags_for_post($post['post_id']);
             foreach ($tags as $i => $tag) {
-                $tags[$i] = "<span class=\"mod_nwi_tag\" id=\"mod_nwi_tag_".$post['post_id']."_".$i."\">"
+                $tags[$i] = "<span class=\"mod_nwi_tag\" id=\"mod_nwi_tag_".$post['post_id']."_".$i."\""
+                          . (strlen($tag['tag_color'])>0 ? " style=\"background-color:".$tag['tag_color']."\"" : "" ) .">"
                           . "<a href=\"".$wb->page_link(PAGE_ID)."?tags=".$tag."\">".$tag."</a></span>";
             }
             // gallery images - wichtig für link "weiterlesen"  SHOW_READ_MORE
