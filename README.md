@@ -19,7 +19,8 @@ NWI steht unter der [GNU General Public License (GPL) v3.0](http://www.gnu.org/l
 
 ## Systemvoraussetzungen
 
-NWI hat keine besonderen Systemvoraussetzungen. Wenn WBCE CMS funktioniert, sollte auch NWI laufen.
+* WBCE v1.4.2 oder neuer
+* **PHP 7.1** oder neuer
 
 ## Installation/Update
 
