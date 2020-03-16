@@ -39,8 +39,8 @@ if (!defined('CAT_PATH')) {
 if(isset($_POST['mode']) && in_array($_POST['mode'],array('default','advanced'))) {
     $database->query(sprintf(
         "UPDATE `%smod_news_img_settings`"
-        . " SET `mode`='%s'",
-        TABLE_PREFIX, $_POST['mode']
+        . " SET `mode`='%s' WHERE `section_id`=%d",
+        TABLE_PREFIX, $_POST['mode'], $section_id
     ));
     if ($database->is_error()) {
         $admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
@@ -58,26 +58,45 @@ $raw = array('<', '>', '');
 // get current settings
 $settings = mod_nwi_settings_get($section_id);
 
+// always there
 $header = mod_nwi_escapeString(str_replace($friendly, $raw, $_POST['header']));
 $post_loop = mod_nwi_escapeString(str_replace($friendly, $raw, $_POST['post_loop']));
 $view_order = intval($_POST['view_order']);
 $footer = mod_nwi_escapeString(str_replace($friendly, $raw, $_POST['footer']));
 $post_header = mod_nwi_escapeString(str_replace($friendly, $raw, $_POST['post_header']));
 $post_content = mod_nwi_escapeString(str_replace($friendly, $raw, $_POST['post_content']));
-$image_loop = mod_nwi_escapeString(str_replace($friendly, $raw, $_POST['image_loop']));
 $post_footer = mod_nwi_escapeString(str_replace($friendly, $raw, $_POST['post_footer']));
 $posts_per_page = mod_nwi_escapeString($_POST['posts_per_page']);
 $gallery = mod_nwi_escapeString($_POST['gallery']);
-$gal_img_resize_width = mod_nwi_escapeString($_POST['gal_img_resize_width']);
-$gal_img_resize_height = mod_nwi_escapeString($_POST['gal_img_resize_height']);
-$gal_img_max_size = intval($_POST['gal_img_max_size'])*1024;
 $use_second_block = ( (isset($_POST['use_second_block']) && $_POST['use_second_block']=='Y') ? 'Y' : 'N');
-$view = mod_nwi_escapeString($_POST['view']);
-$block2 = mod_nwi_escapeString(str_replace($friendly, $raw, $_POST['block2']));
 
-// if the user chooses a new view, the setting are overwritten by the
+// expert mode
+if(isset($settings['mode']) && $settings['mode']=='advanced') {
+    $image_loop = mod_nwi_escapeString(str_replace($friendly, $raw, $_POST['image_loop']));
+    $gal_img_resize_width = mod_nwi_escapeString($_POST['gal_img_resize_width']);
+    $gal_img_resize_height = mod_nwi_escapeString($_POST['gal_img_resize_height']);
+    $gal_img_max_size = intval($_POST['gal_img_max_size'])*1024;
+    $view = mod_nwi_escapeString($_POST['view']);
+    $block2 = mod_nwi_escapeString(str_replace($friendly, $raw, $_POST['block2']));
+    $thumbwidth = mod_nwi_escapeString($_POST['thumb_width']);
+    $thumbheight = mod_nwi_escapeString($_POST['thumb_height']);
+} else {
+    $image_loop = $settings['image_loop'];
+    $gal_img_resize_width = $settings['imgmaxwidth'];
+    $gal_img_resize_height = $settings['imgmaxheight'];
+    $gal_img_max_size = $settings['imgmaxsize'];
+    $view = $settings['view'];
+    $block2 = $settings['block2'];
+    list($previewwidth,
+        $previewheight,
+        $thumbwidth,
+        $thumbheight
+    ) = mod_nwi_get_sizes($section_id);
+}
+
+// if the user chooses a new view, the settings are overwritten by the
 // defaults of this view!
-if($view!=$settings['view']) {
+if(!empty($view) && $view != $settings['view']) {
     include __DIR__.'/views/'.$view.'/config.php';
 }
 
@@ -86,8 +105,6 @@ $crop = 'N';
 
 $width = $_POST['resize_width'];
 $height = $_POST['resize_height'];
-$thumbwidth = $_POST['thumb_width'];
-$thumbheight = $_POST['thumb_height'];
 $thumbsize = "100x100"; // default
 
 $crop = (isset($_POST['crop_preview']) ? $_POST['crop_preview'] : 'N');
