@@ -1943,6 +1943,7 @@ function mod_nwi_display_news_items(
 	$sort_by = 1,                   // 1:=position (default), 2:=posted_when, 3:=published_when, 4:=random order
 	$sort_order = 1,                // 1:=descending (default), 2:=ascending
 	$not_older_than = 0,            // 0:=disabled (default), 0-999 (only show news `published_when` date <=x days; 12 hours:=0.5)
+    $is_not_older_than = 0,         // alias for not_older_than
 	$group_id_type = 'group_id',    // type used by group_id to extract news entries (supported: 'group_id', 'page_id', 'section_id', 'post_id')
 	$lang_filter = false,           // flag to enable language filter (default:= false, show only news from a news page, which language fits $lang_id)
     $skip = null,
@@ -1963,6 +1964,7 @@ function mod_nwi_display_news_items(
 			'sort_by'            => $sort_by,
 			'sort_order'         => $sort_order,
 			'not_older_than'     => $not_older_than,
+            'is_not_older_than'  => $is_not_older_than,
 			'lang_id'            => $lang_id,
 			'lang_filter'        => $lang_filter,
             'skip'               => $skip,
@@ -1991,6 +1993,7 @@ function mod_nwi_get_news_items($options=array())
 		'sort_by' => 1,                   // 1:=position (default), 2:=posted_when, 3:=published_when, 4:=random order
 		'sort_order' => 1,                // 1:=descending (default), 2:=ascending
 		'not_older_than' => 0,            // 0:=disabled (default), 0-999 (only show news `published_when` date <=x days; 12 hours:=0.5)
+        'is_not_older_than' => 0,
 		'lang_id' => 'AUTO',              // language file to load and lang_id used if $lang_filer = true (default:= auto, examples: AUTO, DE, EN)
 		'lang_filter' => false,	          // flag to enable language filter (default:= false, show only news from a news page, which language fits $lang_id)
         'skip' => null,                   // do not show posts with the given list of tags (default:=none)
@@ -2023,6 +2026,7 @@ function mod_nwi_get_news_items($options=array())
 	mod_nwi_sanitize_input($sort_by, 'i{1;1;5}');
 	mod_nwi_sanitize_input($sort_order, 'i{1;1;2}');
 	mod_nwi_sanitize_input($not_older_than, 'd{0;0;999}');
+    mod_nwi_sanitize_input($is_not_older_than, 'd{0;0;999}');
 	mod_nwi_sanitize_input($group_id_type, 'l{group_id;group_id;page_id;section_id;post_id}');
 	mod_nwi_sanitize_input($lang_filter, 'b');
     mod_nwi_sanitize_input($skip,'s{TRIM|STRIP|ENTITY}');
@@ -2059,6 +2063,9 @@ function mod_nwi_get_news_items($options=array())
     // ---------- time filter --------------------------------------------------
 	$server_time = time();
 	$sql_not_older_than = '1';
+    if($is_not_older_than > 0) {
+        $not_older_than = $is_not_older_than;
+    }
 	if ($not_older_than > 0) {
 		$sql_not_older_than = ' (t1.`published_when` >= \'' . ($server_time - ($not_older_than * 24 * 60 * 60)) . '\')';
 	}
