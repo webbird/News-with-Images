@@ -70,30 +70,32 @@ require(WB_PATH."/index.php");
     }   // end function scandir()
 
     $target_dir = WB_PATH . PAGES_DIRECTORY.'/posts/';
-	$files = scandir($target_dir);
-	natcasesort($files);
+    if(is_dir($target_dir)) {
+    	$files = scandir($target_dir);
+    	natcasesort($files);
 
-	// All files in /pages/posts/
-	foreach( $files as $file )
-    {
-        if( file_exists($target_dir.$file)
-            AND ($file != '.')
-                AND ($file != '..')
-                    AND ($file != 'index.php') )
+    	// All files in /pages/posts/
+    	foreach( $files as $file )
         {
-            clearstatcache();
-            $timestamp = filemtime ( $target_dir.$file );
-            $lines = file($target_dir.$file);
-            $content = '';
-            // read lines until first define
-            foreach ($lines as $line_num => $line) {
-                if(strstr($line,'define'))
-                {
-                  break;
+            if( file_exists($target_dir.$file)
+                AND ($file != '.')
+                    AND ($file != '..')
+                        AND ($file != 'index.php') )
+            {
+                clearstatcache();
+                $timestamp = filemtime ( $target_dir.$file );
+                $lines = file($target_dir.$file);
+                $content = '';
+                // read lines until first define
+                foreach ($lines as $line_num => $line) {
+                    if(strstr($line,'define'))
+                    {
+                      break;
+                    }
+                    $content .= $line;
                 }
-                $content .= $line;
+                nwi_create_new_post($target_dir.$file, $timestamp, $content);
             }
-            nwi_create_new_post($target_dir.$file, $timestamp, $content);
         }
     }
 
@@ -323,10 +325,10 @@ require(WB_PATH."/index.php");
     // install the droplet(s)
     if(!defined('CAT_PATH')) {
         try {
-            include WB_PATH.'/modules/droplets/functions.inc.php';
-            make_dir(WB_PATH.'/temp/unzip');
-            wbce_unpack_and_import(WB_PATH.'/modules/news_img/droplets/droplet_getNewsItems.zip', WB_PATH . '/temp/unzip/');
-            rm_full_dir(WB_PATH.'/temp/unzip');
+        include WB_PATH.'/modules/droplets/functions.inc.php';
+        make_dir(WB_PATH.'/temp/unzip');
+        wbce_unpack_and_import(WB_PATH.'/modules/news_img/droplets/droplet_getNewsItems.zip', WB_PATH . '/temp/unzip/');
+        rm_full_dir(WB_PATH.'/temp/unzip');
         } catch ( \Exception $e ) {}
     } else {
         CAT_Helper_Droplet::installDroplet(WB_PATH.'/modules/news_img/droplets/droplet_getNewsItems.zip');
