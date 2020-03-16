@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
 <html lang="de-de" dir="ltr">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <head>
 <title>Readme</title>
 
@@ -166,6 +167,7 @@ nav label:active { background: #ffffff; }
 <p>Beiträge können einem oder mehreren Stichworten zugeordnet werden. Diese Stichworte werden dann je nach Konfiguration im Frontend auf der Beitragsübersicht und/oder der Detailansicht angezeigt und sind jeweils mit der Übersicht aller Beiträge zu diesem Stichwort verlinkt.</p>
 <p>Stichworte aus der Beitragsübersicht heraus zentral für alle Beiträge im Abschnitt zur Verfügung gestellt (Reiter "Stichworte") und können dann in der Beitrags-Detailansicht ausgewählt werden.</p>
 <p>Globale Stichworte stehen in allen NWI-Abschnitten zur Verfügung, also auch auf anderen Seiten des Auftritts.</p>
+<p>Nach dem Anlegen können Stichworte bearbeitet/geändert werden, ebenso ist es möglich, diesen eigene Farben zuzuweisen.</p>
 
 <h3 id="d65">2. Block</h3>
 <p>Diese Funktion steht nur zur Verfügung, wenn bei den Einstellungen der "Expertenmodus" aktiviert wurde und die Verwendung des 2. Blocks aktiviert ist.</p>
@@ -234,7 +236,8 @@ Das Beitragsbild steht <strong>nur</strong> in der angegebenen Auflösung zur Ve
 <li>[TEXT_READ_MORE] &quot;Details anzeigen&quot;,</li>
 <li>[SHOW_READ_MORE], <em>hidden</em> oder <em>visible</em>,</li>
 <li>[GROUP_IMAGE_URL] URL des Gruppen-Bildes,</li>
-<li>[CONTENT_LONG] Langtext</li>
+<li>[CONTENT_LONG] Langtext,</li>
+<li>[TAGS] Dem Beitrag zugeordnete Stichworte (Tags)</li>
 </ul>
 <h3 id="d73">Beitragsansicht</h3>
 <ul>
@@ -262,7 +265,8 @@ Das Beitragsbild steht <strong>nur</strong> in der angegebenen Auflösung zur Ve
 <li>[USER_ID] ID des Erstellers des Beitrags,</li>
 <li>[USERNAME] Benutzername des Erstellers des Beitrags,</li>
 <li>[DISPLAY_NAME] Anzeigename des Erstellers des Beitrags,</li>
-<li>[EMAIL] Mailadresse des Erstellers des Beitrags</li>
+<li>[EMAIL] Mailadresse des Erstellers des Beitrags,</li>
+<li>[TAGS] Dem Beitrag zugeordnete Stichworte (Tags)</li>
 </ul>
 <h4 id="d732">Nachrichten-Inhalt</h4>
 <ul>
@@ -270,7 +274,8 @@ Das Beitragsbild steht <strong>nur</strong> in der angegebenen Auflösung zur Ve
 <li>[IMAGES] Bilder / Galerie-HTML,</li>
 <li>[IMAGE_URL] URL des Beitragsbilds (https://example.com/media/.news_img/filename.jpg),</li>
 <li>[CONTENT_SHORT] Kurztext,</li>
-<li>[CONTENT_LONG] Langtext </li>
+<li>[CONTENT_LONG] Langtext, </li>
+<li>[TAGS] Dem Beitrag zugeordnete Stichworte (Tags)</li>
 </ul>
 <h3 id="d74">Galerie-/Bild-Einstellungen</h3>
 <ul>
@@ -339,6 +344,7 @@ Das Beitragsbild steht <strong>nur</strong> in der angegebenen Auflösung zur Ve
 <p>Posts can be assigned to one or more tags. Depending on the configuration, these tags are then displayed in the front end on the article overview and / or the detailed view and are linked to the overview of all articles for this tag.</p>
 <p>Tags are made available centrally for all articles in the section from the article overview ("tags" tab) and can then be selected in the article detail view.</p>
 <p>Global tags are available in all NWI sections, e.g. also on other pages of the website.</p>
+<p>Once created, tags can be modified and it's also possible to define own colors for each tag.</p>
 
 <h3>2nd Block</h3>
 <p>This function is only available if "expert mode" has been activated in the settings and "Use second block" is chosen.</p>
@@ -409,7 +415,8 @@ The image is only available in the specified resolution. If it is to be used in 
 <li>[TEXT_READ_MORE] &quot;Show details&quot;,</li>
 <li>[SHOW_READ_MORE], <em> hidden </em> or <em> visible </em>,</li>
 <li>[GROUP_IMAGE_URL] URL of the group image,</li>
-<li>[CONTENT_LONG] long text</li>
+<li>[CONTENT_LONG] long text,</li>
+<li>[TAGS] The tags assigned to the post</li>
 </ul>
 <h3>post view</h3>
 <ul>
@@ -437,14 +444,16 @@ The image is only available in the specified resolution. If it is to be used in 
 <li>[USER_ID] ID of the creator of the post,</li>
 <li>[USERNAME] username of the creator of the post,</li>
 <li>[DISPLAY_NAME] Display name of the creator of the post,</li>
-<li>[EMAIL] Email address of the creator of the post</li>
+<li>[EMAIL] Email address of the creator of the post,</li>
+<li>[TAGS] The tags assigned to the post</li>
 </ul>
 <h4>news content</h4>
 <ul>
 <li>[CONTENT] complete post Content (short+long) (HTML),</li>
 <li>[IMAGES] Images / Gallery HTML,</li>
 <li>[CONTENT_SHORT] short text,</li>
-<li>[CONTENT_LONG] long text</li>
+<li>[CONTENT_LONG] long text,</li>
+<li>[TAGS] The tags assigned to the post</li>
 </ul>
 <h3>Gallery / Picture Settings</h3>
 <ul>
