@@ -1,6 +1,5 @@
 <div class="mod_news_img">
     <h2><?php echo $MOD_NEWS_IMG['SETTINGS']; ?></h2>
-<?php if(function_exists('edit_module_css')): edit_module_css('news_img'); endif; ?>
     <form name="modify_mode" action="<?php echo WB_URL; ?>/modules/news_img/save_settings.php" method="post">
         <?php echo $FTAN; ?>
         <input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
