@@ -165,7 +165,7 @@
                     <input type="text" name="picdesc[<?php echo $image['id'] ?>]" value="<?php echo htmlspecialchars($image["picdesc"]) ?>">
                 </td>
                 <td>
-                    <a onclick="return confirm('<?php echo $MOD_NEWS_IMG['DELETEIMAGE'] ?>')" href="<?php echo WB_URL ?>/modules/news_img/modify_post.php?page_id=<?php echo $page_id ?>&section_id=<?php echo $section_id ?>&post_id=<?php echo $image['id_key'] ?>&img_id=<?php echo $image['id_key'] ?>#fs">
+                    <a onclick="return confirm('<?php echo $MOD_NEWS_IMG['DELETEIMAGE'] ?>')" href="<?php echo WB_URL ?>/modules/news_img/modify_post.php?page_id=<?php echo $page_id ?>&section_id=<?php echo $section_id ?>&post_id=<?php echo $post_id_key ?>&img_id=<?php echo $image['id_key'] ?>#fs">
                         <img src="<?php echo THEME_URL ?>/images/delete_16.png" />
                     </a>
                 </td>
