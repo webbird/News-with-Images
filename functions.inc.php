@@ -1952,7 +1952,7 @@ function mod_nwi_display_news_items(
     $view = null,                   // CSS view to use
     $aslist = false
 ) {
-	$output = mod_nwi_get_news_items(
+	$mod_nwi_output = mod_nwi_get_news_items(
 		$options = array(
 			'group_id_type'      => $group_id_type,
 			'group_id'           => $group_id,
@@ -1974,7 +1974,7 @@ function mod_nwi_display_news_items(
             'aslist'             => $aslist,
 		)
 	);
-	echo $output;
+	echo $mod_nwi_output;
 }
 
 function mod_nwi_get_news_items($options=array())
@@ -2215,12 +2215,12 @@ function mod_nwi_get_news_items($options=array())
     }
 
     if(!empty($settings['aslist']) && $settings['aslist']==true) {
-        $output = array('<ul class="nia_posts">');
+        $mod_nwi_output = array('<ul class="nia_posts">');
         foreach($posts as $p) {
-            $output[] = '<li class="nia_post"><a href="'.WB_URL.PAGES_DIRECTORY.$p['link'].PAGE_EXTENSION.'">'.$p['title'].'</a></li>';
+            $mod_nwi_output[] = '<li class="nia_post"><a href="'.WB_URL.PAGES_DIRECTORY.$p['link'].PAGE_EXTENSION.'">'.$p['title'].'</a></li>';
         }
-        $output[] = '</ul>';
-        return implode("\n",$output);
+        $mod_nwi_output[] = '</ul>';
+        return implode("\n",$mod_nwi_output);
     }
 
     $tpl = '/templates/default/view.phtml';
