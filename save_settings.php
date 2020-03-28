@@ -132,7 +132,7 @@ if ($posts_per_page=='') {
 $query_content = $database->query("SELECT `gallery` FROM `".TABLE_PREFIX."mod_news_img_settings` WHERE `section_id` = '$section_id'");
 $fetch_content = $query_content->fetchRow();
 if ($fetch_content['gallery'] != $gallery) {
-    include WB_PATH.'/modules/news_img/js/'.$gallery.'/settings.php';
+    include WB_PATH.'/modules/news_img/js/galleries/'.$gallery.'/settings.php';
 }
 
 $gal_img_max_size = intval($gal_img_max_size);

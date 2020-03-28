@@ -1417,6 +1417,9 @@ function mod_nwi_img_get_by_post(int $post_id, bool $render)
         "ORDER BY `position`,`id` ASC",
         TABLE_PREFIX,intval($post_id)
     ));
+	
+	$thumbsizeraw = explode('x',$settings['imgthumbsize']);
+
     $images = array();
     if (!empty($query_img) && $query_img->numRows() > 0) {
         while ($row = $query_img->fetchRow()) {
@@ -1425,10 +1428,18 @@ function mod_nwi_img_get_by_post(int $post_id, bool $render)
                     array(
                         '[IMAGE]',
                         '[DESCRIPTION]',
+						'[THUMB]',
+						'[THUMBWIDTH]',
+						'[THUMBHEIGHT]',
+						'[WB_URL]'
                     ),
                     array(
                         WB_URL.MEDIA_DIRECTORY.'/.news_img/'.POST_ID.'/'.$row['picname'],
                         $row['picdesc'],
+						WB_URL.MEDIA_DIRECTORY.'/.news_img/'.POST_ID.'/thumb/'.$row['picname'],
+						$thumbsizeraw[0],
+						$thumbsizeraw[1],
+						WB_URL
                     ),
                     $settings['image_loop']
                 );

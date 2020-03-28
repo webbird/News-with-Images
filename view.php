@@ -26,6 +26,8 @@ if(file_exists($lang)) {
     require $lang;
 }
 
+$output='';
+
 // overwrite php.ini on Apache servers for valid SESSION ID Separator
 if (function_exists('ini_set')) {
     ini_set('arg_separator.output', '&amp;');

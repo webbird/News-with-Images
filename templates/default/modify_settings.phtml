@@ -138,6 +138,7 @@
                         <select name="gallery" style="width: 98%;" onfocus="this.setAttribute('PrvSelectedValue',this.value);" onchange="if(confirm('<?php echo $MOD_NEWS_IMG['GALLERY_WARNING']?>')==false){ this.value=this.getAttribute('PrvSelectedValue');return false; }" >
                             <option value="fotorama"<?php if($settings['gallery']=='fotorama'): ?> selected="selected"<?php endif; ?>>Fotorama</option>
                             <option value="masonry"<?php if($settings['gallery']=='masonry'): ?> selected="selected"<?php endif; ?>>Masonry</option>
+							<option value="lightcase" <?php if($settings['gallery']=='lightcase'): ?> selected="selected"<?php endif; ?>>Lightcase</option>
         					<option value="none"<?php if($settings['gallery']=='none'): ?> selected="selected"<?php endif; ?>><?php echo $MOD_NEWS_IMG['NONE'] ?></option>
                         </select>
         			</td>
