@@ -154,7 +154,7 @@ if (defined('POST_ID') && is_numeric(POST_ID)) {
         }
     }
 
-    $mod_nwi_output = preg_replace_callback(
+    $output = preg_replace_callback(
         '~\[('.implode('|',$vars).')+\]~',
         function($match) use($replacements) {
             return (isset($match[1]) && isset($replacements[$match[1]]))
