@@ -14,9 +14,7 @@
  */
 
 // Must include code to stop this file being access directly
-if (defined('WB_PATH') == false) {
-    exit("Cannot access this file directly");
-}
+if(!defined('WB_PATH')) { exit("Cannot access this file directly"); }
 
 require_once __DIR__.'/functions.inc.php';
 

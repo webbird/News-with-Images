@@ -14,7 +14,7 @@
  */
 
 // Must include code to stop this file being access directly
-if(defined('WB_PATH') == false) { exit("Cannot access this file directly"); }
+if(!defined('WB_PATH')) { exit("Cannot access this file directly"); }
 
 $database->query("DELETE FROM `".TABLE_PREFIX."search` WHERE `name` = 'module' AND `value` = 'news_img'");
 $database->query("DELETE FROM `".TABLE_PREFIX."search` WHERE `extra` = 'news_img'");
