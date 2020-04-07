@@ -15,8 +15,9 @@ if(file_exists($lang)) {
     require $lang;
 }
 
-global $allowed_suffixes;
+global $allowed_suffixes, $allowed_mime_prefix;
 $allowed_suffixes = array('jpg','jpeg','gif','png');
+$allowed_mime_prefix = 'image';
 
 $mod_nwi_file_dir = WB_PATH.MEDIA_DIRECTORY.'/.news_img/';
 $mod_nwi_thumb_dir = WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb/';
@@ -267,13 +268,18 @@ function mod_nwi_tag_exists(int $section_id, string $tag)
 
 // ========== Images ===========================================================
 
-function mod_nwi_img_copy($source, $dest){
+/**
+ * copy all images from $source path to $dest path
+ * this is used for post_copy
+ **/
+function mod_nwi_img_copy(string $source, string $dest)
+{
     if(is_dir($source)) {
         $dir_handle=opendir($source);
-        while($file=readdir($dir_handle)){
-            if($file!="." && $file!=".."){
-                if(is_dir($source."/".$file)){
-                    if(!is_dir($dest."/".$file)){
+        while($file=readdir($dir_handle)) {
+            if($file!="." && $file!="..") {
+                if(is_dir($source."/".$file)) {
+                    if(!is_dir($dest."/".$file)) {
                         mkdir($dest."/".$file);
                     }
                     mod_nwi_img_copy($source."/".$file, $dest."/".$file);
@@ -284,11 +290,15 @@ function mod_nwi_img_copy($source, $dest){
         }
         closedir($dir_handle);
     } else {
-        if(file_exists($source))
+        if(file_exists($source)) {
             copy($source, $dest);
+    }
     }
 }
 
+/**
+ * get image details from database
+ **/
 function mod_nwi_img_get($pic_id)
 {
     global $database;
@@ -362,150 +372,71 @@ header('Location: ../');
     }
 }
 
-function mod_nwi_img_upload($post_id,$is_preview_image=false)
+/**
+ *
+ * @access public
+ * @return
+ **/
+function mod_nwi_img_handle_upload()
 {
-    global $database, $mod_nwi_file_dir, $allowed_suffixes;
 
-    // upload.php = 'file'
-    // modify_post.php (preview image) = 'postfoto'
-    $key = 'file';
-    if($is_preview_image) {
-        $key = 'postfoto';
-    } else {
-        $mod_nwi_file_dir .= "$post_id/";
-    }
-    $mod_nwi_thumb_dir = $mod_nwi_file_dir . "thumb/";
-    $imageErrorMessage = null;
+}   // end function mod_nwi_img_handle_upload()
 
-    // get section id
-    $post_data = mod_nwi_post_get($post_id);
-    $section_id = intval($post_data['section_id']);
 
-    // get settings
-    $settings = mod_nwi_settings_get($section_id);
+/**
+ * sanitize uploaded file (name, size, type)
+ **/
+function mod_nwi_img_sanitize_upload(array $settings, ?string $key='image') : array
+{
+    global $MESSAGE, $MOD_NEWS_IMG, $allowed_suffixes, $allowed_mime_prefix;
+    $errors = array();
 
-    $settings['imgmaxsize'] = intval($settings['imgmaxsize']);
+    if(isset($_FILES[$key]) && is_array($_FILES[$key]))
+    {
+        // get max. upload file size from php.ini
     $iniset = ini_get('upload_max_filesize');
     $iniset = mod_nwi_return_bytes($iniset);
 
-    list($previewwidth,
-        $previewheight,
-        $thumbwidth,
-        $thumbheight
-    ) = mod_nwi_get_sizes($section_id);
-
-    // gallery images size
+        // gallery images size; default = upload_max_filesize setting
     $imagemaxsize  = ($settings['imgmaxsize']>0 && $settings['imgmaxsize'] < $iniset)
         ? $settings['imgmaxsize']
         : $iniset;
 
-    $imagemaxwidth  = $settings['imgmaxwidth'];
-    $imagemaxheight = $settings['imgmaxheight'];
-    $crop           = ($settings['crop_preview'] == 'Y') ? 1 : 0;
+        $picture = $_FILES[$key];
 
-    // make sure the folder exists
-    if(!is_dir($mod_nwi_file_dir)) {
-        mod_nwi_img_makedir($mod_nwi_file_dir);
+        // validate mime type
+        if(isset($picture['type']) && !preg_match('~^'.$allowed_mime_prefix.'\/~i',$picture['type'])) {
+            $errors[] = $MOD_NEWS_IMG['IMAGE_INVALID_TYPE'];
     }
 
-    // handle upload
-    if(isset($_FILES[$key]) && is_array($_FILES[$key]))
-    {
-        $picture = $_FILES[$key];
-        if (isset($picture['name']) && $picture['name'] && (strlen($picture['name']) > 3))
+        // check and sanitize file name, check for allowed suffix
+        // min string length 5 = x.ext
+        if (isset($picture['name']) && (strlen($picture['name']) > 4))
         {
-            $pic_error = '';
             // change special characters
             $imagename = media_filename($picture['name']);
             // validate suffix
             $suffix = strtolower(pathinfo($imagename,PATHINFO_EXTENSION));
             if(!in_array($suffix,$allowed_suffixes)) {
-                $imageErrorMessage = 'invalid file type';
-            } else {
-                // lowercase filename and find a free one
-                $imagename = mod_nwi_find_free_filename($mod_nwi_file_dir,strtolower($imagename));
-                $filepath = $mod_nwi_file_dir.$imagename;
-                // check size limit
-                if (empty($picture['size']) || $picture['size'] > $imagemaxsize) {
-                    $imageErrorMessage .= $MOD_NEWS_IMG['IMAGE_LARGER_THAN'].mod_nwi_byte_convert($imagemaxsize).'<br />';
-                } elseif (strlen($imagename) > '256') {
-                    $imageErrorMessage .= $MOD_NEWS_IMG['IMAGE_FILENAME_ERROR'].'<br />';
-                } else {
-                    // move to media folder
-                    if (true===move_uploaded_file($picture['tmp_name'], $filepath)) {
-                        // preview images have a different size (smaller in most cases)
-                        if($is_preview_image) {
-                            $imagemaxwidth  = $previewwidth;
-                            $imagemaxheight = $previewheight;
-                        }
-                        // fix for empty max values
-                        if(empty($imagemaxwidth)) {
-                            $imagemaxwidth = 150;
-                        }
-                        if(empty($imagemaxheight)) {
-                            $imagemaxheight = 150;
-                        }
-
-                        // resize image (if larger than max width and height)
-                        if (list($w, $h) = getimagesize($mod_nwi_file_dir.$imagename)) {
-                            if ($w>$imagemaxwidth || $h>$imagemaxheight) {
-                                if (true !== ($pic_error = @mod_nwi_image_resize($mod_nwi_file_dir.$imagename, $mod_nwi_file_dir.$imagename, $imagemaxwidth, $imagemaxheight, $crop))) {
-                                    $imageErrorMessage .= $pic_error.'<br />';
-                                    @unlink($mod_nwi_file_dir.$imagename); // delete image (cleanup)
-                                }
-                            }
-                        }
-                        if($is_preview_image) {
-                            $database->query(sprintf(
-                                "UPDATE `%smod_news_img_posts` SET `image`='%s' " .
-                                "WHERE `post_id`=%d",
-                                TABLE_PREFIX, $imagename, $post_id
-                            ));
-                            if($database->is_error()) {
-                                $imageErrorMessage .= $database->get_error()."<br />";
-                            }
-                        } else {
-                            // create thumb
-                            if (true !== ($pic_error = @mod_nwi_image_resize($mod_nwi_file_dir.$imagename, $mod_nwi_thumb_dir.$imagename, $thumbwidth, $thumbheight, $crop))) {
-                                $imageErrorMessage .= $pic_error.'<br />';
-                                @unlink($mod_nwi_file_dir.$imagename); // delete image (cleanup)
-                            } else {
-                                $pic_id = null;
-                                // insert image into image table
-                                $database->query(sprintf(
-                                    "INSERT INTO `%smod_news_img_img` " .
-                                    "(`picname`) " .
-                                    "VALUES ('%s')",
-                                    TABLE_PREFIX,$imagename
-                                ));
-                                if($database->is_error()) {
-                                    $imageErrorMessage .= $database->get_error()."<br />";
-                                } else {
-                                    $pic_id = $database->getLastInsertId();
-                                }
-                                // image position
-                                $order = new order(TABLE_PREFIX.'mod_news_img_img', 'position', 'id', 'post_id');
-                                $position = $order->get_new($post_id);
-                                // connect with current post
-                                $database->query(sprintf(
-                                    "INSERT INTO `%smod_news_img_posts_img` " .
-                                    "(`post_id`,`pic_id`,`position`) " .
-                                    "VALUES ('%s',%d,%d)",
-                                    TABLE_PREFIX,$post_id,$pic_id,$position
-                                ));
-                                if($database->is_error()) {
-                                    $imageErrorMessage .= $database->get_error()."<br />";
-                                }
-                            }
-                        }
-                    } else {
-                        $imageErrorMessage .= "Unable to move uploaded image ".$picture['tmp_name']." to ".$mod_nwi_file_dir.$imagename."<br />";
-                    }
-                }
+                $errors[] = $MESSAGE['GENERIC']['FILE_TYPE'] . " "
+                          . implode(', ',$allowed_suffixes);
             }
         }
-    }
-    return $imageErrorMessage;
+
+                // check size limit
+                if (empty($picture['size']) || $picture['size'] > $imagemaxsize) {
+            $errors[] = $MOD_NEWS_IMG['IMAGE_LARGER_THAN'].mod_nwi_byte_convert($imagemaxsize);
+                } elseif (strlen($imagename) > '256') {
+            $errors[] = $MOD_NEWS_IMG['IMAGE_FILENAME_ERROR'];
+        }
+                } else {
+        $errors[] = $MOD_NEWS_IMG['IMAGE_FILENAME_ERROR'];
+                        }
+
+    return array(
+        'filename' => $imagename,
+        'errors'   => $errors,
+    );
 }
 
 // ===== POSTS =================================================================

@@ -73,6 +73,7 @@ $MOD_NEWS_IMG['POST_SETTINGS'] = 'Post settings';
 $MOD_NEWS_IMG['POSTED_BY'] = 'Posted by';
 $MOD_NEWS_IMG['POSTS'] = 'Posts';
 $MOD_NEWS_IMG['PREVIEWIMAGE'] = 'Preview image';
+$MOD_NEWS_IMG['PREVIEWIMAGE_INFO'] = 'Show this image on the posts listing page';
 $MOD_NEWS_IMG['SAVEGOBACK'] = 'Save and go back';
 $MOD_NEWS_IMG['SETTINGS'] = 'News Settings';
 $MOD_NEWS_IMG['TAG'] = 'Tag';

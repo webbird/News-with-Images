@@ -76,6 +76,7 @@ $MOD_NEWS_IMG['POST_SETTINGS'] = 'Beitragsansicht';
 $MOD_NEWS_IMG['POSTED_BY'] = 'Verfaßt von';
 $MOD_NEWS_IMG['POSTS'] = 'Beiträge';
 $MOD_NEWS_IMG['PREVIEWIMAGE'] = 'Beitragsbild';
+$MOD_NEWS_IMG['PREVIEWIMAGE_INFO'] = 'Dieses Bild auf der Übersichtsseite als Beitragsbild verwenden';
 $MOD_NEWS_IMG['SAVEGOBACK'] = 'Speichern und Zur&uuml;ck';
 $MOD_NEWS_IMG['SETTINGS'] = 'News Einstellungen';
 $MOD_NEWS_IMG['TAG'] = 'Stichwort';

@@ -80,7 +80,7 @@ if (isset($_GET['img_id'])) {
     ));
 }   //end delete gallery image
 
-// re-order images
+// ----- re-order images -------------------------------------------------------
 if (isset($_GET['id']) && (isset($_GET['up']) || isset($_GET['down']))) {
     $order = new order(TABLE_PREFIX.'mod_news_img_img', 'position', 'id', 'post_id');
     $id = $admin->checkIDKEY('id', 0, 'GET');
